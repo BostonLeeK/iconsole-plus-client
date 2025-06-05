@@ -12,6 +12,8 @@ const electronAPI: ElectronAPI = {
     checkConnectionStatus: () =>
       ipcRenderer.invoke("bluetooth:check-connection-status"),
   },
+  saveWorkoutSession: (session) =>
+    ipcRenderer.invoke("save-workout-session", session),
   on: (channel: string, callback: (...args: any[]) => void) => {
     const validChannels = [
       "device-discovered",

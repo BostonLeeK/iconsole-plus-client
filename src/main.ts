@@ -1,5 +1,8 @@
 import { app, BrowserWindow, ipcMain } from "electron";
+import path from "path";
 import { BluetoothService } from "./services/bluetooth.service";
+import { WorkoutSession } from "./types/bluetooth";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -96,6 +99,32 @@ ipcMain.handle("bluetooth:check-connection-status", async () => {
     return { isConnected: false };
   }
 });
+
+ipcMain.handle(
+  "save-workout-session",
+  async (event, session: WorkoutSession) => {
+    try {
+      const userDataPath = app.getPath("userData");
+      const recordsDir = path.join(userDataPath, "data_records");
+
+      if (!existsSync(recordsDir)) {
+        mkdirSync(recordsDir, { recursive: true });
+      }
+
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const filename = `workout-session-${timestamp}.json`;
+      const filepath = path.join(recordsDir, filename);
+
+      writeFileSync(filepath, JSON.stringify(session, null, 2));
+
+      console.log(`Workout session saved to: ${filepath}`);
+      return { success: true, filepath };
+    } catch (error) {
+      console.error("Failed to save workout session:", error);
+      throw error;
+    }
+  }
+);
 
 bluetoothService.on("deviceDiscovered", (device) => {
   mainWindow?.webContents.send("device-discovered", device);

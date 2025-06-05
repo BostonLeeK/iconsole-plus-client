@@ -5,6 +5,7 @@ import { RawData } from "../modules/RawData/RawData";
 import { WorkoutData } from "../modules/WorkoutData/WorkoutData";
 import { BluetoothService } from "../services/bluetoothService";
 import { appState } from "../store/app";
+import { SessionRecorder } from "../modules/SessionRecorder/SessionRecorder";
 
 export function BluetoothScreen() {
   onMount(async () => {
@@ -82,6 +83,7 @@ export function BluetoothScreen() {
           <div class="lg:col-span-8">
             <div class="space-y-6">
               <WorkoutData />
+              <SessionRecorder />
               <RawData />
             </div>
           </div>

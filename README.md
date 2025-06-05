@@ -8,6 +8,7 @@ A modern Electron application built with SolidJS for connecting to iConsole+ exe
 
 - 🔗 **Bluetooth LE Connection** - Connect to iConsole+ exercise bikes
 - 📊 **Real-time Data** - Live workout metrics display
+- 📹 **Session Recording** - Record and save workout sessions to JSON files
 - 🎯 **FTMS Protocol** - Full FTMS (Fitness Machine Service) support
 - 💻 **Cross-platform** - Works on Windows, macOS, and Linux
 - 🎨 **Modern UI** - Built with SolidJS and Electron
@@ -64,6 +65,19 @@ npm run package
 5. **Select your bike** from the list
 6. **Connect** and start your workout!
 
+### 📹 Recording Workout Sessions
+
+1. **Connect to your exercise bike**
+2. **Click "Start Recording"** - all metrics will reset to zero
+3. **Exercise** - data is automatically captured every second
+4. **Click "Stop Recording"** - session is saved as JSON file
+
+Recorded sessions are saved to:
+
+- **Windows**: `%APPDATA%/iconsole-plus-client/data_records/`
+- **macOS**: `~/Library/Application Support/iconsole-plus-client/data_records/`
+- **Linux**: `~/.config/iconsole-plus-client/data_records/`
+
 ## 📋 Supported Devices
 
 - iConsole+ exercise bikes (tested with iConsole+0051)
@@ -80,8 +94,18 @@ This application uses the standard **FTMS (Fitness Machine Service)** Bluetooth 
 - **Service UUID**: `1826` (FTMS)
 - **Message Format**: 21-byte Indoor Bike Data packets
 - **Update Frequency**: 2-3 seconds
+- **Recording Frequency**: 1-second intervals
 - **Platform**: Electron + SolidJS
 - **Bluetooth Library**: @abandonware/noble
+
+### Session Data Format
+
+Each recorded session contains:
+
+- **Session metadata** (start/end time, duration)
+- **Data points** (captured every second with timestamp)
+- **Summary statistics** (max/avg values for all metrics)
+- **JSON format** for easy analysis and integration
 
 ## 📁 Project Structure
 

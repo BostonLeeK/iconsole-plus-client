@@ -18,6 +18,24 @@ export interface WorkoutData {
   calories: number;
   watt: number;
   time: number;
+  timestamp?: number;
+}
+
+export interface WorkoutSession {
+  startTime: string;
+  endTime: string;
+  duration: number;
+  data: WorkoutData[];
+  summary: {
+    maxSpeed: number;
+    avgSpeed: number;
+    maxPower: number;
+    avgPower: number;
+    totalDistance: number;
+    totalCalories: number;
+    maxHeartRate: number;
+    avgHeartRate: number;
+  };
 }
 
 export interface IConsoleResponse {
@@ -51,6 +69,7 @@ export interface ElectronAPI {
       device?: BluetoothDevice;
     }>;
   };
+  saveWorkoutSession(session: WorkoutSession): Promise<void>;
   on(channel: string, callback: (...args: any[]) => void): void;
 }
 

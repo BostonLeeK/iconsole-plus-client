@@ -31,9 +31,14 @@ export class BluetoothService {
     }
 
     window.electronAPI.on("device-discovered", (device: BluetoothDevice) => {
-      addDevice(device);
-      const devicesCount = appState.devices.length + 1;
-      updateStatus(`Found ${devicesCount} device(s)`, "info");
+      const wasAdded = addDevice(device);
+      if (wasAdded) {
+        // Calculate the exact count after adding
+        setTimeout(() => {
+          const devicesCount = appState.devices.length;
+          updateStatus(`Found ${devicesCount} device(s)`, "info");
+        }, 0);
+      }
     });
 
     window.electronAPI.on("device-connected", async () => {
