@@ -103,6 +103,17 @@ ipcMain.handle("bluetooth:check-connection-status", async () => {
 });
 
 ipcMain.handle(
+  "bluetooth:set-resistance-level",
+  async (event, level: number) => {
+    try {
+      await bluetoothService.setResistanceLevel(level);
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+ipcMain.handle(
   "save-workout-session",
   async (event, session: WorkoutSession) => {
     try {
@@ -118,8 +129,6 @@ ipcMain.handle(
       const filepath = path.join(recordsDir, filename);
 
       writeFileSync(filepath, JSON.stringify(session, null, 2));
-
-      console.log(`Workout session saved to: ${filepath}`);
       return { success: true, filepath };
     } catch (error) {
       console.error("Failed to save workout session:", error);

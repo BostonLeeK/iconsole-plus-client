@@ -68,6 +68,7 @@ export class BluetoothService
   private connectedPeripheral: NoblePeripheral | null = null;
   private dataCharacteristic: Characteristic | null = null;
   private controlCharacteristic: Characteristic | null = null;
+  private controlServiceUuid: string | null = null;
   private scanning: boolean = false;
   private discoveredDevices: Set<string> = new Set();
   private pollingInterval: NodeJS.Timeout | null = null;
@@ -190,19 +191,98 @@ export class BluetoothService
           return;
         }
 
-        let targetService: Service | null = null;
+        const ftmsService = services.find((s: Service) => s.uuid === "1826");
+        const proprietaryService = services.find(
+          (s: Service) => s.uuid === "fff0"
+        );
 
-        targetService = services.find((s: Service) => s.uuid === "1826");
+        if (ftmsService) {
+          this.discoverDataCharacteristics(ftmsService)
+            .then(() => {
+              if (proprietaryService) {
+                return this.discoverControlCharacteristics(proprietaryService);
+              } else {
+                return this.discoverControlCharacteristics(ftmsService);
+              }
+            })
+            .then(() => {
+              this.startSimplePolling();
+              resolve();
+            })
+            .catch(reject);
+        } else if (proprietaryService) {
+          this.discoverCharacteristics(proprietaryService)
+            .then(resolve)
+            .catch(reject);
+        } else {
+          this.discoverCharacteristics(services[0] as Service)
+            .then(resolve)
+            .catch(reject);
+        }
+      });
+    });
+  }
 
-        if (!targetService) {
-          targetService = services.find((s: Service) => s.uuid === "fff0");
+  private async discoverDataCharacteristics(service: Service): Promise<void> {
+    return new Promise((resolve, reject) => {
+      service.discoverCharacteristics([], (error, characteristics) => {
+        if (error) {
+          console.error("❌ Data characteristic discovery error:", error);
+          reject(error);
+          return;
         }
 
-        if (!targetService) {
-          targetService = services[0] as Service;
+        if (!characteristics || characteristics.length === 0) {
+          console.error("❌ No data characteristics found");
+          reject(new Error("No characteristics found"));
+          return;
         }
 
-        this.discoverCharacteristics(targetService).then(resolve).catch(reject);
+        for (const char of characteristics) {
+          if (
+            char.properties.includes("notify") ||
+            char.properties.includes("indicate")
+          ) {
+            this.dataCharacteristic = char;
+            this.setupDataCharacteristic(char);
+            break;
+          }
+        }
+
+        resolve();
+      });
+    });
+  }
+
+  private async discoverControlCharacteristics(
+    service: Service
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      service.discoverCharacteristics([], (error, characteristics) => {
+        if (error) {
+          console.error("❌ Control characteristic discovery error:", error);
+          reject(error);
+          return;
+        }
+
+        if (!characteristics || characteristics.length === 0) {
+          console.error("❌ No control characteristics found");
+          reject(new Error("No characteristics found"));
+          return;
+        }
+
+        for (const char of characteristics) {
+          if (
+            char.properties.includes("write") ||
+            char.properties.includes("writeWithoutResponse")
+          ) {
+            this.controlCharacteristic = char;
+            this.controlServiceUuid = service.uuid;
+            break;
+          }
+        }
+
+        resolve();
       });
     });
   }
@@ -288,7 +368,6 @@ export class BluetoothService
 
     // Parse 21-byte FTMS Indoor Bike Data messages
     if (data.length === 21) {
-
       // Extract time from position 19 (seconds elapsed)
       const timeInSeconds = data[19] || 0;
 
@@ -324,9 +403,7 @@ export class BluetoothService
       if (this.controlCharacteristic) {
         let statusCommand: Uint8Array;
 
-        if (
-          this.connectedPeripheral?.advertisement.serviceUuids.includes("1826")
-        ) {
+        if (this.controlServiceUuid === "1826") {
           statusCommand = new Uint8Array([0x00]);
         } else {
           statusCommand = new Uint8Array([0xf0, 0xa2, 0x01, 0x01, 0xa3]);
@@ -337,11 +414,10 @@ export class BluetoothService
           false,
           (error) => {
             if (error) {
-            } else {
+              console.error("Polling error:", error);
             }
           }
         );
-      } else {
       }
     }, 1000);
   }
@@ -400,5 +476,40 @@ export class BluetoothService
 
   public async getWorkoutState(): Promise<WorkoutData | null> {
     return null;
+  }
+
+  public async setResistanceLevel(level: number): Promise<void> {
+    if (!this.controlCharacteristic || !this.isConnected()) {
+      throw new Error(
+        "Device not connected or control characteristic not available"
+      );
+    }
+
+    const clampedLevel = Math.max(1, Math.min(20, Math.round(level)));
+    let resistanceCommand: Uint8Array;
+
+    if (this.controlServiceUuid === "1826") {
+      resistanceCommand = new Uint8Array([0x04, clampedLevel, 0x00]);
+    } else {
+      const bikeLevel = clampedLevel + 1;
+      const commandBytes = [0xf0, 0xa6, 0x01, 0x01, bikeLevel];
+      const checksum = commandBytes.reduce((sum, byte) => sum + byte, 0) & 0xff;
+      resistanceCommand = new Uint8Array([...commandBytes, checksum]);
+    }
+
+    return new Promise((resolve, reject) => {
+      this.controlCharacteristic!.write(
+        Buffer.from(resistanceCommand),
+        false,
+        (error) => {
+          if (error) {
+            console.error("Error sending resistance command:", error);
+            reject(error);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
   }
 }

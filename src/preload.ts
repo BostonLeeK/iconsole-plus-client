@@ -11,6 +11,8 @@ const electronAPI: ElectronAPI = {
     getWorkoutState: () => ipcRenderer.invoke("bluetooth:get-workout-state"),
     checkConnectionStatus: () =>
       ipcRenderer.invoke("bluetooth:check-connection-status"),
+    setResistanceLevel: (level: number) =>
+      ipcRenderer.invoke("bluetooth:set-resistance-level", level),
   },
   saveWorkoutSession: (session) =>
     ipcRenderer.invoke("save-workout-session", session),

@@ -55,6 +55,7 @@ export interface BluetoothServiceInterface {
     isConnected: boolean;
     device?: BluetoothDevice;
   }>;
+  setResistanceLevel(level: number): Promise<void>;
 }
 
 export interface ElectronAPI {
@@ -68,6 +69,7 @@ export interface ElectronAPI {
       isConnected: boolean;
       device?: BluetoothDevice;
     }>;
+    setResistanceLevel(level: number): Promise<void>;
   };
   saveWorkoutSession(session: WorkoutSession): Promise<void>;
   windowControls: {
