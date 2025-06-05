@@ -8,6 +8,7 @@ A modern Electron application built with SolidJS for connecting to iConsole+ exe
 
 - 🔗 **Bluetooth LE Connection** - Connect to iConsole+ exercise bikes
 - 📊 **Real-time Data** - Live workout metrics display
+- 🎛️ **Resistance Control** - Adjust bike resistance remotely (1-20 levels)
 - 📹 **Session Recording** - Record and save workout sessions to JSON files
 - 🎯 **FTMS Protocol** - Full FTMS (Fitness Machine Service) support
 - 💻 **Cross-platform** - Works on Windows, macOS, and Linux
@@ -64,6 +65,7 @@ npm run package
 4. **Click "Scan"** to discover nearby devices
 5. **Select your bike** from the list
 6. **Connect** and start your workout!
+7. **Control resistance** using the slider (1-20 levels)
 
 ### 📹 Recording Workout Sessions
 
@@ -91,12 +93,23 @@ This application uses the standard **FTMS (Fitness Machine Service)** Bluetooth 
 
 ### Key Technical Features
 
-- **Service UUID**: `1826` (FTMS)
+- **Data Service**: `1826` (FTMS) - Real-time workout data
+- **Control Service**: `fff0` (Proprietary) - Resistance commands
 - **Message Format**: 21-byte Indoor Bike Data packets
+- **Resistance Range**: 1-20 levels with dual protocol support
 - **Update Frequency**: 2-3 seconds
 - **Recording Frequency**: 1-second intervals
 - **Platform**: Electron + SolidJS
 - **Bluetooth Library**: @abandonware/noble
+
+### Resistance Control
+
+The application supports both proprietary and FTMS standard resistance control:
+
+- **Primary Protocol**: Proprietary `fff0` service with `0xa6` commands
+- **Fallback Protocol**: FTMS standard `0x04` resistance commands
+- **Range**: 1-20 resistance levels
+- **Real-time**: Immediate response to resistance changes
 
 ### Session Data Format
 

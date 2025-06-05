@@ -3,8 +3,9 @@
 ## Essential Info
 
 ```typescript
-// Service UUID
-const FTMS_SERVICE = "1826";
+// Service UUIDs
+const FTMS_SERVICE = "1826"; // Data reception
+const CONTROL_SERVICE = "fff0"; // Resistance control
 
 // 21-byte message structure
 interface FTMSData {
@@ -17,6 +18,24 @@ interface FTMSData {
   heartRate: number; // data[18]
   time: number; // data[19]
 }
+```
+
+## 🎛️ Resistance Control
+
+### Proprietary Command (Primary)
+
+```typescript
+// Service: fff0, Range: 1-20
+const cmd = [0xf0, 0xa6, 0x01, 0x01, level + 1, checksum];
+const checksum = cmd.slice(0, -1).reduce((xor, b) => xor ^ b, 0);
+```
+
+### FTMS Standard (Fallback)
+
+```typescript
+// Service: 1826, Control Point: 2ad9
+const requestControl = [0x00]; // Send first
+const resistance = [0x04, (level * 10) & 0xff, ((level * 10) >> 8) & 0xff];
 ```
 
 ## Byte Map

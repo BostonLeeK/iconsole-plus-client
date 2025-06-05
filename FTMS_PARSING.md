@@ -199,3 +199,86 @@ This parsing implementation was developed through extensive testing and reverse 
 **Last Updated**: December 2024  
 **Tested Device**: iConsole+0051  
 **Protocol Version**: FTMS 1.0
+
+## 🎛️ Resistance Control
+
+### Dual Protocol Support
+
+iConsole+ bikes support both proprietary and FTMS standard resistance control:
+
+#### Proprietary Protocol (Primary)
+
+- **Service UUID**: `fff0` (Proprietary control service)
+- **Characteristic**: Write characteristic for commands
+- **Command Format**: `[0xf0, 0xa6, 0x01, 0x01, level+1, checksum]`
+- **Resistance Range**: 1-20 levels
+- **Checksum**: XOR of all bytes except checksum
+
+```typescript
+function sendProprietaryResistance(level: number): void {
+  if (level < 1 || level > 20) {
+    throw new Error("Resistance level must be between 1 and 20");
+  }
+
+  const command = [0xf0, 0xa6, 0x01, 0x01, level + 1];
+  const checksum = command.reduce((xor, byte) => xor ^ byte, 0);
+  const fullCommand = [...command, checksum];
+
+  // Send via fff0 service write characteristic
+}
+```
+
+#### FTMS Standard Protocol (Alternative)
+
+- **Service UUID**: `1826` (FTMS service)
+- **Characteristic**: `2ad9` (FTMS Control Point)
+- **Command Format**: `[0x04, resistanceValue & 0xff, (resistanceValue >> 8) & 0xff]`
+- **Resistance Scaling**: level \* 10 (0.1% resolution)
+- **Prerequisite**: Must send Request Control command first
+
+```typescript
+function sendFTMSResistance(level: number): void {
+  // First, request control
+  const requestControl = [0x00];
+  // Send to control point and wait for indication
+
+  // Then send resistance command
+  const resistanceValue = level * 10; // 0.1% resolution
+  const command = [
+    0x04, // Set Target Resistance Level opcode
+    resistanceValue & 0xff,
+    (resistanceValue >> 8) & 0xff,
+  ];
+
+  // Send via 1826 service control point characteristic
+}
+```
+
+### Implementation Strategy
+
+Use dual-service architecture for optimal compatibility:
+
+```typescript
+class BikeController {
+  private dataService: BluetoothRemoteGATTService; // 1826 for data
+  private controlService: BluetoothRemoteGATTService; // fff0 for control
+
+  async setResistance(level: number): Promise<void> {
+    try {
+      // Try proprietary protocol first (more reliable)
+      await this.sendProprietaryCommand(level);
+    } catch (error) {
+      // Fallback to FTMS standard
+      await this.sendFTMSCommand(level);
+    }
+  }
+}
+```
+
+### Service Separation
+
+**Critical**: Maintain strict separation between data and control services:
+
+- **Data Reception**: Use FTMS service (1826) characteristic 2ad2
+- **Resistance Control**: Use proprietary service (fff0)
+- **Never mix**: Avoid sending commands through data service
