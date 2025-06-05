@@ -1,5 +1,4 @@
 import noble from "@abandonware/noble";
-import console from "console";
 import { EventEmitter } from "events";
 import {
   BluetoothDevice,
@@ -149,7 +148,6 @@ export class BluetoothService
 
       peripheral.connect((error) => {
         if (error) {
-          console.error("❌ Connection failed:", error);
           reject(error);
           return;
         }
@@ -162,7 +160,6 @@ export class BluetoothService
             resolve();
           })
           .catch((err) => {
-            console.error("❌ Service discovery failed:", err);
             reject(err);
           });
       });
@@ -232,12 +229,29 @@ export class BluetoothService
             this.setupDataCharacteristic(char);
           }
 
-          if (
-            char.properties.includes("write") ||
-            char.properties.includes("writeWithoutResponse")
-          ) {
-            this.controlCharacteristic = char;
-            this.controlServiceUuid = service.uuid;
+          // For FTMS service, specifically look for Control Point characteristic (0x2ad9)
+          if (service.uuid === "1826") {
+            if (char.uuid === "2ad9" && char.properties.includes("write")) {
+              this.controlCharacteristic = char;
+              this.controlServiceUuid = service.uuid;
+
+              char.subscribe((error) => {
+                if (!error) {
+                  this.requestFTMSControl();
+                }
+              });
+
+              char.on("data", (data: Buffer) => {});
+            }
+          } else {
+            // For proprietary services, use any writable characteristic
+            if (
+              char.properties.includes("write") ||
+              char.properties.includes("writeWithoutResponse")
+            ) {
+              this.controlCharacteristic = char;
+              this.controlServiceUuid = service.uuid;
+            }
           }
         }
         this.startSimplePolling();
@@ -255,31 +269,10 @@ export class BluetoothService
 
     characteristic.subscribe((error) => {
       if (error) {
-        console.error("❌ Error subscribing:", error);
       }
     });
   }
 
-  /**
-   * Parses FTMS (Fitness Machine Service) Indoor Bike Data
-   *
-   * This method handles 21-byte FTMS messages from iConsole+ exercise bikes.
-   * The parsing logic was reverse-engineered through extensive testing.
-   *
-   * Message Structure:
-   * - Bytes 0-1: FTMS flags (typically 0x74 0x0b)
-   * - Bytes 2-3: Speed (16-bit little endian, divide by 100 for km/h)
-   * - Byte 4: Cadence (divide by 2 for realistic RPM)
-   * - Byte 6: Distance (divide by 1000 for kilometers)
-   * - Byte 9: Resistance level (direct value)
-   * - Byte 11: Power output in watts (direct value)
-   * - Byte 13: Calories burned (direct value)
-   * - Byte 18: Heart rate BPM (when sensor available, 0 otherwise)
-   * - Byte 19: Elapsed time in seconds (direct value)
-   *
-   * @param data - 21-byte Buffer containing FTMS Indoor Bike Data
-   * @see FTMS_PARSING.md for detailed documentation
-   */
   private parseSimpleData(data: Buffer): void {
     if (data.length < 10) return;
 
@@ -316,22 +309,13 @@ export class BluetoothService
         return;
       }
 
-      if (this.controlCharacteristic) {
-        let statusCommand: Uint8Array;
-
-        if (this.controlServiceUuid === "1826") {
-          statusCommand = new Uint8Array([0x00]);
-        } else {
-          statusCommand = new Uint8Array([0xf0, 0xa2, 0x01, 0x01, 0xa3]);
-        }
+      if (this.controlCharacteristic && this.controlServiceUuid !== "1826") {
+        const statusCommand = new Uint8Array([0xf0, 0xa2, 0x01, 0x01, 0xa3]);
 
         this.controlCharacteristic.write(
           Buffer.from(statusCommand),
           false,
-          (error) => {
-            if (error) {
-            }
-          }
+          (error) => {}
         );
       }
     }, 1000);
@@ -342,6 +326,20 @@ export class BluetoothService
       clearInterval(this.pollingInterval);
       this.pollingInterval = null;
     }
+  }
+
+  private requestFTMSControl(): void {
+    if (!this.controlCharacteristic || this.controlServiceUuid !== "1826") {
+      return;
+    }
+
+    const requestControlCommand = new Uint8Array([0x00]);
+
+    this.controlCharacteristic.write(
+      Buffer.from(requestControlCommand),
+      false,
+      (error) => {}
+    );
   }
 
   public async disconnectDevice(): Promise<void> {
@@ -401,19 +399,21 @@ export class BluetoothService
     }
 
     const clampedLevel = Math.max(1, Math.min(20, Math.round(level)));
+    let resistanceCommand: Uint8Array;
 
-    console.log(
-      `🎯 Setting resistance to ${clampedLevel}, service: ${this.controlServiceUuid}`
-    );
-
-    const bikeLevel = clampedLevel + 1;
-    const commandBytes = [0xf0, 0xa6, 0x01, 0x01, bikeLevel];
-    const checksum = commandBytes.reduce((sum, byte) => sum + byte, 0) & 0xff;
-    const resistanceCommand = new Uint8Array([...commandBytes, checksum]);
-
-    console.log(
-      `📤 Resistance command: [${Array.from(resistanceCommand).join(", ")}]`
-    );
+    if (this.controlServiceUuid === "1826") {
+      const resistanceValue = clampedLevel * 10;
+      resistanceCommand = new Uint8Array([
+        0x04,
+        resistanceValue & 0xff,
+        (resistanceValue >> 8) & 0xff,
+      ]);
+    } else {
+      const bikeLevel = clampedLevel + 1;
+      const commandBytes = [0xf0, 0xa6, 0x01, 0x01, bikeLevel];
+      const checksum = commandBytes.reduce((sum, byte) => sum + byte, 0) & 0xff;
+      resistanceCommand = new Uint8Array([...commandBytes, checksum]);
+    }
 
     this.stopPolling();
 
@@ -423,11 +423,9 @@ export class BluetoothService
         false,
         (error) => {
           if (error) {
-            console.error(`❌ Resistance command failed:`, error);
             setTimeout(() => this.startSimplePolling(), 500);
             reject(error);
           } else {
-            console.log(`✅ Resistance command sent successfully`);
             setTimeout(() => this.startSimplePolling(), 500);
             resolve();
           }

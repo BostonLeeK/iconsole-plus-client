@@ -18,9 +18,7 @@ export function BluetoothScreen() {
     if (!appState.isConnected) {
       try {
         await bluetoothService.startScanning();
-      } catch (error) {
-        console.error("Failed to start scanning:", error);
-      }
+      } catch (error) {}
     }
   });
 

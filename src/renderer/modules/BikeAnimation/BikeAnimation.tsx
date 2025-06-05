@@ -37,10 +37,7 @@ export function BikeAnimation() {
           preserveAspectRatio: "xMidYMid meet",
         },
       });
-
-    } catch (error) {
-      console.error("Error creating lottie animation:", error);
-    }
+    } catch (error) {}
   };
 
   createEffect(() => {
@@ -53,7 +50,6 @@ export function BikeAnimation() {
     }
 
     if (lottieContainer && !animationInstance) {
-
       setTimeout(initializeAnimation, 100);
     }
 

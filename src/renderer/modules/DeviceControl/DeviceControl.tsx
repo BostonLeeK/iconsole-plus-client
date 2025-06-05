@@ -66,7 +66,6 @@ export function DeviceControl() {
         resistanceLevel()
       );
     } catch (error) {
-      console.error("Failed to set resistance:", error);
     } finally {
       setIsSettingResistance(false);
     }
@@ -80,7 +79,6 @@ export function DeviceControl() {
         await window.electronAPI.bluetoothService.setResistanceLevel(1);
       }, 1000);
     } catch (error) {
-      console.error("Failed to start workout:", error);
     } finally {
       setIsActivating(false);
     }
