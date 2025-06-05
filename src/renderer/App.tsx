@@ -3,6 +3,7 @@ import { Dashboard } from "./modules/Dashboard/Dashboard";
 import { Settings } from "./modules/Settings/Settings";
 import { TitleBar } from "./modules/TitleBar/TitleBar";
 import { appActions, appState } from "./store/app.store";
+import { WorkoutHistory } from "./modules/WorkoutHistory/WorkoutHistory";
 
 function App() {
   onMount(() => {
@@ -23,7 +24,14 @@ function App() {
       <div class="flex-1 overflow-hidden">
         <Show
           when={appState().currentScreen === "dashboard"}
-          fallback={<Settings />}
+          fallback={
+            <Show
+              when={appState().currentScreen === "settings"}
+              fallback={<WorkoutHistory />}
+            >
+              <Settings />
+            </Show>
+          }
         >
           <Dashboard />
         </Show>

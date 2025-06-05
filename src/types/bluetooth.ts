@@ -88,6 +88,15 @@ export interface ElectronAPI extends ElectronSettingsAPI {
       inputTokens?: number;
       outputTokens?: number;
     }>;
+    analyzeWorkoutSession(
+      session: any,
+      apiKey: string
+    ): Promise<{
+      analysis: string;
+      recommendations: string[];
+      performance_score: number;
+      zones_analysis: any;
+    }>;
   };
   ttsService: {
     speak(text: string, apiKey: string): Promise<Buffer>;

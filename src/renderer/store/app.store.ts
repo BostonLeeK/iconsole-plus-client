@@ -1,7 +1,7 @@
 import { createMemo, createSignal } from "solid-js";
 import type { BluetoothDevice, WorkoutData } from "../../types/bluetooth";
 
-export type AppScreen = "dashboard" | "settings";
+export type AppScreen = "dashboard" | "settings" | "workout-history";
 
 const [currentScreen, setCurrentScreen] = createSignal<AppScreen>("dashboard");
 const [isScanning, setIsScanning] = createSignal(false);
@@ -47,4 +47,5 @@ export const appActions = {
   resetDevices: () => setDevices([]),
   navigateToSettings: () => setCurrentScreen("settings"),
   navigateToDashboard: () => setCurrentScreen("dashboard"),
+  navigateToWorkoutHistory: () => setCurrentScreen("workout-history"),
 };

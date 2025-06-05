@@ -16,5 +16,9 @@ export interface ElectronSettingsAPI {
     setOpenAIApiKey(apiKey: string): Promise<void>;
     clearOpenAIApiKey(): Promise<void>;
     openLogsDirectory(): Promise<void>;
+    getWorkoutSessions(): Promise<any[]>;
+    getWorkoutSessionData(filename: string): Promise<any>;
+    saveWorkoutSessionAnalysis(session: any, filename?: string): Promise<void>;
+    deleteWorkoutSession(filename: string): Promise<void>;
   };
 }

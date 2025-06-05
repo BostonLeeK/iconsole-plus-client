@@ -26,10 +26,24 @@ const electronAPI: ElectronAPI = {
     clearOpenAIApiKey: () =>
       ipcRenderer.invoke("settings:clear-openai-api-key"),
     openLogsDirectory: () => ipcRenderer.invoke("settings:open-logs-directory"),
+    getWorkoutSessions: () =>
+      ipcRenderer.invoke("settings:get-workout-sessions"),
+    getWorkoutSessionData: (filename: string) =>
+      ipcRenderer.invoke("settings:get-workout-session-data", filename),
+    saveWorkoutSessionAnalysis: (session: any, filename?: string) =>
+      ipcRenderer.invoke(
+        "settings:save-workout-session-analysis",
+        session,
+        filename
+      ),
+    deleteWorkoutSession: (filename: string) =>
+      ipcRenderer.invoke("settings:delete-workout-session", filename),
   },
   aiService: {
     analyzeWorkout: (request: any, apiKey: string) =>
       ipcRenderer.invoke("ai:analyze-workout", request, apiKey),
+    analyzeWorkoutSession: (session: any, apiKey: string) =>
+      ipcRenderer.invoke("ai:analyze-workout-session", session, apiKey),
   },
   ttsService: {
     speak: (text: string, apiKey: string) =>

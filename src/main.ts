@@ -1,5 +1,11 @@
 import { app, BrowserWindow, ipcMain, shell } from "electron";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "fs";
 import path from "path";
 import { BluetoothService } from "./services/bluetooth.service";
 import settingsService from "./services/settings.service";
@@ -459,6 +465,203 @@ ipcMain.handle("settings:open-logs-directory", () => {
   const logsDir = path.join(userDataPath, "data_records");
   shell.openPath(logsDir);
 });
+
+ipcMain.handle("settings:get-workout-sessions", async () => {
+  try {
+    const userDataPath = app.getPath("userData");
+    const recordsDir = path.join(userDataPath, "data_records");
+
+    if (!existsSync(recordsDir)) {
+      return [];
+    }
+
+    const files = readdirSync(recordsDir);
+    const workoutFiles = files.filter(
+      (file) => file.startsWith("workout-session-") && file.endsWith(".json")
+    );
+
+    const sessions = [];
+    for (const file of workoutFiles) {
+      try {
+        const filepath = path.join(recordsDir, file);
+        const content = readFileSync(filepath, "utf8");
+        const sessionData = JSON.parse(content);
+
+        sessions.push({
+          filename: file,
+          startTime: sessionData.startTime,
+          endTime: sessionData.endTime,
+          duration: sessionData.duration,
+          summary: sessionData.summary,
+        });
+      } catch (error) {
+        console.error(`Failed to read session file ${file}:`, error);
+      }
+    }
+
+    return sessions.sort(
+      (a, b) =>
+        new Date(b.startTime).getTime() - new Date(a.startTime).getTime()
+    );
+  } catch (error) {
+    console.error("Failed to get workout sessions:", error);
+    return [];
+  }
+});
+
+ipcMain.handle(
+  "settings:get-workout-session-data",
+  async (event, filename: string) => {
+    try {
+      const userDataPath = app.getPath("userData");
+      const recordsDir = path.join(userDataPath, "data_records");
+      const filepath = path.join(recordsDir, filename);
+
+      if (!existsSync(filepath)) {
+        throw new Error("Session file not found");
+      }
+
+      const content = readFileSync(filepath, "utf8");
+      return JSON.parse(content);
+    } catch (error) {
+      console.error(
+        `Failed to get workout session data for ${filename}:`,
+        error
+      );
+      throw error;
+    }
+  }
+);
+
+ipcMain.handle(
+  "settings:save-workout-session-analysis",
+  async (event, session: any, filename?: string) => {
+    try {
+      const userDataPath = app.getPath("userData");
+      const recordsDir = path.join(userDataPath, "data_records");
+
+      let targetFilename = filename;
+      if (!targetFilename) {
+        const startTime = new Date(session.startTime)
+          .toISOString()
+          .replace(/[:.]/g, "-");
+        targetFilename = `workout-session-${startTime}.json`;
+      }
+
+      const filepath = path.join(recordsDir, targetFilename);
+
+      writeFileSync(filepath, JSON.stringify(session, null, 2));
+      return { success: true };
+    } catch (error) {
+      console.error("Failed to save workout session analysis:", error);
+      throw error;
+    }
+  }
+);
+
+ipcMain.handle(
+  "ai:analyze-workout-session",
+  async (event, session: any, apiKey: string) => {
+    try {
+      const API_URL = "https://api.anthropic.com/v1/messages";
+
+      const prompt = `Analyze this cycling workout session and provide detailed insights:
+
+Session Duration: ${Math.floor(session.duration / 1000 / 60)} minutes
+Summary Stats:
+- Max Heart Rate: ${session.summary.maxHeartRate} bpm
+- Avg Heart Rate: ${session.summary.avgHeartRate} bpm  
+- Max Power: ${session.summary.maxPower}W
+- Avg Power: ${session.summary.avgPower}W
+- Max Speed: ${session.summary.maxSpeed} km/h
+- Avg Speed: ${session.summary.avgSpeed} km/h
+- Total Distance: ${session.summary.totalDistance} km
+- Total Calories: ${session.summary.totalCalories}
+
+Data points: ${session.data.length} measurements
+
+Please provide:
+1. Overall performance analysis
+2. Heart rate zones analysis
+3. Power and endurance insights
+4. Specific recommendations for improvement
+5. Performance score (1-100)
+
+Respond in JSON format:
+{
+  "analysis": "detailed analysis text",
+  "recommendations": ["recommendation 1", "recommendation 2", "recommendation 3"],
+  "performance_score": 85,
+  "zones_analysis": {
+    "heart_rate_zones": "analysis of heart rate zones",
+    "power_zones": "analysis of power output",
+    "endurance_assessment": "endurance evaluation"
+  }
+}`;
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify({
+          model: "claude-3-haiku-20240307",
+          max_tokens: 2000,
+          messages: [
+            {
+              role: "user",
+              content: prompt,
+            },
+          ],
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("AI Analysis Error:", errorText);
+        throw new Error(`AI API error: ${response.status} - ${errorText}`);
+      }
+
+      const data = await response.json();
+      const responseText = data.content[0].text;
+
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error("No JSON found in response");
+      }
+
+      const analysis = JSON.parse(jsonMatch[0]);
+      return analysis;
+    } catch (error) {
+      console.error("AI Workout Analysis Error:", error);
+      throw new Error(`AI analysis failed: ${error.message}`);
+    }
+  }
+);
+
+ipcMain.handle(
+  "settings:delete-workout-session",
+  async (event, filename: string) => {
+    try {
+      const userDataPath = app.getPath("userData");
+      const recordsDir = path.join(userDataPath, "data_records");
+      const filepath = path.join(recordsDir, filename);
+
+      if (!existsSync(filepath)) {
+        throw new Error("Session file not found");
+      }
+
+      const { unlinkSync } = require("fs");
+      unlinkSync(filepath);
+      return { success: true };
+    } catch (error) {
+      console.error(`Failed to delete workout session ${filename}:`, error);
+      throw error;
+    }
+  }
+);
 
 process.on("uncaughtException", (error) => {});
 
