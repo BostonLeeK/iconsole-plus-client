@@ -93,6 +93,7 @@ export interface ElectronAPI extends ElectronSettingsAPI {
     speak(text: string, apiKey: string): Promise<Buffer>;
   };
   saveWorkoutSession(session: WorkoutSession): Promise<void>;
+  saveAISession(aiSession: any): Promise<void>;
   windowControls: {
     minimize(): Promise<void>;
     maximize(): Promise<void>;

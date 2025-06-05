@@ -174,7 +174,7 @@ class SpeechService {
 
       // Track TTS cost
       const { aiActions } = await import("../store/ai.store");
-      aiActions.updateTTSStats(text.length);
+      await aiActions.updateTTSStats(text.length);
 
       const audioBuffer = await window.electronAPI.ttsService.speak(
         text,

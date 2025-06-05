@@ -86,6 +86,21 @@ Recorded sessions are saved to:
 - **macOS**: `~/Library/Application Support/iconsole-plus-client/data_records/`
 - **Linux**: `~/.config/iconsole-plus-client/data_records/`
 
+### 🤖 Recording AI Trainer Sessions
+
+1. **Turn on AI Trainer** during your workout - session file is created automatically
+2. **AI provides real-time coaching** - each advice is instantly saved to the session file
+3. **Automatic saving** - no manual intervention needed, everything is saved in real-time
+4. **Session completion** - when AI trainer is turned off, session is finalized
+
+AI sessions are saved in the same directory as workout sessions and include:
+
+- **Session metadata** (start/end time, duration, total cost)
+- **All AI advice** with timestamps and workout context
+- **Resistance changes** made by AI trainer
+- **Usage statistics** (tokens used, API calls, TTS characters)
+- **Training configuration** (goals, ride style, settings used)
+
 ### 🤖 AI Personal Trainer
 
 The AI Trainer provides intelligent, real-time coaching using Claude AI to optimize your workout experience.
@@ -106,6 +121,7 @@ The AI Trainer provides intelligent, real-time coaching using Claude AI to optim
 - **Personalized Advice** - Contextual coaching tips and encouragement
 - **Voice Coaching** - Text-to-speech for hands-free training guidance
 - **Session History** - Complete log of all AI decisions and advice
+- **Automatic Session Recording** - Real-time saving of AI sessions as JSON files
 - **Cost Tracking** - Monitor API usage and estimated costs in real-time
 - **Goal-based Training** - Different strategies for each training objective
 

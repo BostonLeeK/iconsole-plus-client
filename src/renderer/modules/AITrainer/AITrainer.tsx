@@ -25,10 +25,10 @@ export function AITrainer() {
     setHasApiKey(!!apiKey);
   });
 
-  createEffect(() => {
+  createEffect(async () => {
     if (aiEnabled() && hasApiKey()) {
       setSessionStartTime(Date.now());
-      aiActions.startNewSession();
+      await aiActions.startNewSession();
 
       if (!hasShownWelcome()) {
         showWelcomeMessage();
@@ -37,6 +37,9 @@ export function AITrainer() {
 
       startAIAnalysis();
     } else {
+      if (!aiEnabled()) {
+        await aiActions.endSession();
+      }
       stopAIAnalysis();
       setHasShownWelcome(false);
     }
@@ -59,85 +62,30 @@ export function AITrainer() {
   };
 
   const showWelcomeMessage = async () => {
-    const rideStyleName =
-      RIDE_STYLES.find((s) => s.id === rideStyle())?.name || "suburban";
-    const goalName =
-      TRAINING_GOALS.find((g) => g.id === goal())?.name || "casual";
-
-    const isDeviceConnected = appState.isConnected;
-    const resistanceControl = isDeviceConnected ? "and adjust resistance" : "";
-    const connectionStatus = isDeviceConnected
-      ? ""
-      : " Note: Device not connected - I'll provide advice only.";
-
-    const welcomeMessages = [
-      `Welcome to your ${goalName.toLowerCase()} ${rideStyleName.toLowerCase()} training session! I'm your AI trainer and I'll help you optimize your workout every 30 seconds ${resistanceControl}.${connectionStatus}`,
-      `Ready for a ${goalName.toLowerCase()} ride through ${rideStyleName.toLowerCase()} terrain? Let's get started and I'll provide personalized guidance throughout your session${connectionStatus}`,
-      `AI trainer activated for ${goalName.toLowerCase()} training! I'll monitor your ${rideStyleName.toLowerCase()} ride ${resistanceControl} to help you achieve your goals.${connectionStatus}`,
-      `Let's begin your ${goalName.toLowerCase()} workout! I'll be analyzing your performance and providing coaching tips for this ${rideStyleName.toLowerCase()} session.${connectionStatus}`,
-    ];
-
     const welcomeMessage =
-      welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
+      goal() === "weight_loss"
+        ? "Welcome to your fat-burning session! Keep your heart rate in the target zone."
+        : goal() === "endurance"
+        ? "Ready for endurance training! We'll maintain steady resistance for optimal stamina building."
+        : goal() === "warmup"
+        ? "Let's start with a gentle warm-up. We'll gradually increase intensity to prepare your muscles."
+        : "Welcome to your casual ride! Enjoy a comfortable pace with gentle resistance changes.";
+
     setAdvice(welcomeMessage);
     setIsWelcomeMessage(true);
-
-    try {
-      await speakAdvice(welcomeMessage);
-    } catch (error) {
-      console.error("Welcome message speech failed:", error);
-    }
+    speakAdvice(welcomeMessage);
   };
 
   const startAIAnalysis = () => {
-    if (analysisInterval) return;
-
-    // Delay first analysis to allow welcome message to be read/heard
-    const firstAnalysisDelay = hasShownWelcome() ? 15000 : 0; // 15 seconds after welcome
+    const firstAnalysisDelay = 5000;
 
     setTimeout(() => {
-      if (analysisInterval) return;
       analysisInterval = setInterval(async () => {
+        if (!aiEnabled()) return;
+
         try {
           setIsAnalyzing(true);
           const workoutData = appState.workoutData;
-          const isDeviceConnected = appState.isConnected;
-
-          // If no device connected, provide general advice
-          if (!isDeviceConnected) {
-            const generalAdvice = [
-              "Keep a steady pace and focus on your breathing. Remember to maintain good posture throughout your ride.",
-              "Great job! Try to maintain consistent pedaling rhythm. Listen to your body and adjust intensity as needed.",
-              "Focus on smooth pedal strokes and keep your core engaged. You're doing well!",
-              "Remember to stay hydrated during your workout. Keep up the good work!",
-            ];
-
-            const advice =
-              generalAdvice[Math.floor(Math.random() * generalAdvice.length)];
-            setAdvice(advice);
-            setIsWelcomeMessage(false);
-            speakAdvice(advice);
-
-            // Add to history (but no tokens/cost for general advice)
-            aiActions.addAdviceEntry({
-              timestamp: new Date().toISOString(),
-              advice: advice,
-              oldResistance: 0,
-              newResistance: 0,
-              workoutData: {
-                time: 0,
-                speed: 0,
-                rpm: 0,
-                power: 0,
-                heartRate: 0,
-              },
-              rideStyle: rideStyle(),
-              goal: goal(),
-            });
-            return;
-          }
-
-          if (!workoutData) return;
 
           const sessionDuration = Math.floor(
             (Date.now() - sessionStartTime()) / 1000
@@ -173,7 +121,7 @@ export function AITrainer() {
 
           speakAdvice(response.advice);
 
-          aiActions.addAdviceEntry({
+          await aiActions.addAdviceEntry({
             timestamp: new Date().toISOString(),
             advice: response.advice,
             oldResistance,
@@ -190,13 +138,12 @@ export function AITrainer() {
           });
 
           if (response.inputTokens && response.outputTokens) {
-            aiActions.updateSessionStats(
+            await aiActions.updateSessionStats(
               response.inputTokens,
               response.outputTokens
             );
           }
 
-          // Try to set resistance only if device is connected
           try {
             const connectionStatus =
               await window.electronAPI.bluetoothService.checkConnectionStatus();
@@ -209,7 +156,6 @@ export function AITrainer() {
             }
           } catch (resistanceError) {
             console.warn("Failed to set resistance:", resistanceError.message);
-            // Continue with advice even if resistance setting fails
           }
         } catch (error) {
           console.error("AI Analysis Error:", error);

@@ -15,5 +15,6 @@ export interface ElectronSettingsAPI {
     getOpenAIApiKey(): Promise<string | undefined>;
     setOpenAIApiKey(apiKey: string): Promise<void>;
     clearOpenAIApiKey(): Promise<void>;
+    openLogsDirectory(): Promise<void>;
   };
 }

@@ -77,7 +77,7 @@ export function Settings() {
   };
 
   return (
-    <div class="min-h-screen bg-gray-900 text-white p-6">
+    <div class="min-h-screen max-h-screen overflow-y-auto bg-gray-900 text-white p-6 pb-24">
       <div class="max-w-2xl mx-auto">
         <div class="flex items-center gap-4 mb-8">
           <button
@@ -165,7 +165,6 @@ export function Settings() {
             </div>
           </div>
         </div>
-
         <div class="bg-gray-800 rounded-2xl shadow-xl border border-gray-700 overflow-hidden mt-6">
           <div class="bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-4">
             <div class="flex items-center gap-3">
@@ -228,6 +227,34 @@ export function Settings() {
                 }`}
               >
                 Clear
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-800 rounded-2xl shadow-xl border border-gray-700 overflow-hidden mt-6">
+          <div class="bg-gradient-to-r from-gray-600 to-gray-700 px-6 py-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                <span class="text-lg">⚙️</span>
+              </div>
+              <div class="flex-1">
+                <h2 class="text-xl font-bold text-white">General Settings</h2>
+                <p class="text-blue-100 text-sm">
+                  Configure general settings for the app
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 space-y-6">
+            <div>
+              <button
+                class="px-4 py-3 rounded-lg font-medium transition-colors bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={() => {
+                  window.electronAPI.settings.openLogsDirectory();
+                }}
+              >
+                Open Logs Directory
               </button>
             </div>
           </div>

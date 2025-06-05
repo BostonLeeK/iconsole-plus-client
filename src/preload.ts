@@ -25,6 +25,7 @@ const electronAPI: ElectronAPI = {
       ipcRenderer.invoke("settings:set-openai-api-key", apiKey),
     clearOpenAIApiKey: () =>
       ipcRenderer.invoke("settings:clear-openai-api-key"),
+    openLogsDirectory: () => ipcRenderer.invoke("settings:open-logs-directory"),
   },
   aiService: {
     analyzeWorkout: (request: any, apiKey: string) =>
@@ -36,6 +37,8 @@ const electronAPI: ElectronAPI = {
   },
   saveWorkoutSession: (session) =>
     ipcRenderer.invoke("save-workout-session", session),
+  saveAISession: (aiSession) =>
+    ipcRenderer.invoke("save-ai-session", aiSession),
   windowControls: {
     minimize: () => ipcRenderer.invoke("window:minimize"),
     maximize: () => ipcRenderer.invoke("window:maximize"),

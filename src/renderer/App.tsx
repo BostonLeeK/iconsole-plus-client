@@ -2,13 +2,10 @@ import { onMount, Show } from "solid-js";
 import { Dashboard } from "./modules/Dashboard/Dashboard";
 import { Settings } from "./modules/Settings/Settings";
 import { TitleBar } from "./modules/TitleBar/TitleBar";
-import { BluetoothService } from "./services/bluetoothService";
 import { appActions, appState } from "./store/app.store";
 
 function App() {
   onMount(() => {
-    const bluetoothService = BluetoothService.getInstance();
-
     window.electronAPI.bluetoothService
       .checkConnectionStatus()
       .then((status) => {

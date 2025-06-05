@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, shell } from "electron";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import path from "path";
 import { BluetoothService } from "./services/bluetooth.service";
@@ -402,6 +402,32 @@ ipcMain.handle(
   }
 );
 
+ipcMain.handle("save-ai-session", async (event, aiSession: any) => {
+  try {
+    const userDataPath = app.getPath("userData");
+    const recordsDir = path.join(userDataPath, "data_records");
+
+    if (!existsSync(recordsDir)) {
+      mkdirSync(recordsDir, { recursive: true });
+    }
+
+    let filepath;
+    if (aiSession.sessionInfo?.filename) {
+      filepath = path.join(recordsDir, aiSession.sessionInfo.filename);
+    } else {
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const filename = `ai-session-${timestamp}.json`;
+      filepath = path.join(recordsDir, filename);
+    }
+
+    writeFileSync(filepath, JSON.stringify(aiSession, null, 2));
+    return { success: true, filepath };
+  } catch (error) {
+    console.error("MAIN: Failed to save AI session:", error);
+    throw error;
+  }
+});
+
 bluetoothService.on("deviceDiscovered", (device) => {
   mainWindow?.webContents.send("device-discovered", device);
 });
@@ -426,6 +452,12 @@ bluetoothService.on("rawDataReceived", (rawBytes) => {
 
 bluetoothService.on("error", (error) => {
   mainWindow?.webContents.send("bluetooth-error", error.message);
+});
+
+ipcMain.handle("settings:open-logs-directory", () => {
+  const userDataPath = app.getPath("userData");
+  const logsDir = path.join(userDataPath, "data_records");
+  shell.openPath(logsDir);
 });
 
 process.on("uncaughtException", (error) => {});
