@@ -14,6 +14,12 @@ const electronAPI: ElectronAPI = {
   },
   saveWorkoutSession: (session) =>
     ipcRenderer.invoke("save-workout-session", session),
+  windowControls: {
+    minimize: () => ipcRenderer.invoke("window:minimize"),
+    maximize: () => ipcRenderer.invoke("window:maximize"),
+    close: () => ipcRenderer.invoke("window:close"),
+    isMaximized: () => ipcRenderer.invoke("window:is-maximized"),
+  },
   on: (channel: string, callback: (...args: any[]) => void) => {
     const validChannels = [
       "device-discovered",

@@ -70,6 +70,12 @@ export interface ElectronAPI {
     }>;
   };
   saveWorkoutSession(session: WorkoutSession): Promise<void>;
+  windowControls: {
+    minimize(): Promise<void>;
+    maximize(): Promise<void>;
+    close(): Promise<void>;
+    isMaximized(): Promise<boolean>;
+  };
   on(channel: string, callback: (...args: any[]) => void): void;
 }
 

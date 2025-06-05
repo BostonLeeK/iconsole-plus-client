@@ -1,11 +1,13 @@
 import { onMount } from "solid-js";
+import { TitleBar } from "../components/TitleBar";
+import { BikeAnimation } from "../modules/BikeAnimation/BikeAnimation";
 import { DeviceControl } from "../modules/DeviceControl/DeviceControl";
 import { DeviceList } from "../modules/DeviceList/DeviceList";
 import { RawData } from "../modules/RawData/RawData";
+import { SessionRecorder } from "../modules/SessionRecorder/SessionRecorder";
 import { WorkoutData } from "../modules/WorkoutData/WorkoutData";
 import { BluetoothService } from "../services/bluetoothService";
 import { appState } from "../store/app";
-import { SessionRecorder } from "../modules/SessionRecorder/SessionRecorder";
 
 export function BluetoothScreen() {
   onMount(async () => {
@@ -23,8 +25,10 @@ export function BluetoothScreen() {
   });
 
   return (
-    <div class="min-h-screen bg-gradient-to-br from-gray-900 to-slate-800">
-      <div class="max-w-7xl mx-auto px-4 py-6">
+    <div class="min-h-screen bg-gradient-to-br from-gray-900 to-slate-800 flex flex-col pt-8">
+      <TitleBar />
+
+      <div class="flex-1 max-w-7xl mx-auto px-4 py-6">
         <header class="mb-8 text-center">
           <div class="flex items-center justify-center gap-3 mb-4">
             <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -77,6 +81,7 @@ export function BluetoothScreen() {
             <div class="space-y-6">
               <DeviceControl />
               <DeviceList />
+              <BikeAnimation />
             </div>
           </div>
 

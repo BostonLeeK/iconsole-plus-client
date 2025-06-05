@@ -1,8 +1,8 @@
 import { app, BrowserWindow, ipcMain } from "electron";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
 import path from "path";
 import { BluetoothService } from "./services/bluetooth.service";
 import { WorkoutSession } from "./types/bluetooth";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -12,8 +12,10 @@ const bluetoothService = new BluetoothService();
 
 const createWindow = (): void => {
   mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: 1400,
+    height: 900,
+    frame: false,
+    titleBarStyle: "hidden",
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -155,3 +157,24 @@ bluetoothService.on("error", (error) => {
 process.on("uncaughtException", (error) => {});
 
 process.on("unhandledRejection", (reason, promise) => {});
+
+// Window control handlers for custom title bar
+ipcMain.handle("window:minimize", () => {
+  mainWindow?.minimize();
+});
+
+ipcMain.handle("window:maximize", () => {
+  if (mainWindow?.isMaximized()) {
+    mainWindow.unmaximize();
+  } else {
+    mainWindow?.maximize();
+  }
+});
+
+ipcMain.handle("window:close", () => {
+  mainWindow?.close();
+});
+
+ipcMain.handle("window:is-maximized", () => {
+  return mainWindow?.isMaximized() || false;
+});
