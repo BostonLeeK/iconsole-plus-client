@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from "electron";
-import { ElectronAPI } from "./types/bluetooth";
+import type { ElectronAPI } from "./types/bluetooth";
 
 const electronAPI: ElectronAPI = {
   bluetoothService: {
@@ -13,6 +13,13 @@ const electronAPI: ElectronAPI = {
       ipcRenderer.invoke("bluetooth:check-connection-status"),
     setResistanceLevel: (level: number) =>
       ipcRenderer.invoke("bluetooth:set-resistance-level", level),
+  },
+  settings: {
+    getClaudeApiKey: () => ipcRenderer.invoke("settings:get-claude-api-key"),
+    setClaudeApiKey: (apiKey: string) =>
+      ipcRenderer.invoke("settings:set-claude-api-key", apiKey),
+    clearClaudeApiKey: () =>
+      ipcRenderer.invoke("settings:clear-claude-api-key"),
   },
   saveWorkoutSession: (session) =>
     ipcRenderer.invoke("save-workout-session", session),
@@ -38,4 +45,14 @@ const electronAPI: ElectronAPI = {
   },
 };
 
+const windowAPI = {
+  minimize: () => ipcRenderer.invoke("window:minimize"),
+  maximize: () => ipcRenderer.invoke("window:maximize"),
+  close: () => ipcRenderer.invoke("window:close"),
+  isMaximized: () => ipcRenderer.invoke("window:is-maximized"),
+};
+
 contextBridge.exposeInMainWorld("electronAPI", electronAPI);
+contextBridge.exposeInMainWorld("windowAPI", windowAPI);
+
+export type ElectronAPIType = typeof electronAPI;

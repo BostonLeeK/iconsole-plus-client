@@ -1,3 +1,5 @@
+import { ElectronSettingsAPI } from "./settings";
+
 export interface BluetoothDevice {
   id: string;
   name: string;
@@ -10,31 +12,32 @@ export interface BluetoothDevice {
 }
 
 export interface WorkoutData {
+  time: number;
   speed: number;
-  heartRate: number;
   rpm: number;
-  resistance: number;
   distance: number;
   calories: number;
+  heartRate: number;
   watt: number;
-  time: number;
-  timestamp?: number;
+  resistance: number;
 }
 
 export interface WorkoutSession {
+  id: string;
+  deviceName: string;
   startTime: string;
   endTime: string;
   duration: number;
   data: WorkoutData[];
   summary: {
-    maxSpeed: number;
-    avgSpeed: number;
-    maxPower: number;
-    avgPower: number;
     totalDistance: number;
+    averageSpeed: number;
+    maxSpeed: number;
     totalCalories: number;
+    averageHeartRate: number;
     maxHeartRate: number;
-    avgHeartRate: number;
+    averageWatt: number;
+    maxWatt: number;
   };
 }
 
@@ -58,7 +61,7 @@ export interface BluetoothServiceInterface {
   setResistanceLevel(level: number): Promise<void>;
 }
 
-export interface ElectronAPI {
+export interface ElectronAPI extends ElectronSettingsAPI {
   bluetoothService: {
     startScanning(): Promise<void>;
     stopScanning(): Promise<void>;

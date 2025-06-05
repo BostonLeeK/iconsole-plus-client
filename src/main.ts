@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import path from "path";
 import { BluetoothService } from "./services/bluetooth.service";
+import settingsService from "./services/settings.service";
 import { WorkoutSession } from "./types/bluetooth";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -112,6 +113,30 @@ ipcMain.handle(
     }
   }
 );
+
+ipcMain.handle("settings:get-claude-api-key", async () => {
+  try {
+    return settingsService.getClaudeApiKey();
+  } catch (error) {
+    return undefined;
+  }
+});
+
+ipcMain.handle("settings:set-claude-api-key", async (event, apiKey: string) => {
+  try {
+    settingsService.setClaudeApiKey(apiKey);
+  } catch (error) {
+    throw error;
+  }
+});
+
+ipcMain.handle("settings:clear-claude-api-key", async () => {
+  try {
+    settingsService.clearClaudeApiKey();
+  } catch (error) {
+    throw error;
+  }
+});
 
 ipcMain.handle(
   "save-workout-session",

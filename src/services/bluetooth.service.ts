@@ -1,4 +1,5 @@
 import noble from "@abandonware/noble";
+import console from "console";
 import { EventEmitter } from "events";
 import {
   BluetoothDevice,
@@ -180,13 +181,11 @@ export class BluetoothService
     return new Promise((resolve, reject) => {
       peripheral.discoverServices([], (error, services) => {
         if (error) {
-          console.error("❌ Service discovery error:", error);
           reject(error);
           return;
         }
 
         if (!services || services.length === 0) {
-          console.error("❌ No services found on device");
           reject(new Error("No services found"));
           return;
         }
@@ -197,19 +196,7 @@ export class BluetoothService
         );
 
         if (ftmsService) {
-          this.discoverDataCharacteristics(ftmsService)
-            .then(() => {
-              if (proprietaryService) {
-                return this.discoverControlCharacteristics(proprietaryService);
-              } else {
-                return this.discoverControlCharacteristics(ftmsService);
-              }
-            })
-            .then(() => {
-              this.startSimplePolling();
-              resolve();
-            })
-            .catch(reject);
+          this.discoverCharacteristics(ftmsService).then(resolve).catch(reject);
         } else if (proprietaryService) {
           this.discoverCharacteristics(proprietaryService)
             .then(resolve)
@@ -223,17 +210,15 @@ export class BluetoothService
     });
   }
 
-  private async discoverDataCharacteristics(service: Service): Promise<void> {
+  private async discoverCharacteristics(service: Service): Promise<void> {
     return new Promise((resolve, reject) => {
       service.discoverCharacteristics([], (error, characteristics) => {
         if (error) {
-          console.error("❌ Data characteristic discovery error:", error);
           reject(error);
           return;
         }
 
         if (!characteristics || characteristics.length === 0) {
-          console.error("❌ No data characteristics found");
           reject(new Error("No characteristics found"));
           return;
         }
@@ -245,77 +230,14 @@ export class BluetoothService
           ) {
             this.dataCharacteristic = char;
             this.setupDataCharacteristic(char);
-            break;
           }
-        }
 
-        resolve();
-      });
-    });
-  }
-
-  private async discoverControlCharacteristics(
-    service: Service
-  ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      service.discoverCharacteristics([], (error, characteristics) => {
-        if (error) {
-          console.error("❌ Control characteristic discovery error:", error);
-          reject(error);
-          return;
-        }
-
-        if (!characteristics || characteristics.length === 0) {
-          console.error("❌ No control characteristics found");
-          reject(new Error("No characteristics found"));
-          return;
-        }
-
-        for (const char of characteristics) {
           if (
             char.properties.includes("write") ||
             char.properties.includes("writeWithoutResponse")
           ) {
             this.controlCharacteristic = char;
             this.controlServiceUuid = service.uuid;
-            break;
-          }
-        }
-
-        resolve();
-      });
-    });
-  }
-
-  private async discoverCharacteristics(service: Service): Promise<void> {
-    return new Promise((resolve, reject) => {
-      service.discoverCharacteristics([], (error, characteristics) => {
-        if (error) {
-          console.error("❌ Characteristic discovery error:", error);
-          reject(error);
-          return;
-        }
-
-        if (!characteristics || characteristics.length === 0) {
-          console.error("❌ No characteristics found");
-          reject(new Error("No characteristics found"));
-          return;
-        }
-
-        for (const char of characteristics) {
-          if (
-            char.properties.includes("notify") ||
-            char.properties.includes("indicate")
-          ) {
-            this.dataCharacteristic = char;
-            this.setupDataCharacteristic(char);
-          }
-
-          if (
-            char.properties.includes("write") ||
-            char.properties.includes("writeWithoutResponse")
-          ) {
-            this.controlCharacteristic = char;
           }
         }
         this.startSimplePolling();
@@ -361,29 +283,23 @@ export class BluetoothService
   private parseSimpleData(data: Buffer): void {
     if (data.length < 10) return;
 
-    // Handle 3-byte response messages (status/acknowledgment)
     if (data.length === 3) {
       return;
     }
 
-    // Parse 21-byte FTMS Indoor Bike Data messages
     if (data.length === 21) {
-      // Extract time from position 19 (seconds elapsed)
       const timeInSeconds = data[19] || 0;
-
-      // Extract speed from positions 2-3 (16-bit little endian)
-      // Formula: (low_byte + high_byte * 256) / 100 = km/h
       const speedRaw = data[2] | (data[3] << 8);
 
       const workoutData = {
         time: timeInSeconds,
-        speed: speedRaw ? speedRaw / 100 : 0, // Convert centimeters/h to km/h
-        rpm: data[4] ? Math.round(data[4] / 2) : 0, // Scale down for realistic cadence
-        distance: data[6] ? data[6] / 1000 : 0, // Convert meters to kilometers
-        calories: data[13] || 0, // Direct value in kcal
-        heartRate: data[18] || 0, // Direct value in BPM (0 if no sensor)
-        watt: data[11] || 0, // Direct value in watts
-        resistance: data[9] || 0, // Direct resistance level
+        speed: speedRaw ? speedRaw / 100 : 0,
+        rpm: data[4] ? Math.round(data[4] / 2) : 0,
+        distance: data[6] ? data[6] / 1000 : 0,
+        calories: data[13] || 0,
+        heartRate: data[18] || 0,
+        watt: data[11] || 0,
+        resistance: data[9] || 0,
       };
 
       this.emit("dataReceived", workoutData);
@@ -414,7 +330,6 @@ export class BluetoothService
           false,
           (error) => {
             if (error) {
-              console.error("Polling error:", error);
             }
           }
         );
@@ -486,16 +401,21 @@ export class BluetoothService
     }
 
     const clampedLevel = Math.max(1, Math.min(20, Math.round(level)));
-    let resistanceCommand: Uint8Array;
 
-    if (this.controlServiceUuid === "1826") {
-      resistanceCommand = new Uint8Array([0x04, clampedLevel, 0x00]);
-    } else {
-      const bikeLevel = clampedLevel + 1;
-      const commandBytes = [0xf0, 0xa6, 0x01, 0x01, bikeLevel];
-      const checksum = commandBytes.reduce((sum, byte) => sum + byte, 0) & 0xff;
-      resistanceCommand = new Uint8Array([...commandBytes, checksum]);
-    }
+    console.log(
+      `🎯 Setting resistance to ${clampedLevel}, service: ${this.controlServiceUuid}`
+    );
+
+    const bikeLevel = clampedLevel + 1;
+    const commandBytes = [0xf0, 0xa6, 0x01, 0x01, bikeLevel];
+    const checksum = commandBytes.reduce((sum, byte) => sum + byte, 0) & 0xff;
+    const resistanceCommand = new Uint8Array([...commandBytes, checksum]);
+
+    console.log(
+      `📤 Resistance command: [${Array.from(resistanceCommand).join(", ")}]`
+    );
+
+    this.stopPolling();
 
     return new Promise((resolve, reject) => {
       this.controlCharacteristic!.write(
@@ -503,9 +423,12 @@ export class BluetoothService
         false,
         (error) => {
           if (error) {
-            console.error("Error sending resistance command:", error);
+            console.error(`❌ Resistance command failed:`, error);
+            setTimeout(() => this.startSimplePolling(), 500);
             reject(error);
           } else {
+            console.log(`✅ Resistance command sent successfully`);
+            setTimeout(() => this.startSimplePolling(), 500);
             resolve();
           }
         }

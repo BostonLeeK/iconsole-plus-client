@@ -6,6 +6,7 @@ export function DeviceControl() {
   const bluetoothService = BluetoothService.getInstance();
   const [resistanceLevel, setResistanceLevel] = createSignal(1);
   const [isSettingResistance, setIsSettingResistance] = createSignal(false);
+  const [isActivating, setIsActivating] = createSignal(false);
 
   const [connectionStatus, setConnectionStatus] = createSignal({
     status: "Ready to scan",
@@ -68,6 +69,20 @@ export function DeviceControl() {
       console.error("Failed to set resistance:", error);
     } finally {
       setIsSettingResistance(false);
+    }
+  };
+
+  const handleStartWorkout = async () => {
+    try {
+      setIsActivating(true);
+      await window.electronAPI.bluetoothService.setResistanceLevel(5);
+      setTimeout(async () => {
+        await window.electronAPI.bluetoothService.setResistanceLevel(1);
+      }, 1000);
+    } catch (error) {
+      console.error("Failed to start workout:", error);
+    } finally {
+      setIsActivating(false);
     }
   };
 
