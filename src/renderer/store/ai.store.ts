@@ -20,7 +20,9 @@ export interface AISessionStats {
   totalRequests: number;
   totalInputTokens: number;
   totalOutputTokens: number;
+  totalTTSCharacters: number;
   estimatedCost: number; // in USD
+  ttsCost: number; // in USD
   sessionStartTime?: string;
 }
 
@@ -36,7 +38,9 @@ const [aiStore, setAIStore] = createStore<AIStore>({
     totalRequests: 0,
     totalInputTokens: 0,
     totalOutputTokens: 0,
+    totalTTSCharacters: 0,
     estimatedCost: 0,
+    ttsCost: 0,
   },
   isHistoryOpen: false,
 });
@@ -47,14 +51,32 @@ export const aiActions = {
   },
 
   updateSessionStats: (inputTokens: number, outputTokens: number) => {
+    setAIStore("sessionStats", (prev) => {
+      const newInputTokens = prev.totalInputTokens + inputTokens;
+      const newOutputTokens = prev.totalOutputTokens + outputTokens;
+      return {
+        ...prev,
+        totalRequests: prev.totalRequests + 1,
+        totalInputTokens: newInputTokens,
+        totalOutputTokens: newOutputTokens,
+        estimatedCost: calculateTotalCost(
+          newInputTokens,
+          newOutputTokens,
+          prev.totalTTSCharacters
+        ),
+      };
+    });
+  },
+
+  updateTTSStats: (characters: number) => {
     setAIStore("sessionStats", (prev) => ({
       ...prev,
-      totalRequests: prev.totalRequests + 1,
-      totalInputTokens: prev.totalInputTokens + inputTokens,
-      totalOutputTokens: prev.totalOutputTokens + outputTokens,
-      estimatedCost: calculateCost(
-        prev.totalInputTokens + inputTokens,
-        prev.totalOutputTokens + outputTokens
+      totalTTSCharacters: prev.totalTTSCharacters + characters,
+      ttsCost: calculateTTSCost(prev.totalTTSCharacters + characters),
+      estimatedCost: calculateTotalCost(
+        prev.totalInputTokens,
+        prev.totalOutputTokens,
+        prev.totalTTSCharacters + characters
       ),
     }));
   },
@@ -66,7 +88,9 @@ export const aiActions = {
         totalRequests: 0,
         totalInputTokens: 0,
         totalOutputTokens: 0,
+        totalTTSCharacters: 0,
         estimatedCost: 0,
+        ttsCost: 0,
         sessionStartTime: new Date().toISOString(),
       },
       isHistoryOpen: false,
@@ -87,6 +111,22 @@ function calculateCost(inputTokens: number, outputTokens: number): number {
   const inputCost = (inputTokens / 1000000) * 0.25;
   const outputCost = (outputTokens / 1000000) * 1.25;
   return inputCost + outputCost;
+}
+
+// OpenAI TTS pricing: $0.015 per 1K characters
+function calculateTTSCost(characters: number): number {
+  return (characters / 1000) * 0.015;
+}
+
+// Total cost: Claude + OpenAI TTS
+function calculateTotalCost(
+  inputTokens: number,
+  outputTokens: number,
+  ttsCharacters: number
+): number {
+  const claudeCost = calculateCost(inputTokens, outputTokens);
+  const ttsCost = calculateTTSCost(ttsCharacters);
+  return claudeCost + ttsCost;
 }
 
 export { aiStore };

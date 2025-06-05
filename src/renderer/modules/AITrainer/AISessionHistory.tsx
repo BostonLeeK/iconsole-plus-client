@@ -1,5 +1,6 @@
 import { Show } from "solid-js";
 import { RIDE_STYLES, TRAINING_GOALS } from "../../../services/ai.service";
+import speechService from "../../services/speechService";
 import { aiActions, AIAdviceEntry, aiStore } from "../../store/ai.store";
 
 export function AISessionHistory() {
@@ -45,7 +46,30 @@ export function AISessionHistory() {
       </div>
 
       <div class="mb-3">
-        <p class="text-white text-sm leading-relaxed">{props.entry.advice}</p>
+        <div class="flex justify-between items-start gap-2">
+          <p class="text-white text-sm leading-relaxed flex-1">
+            {props.entry.advice}
+          </p>
+          <button
+            onClick={() => speechService.speak(props.entry.advice, true)}
+            class="text-purple-400 hover:text-purple-300 p-1 flex-shrink-0"
+            title="Speak advice"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5 7h4l1 1v8l-1 1H5a1 1 0 01-1-1V8a1 1 0 011-1z"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
@@ -125,12 +149,12 @@ export function AISessionHistory() {
           </div>
 
           <div class="bg-gray-900 p-4 border-b border-gray-700">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
               <div>
                 <div class="text-2xl font-bold text-purple-400">
                   {aiStore.sessionStats.totalRequests}
                 </div>
-                <div class="text-gray-400 text-sm">Requests</div>
+                <div class="text-gray-400 text-sm">AI Requests</div>
               </div>
               <div>
                 <div class="text-2xl font-bold text-blue-400">
@@ -145,12 +169,29 @@ export function AISessionHistory() {
                 <div class="text-gray-400 text-sm">Output tokens</div>
               </div>
               <div>
+                <div class="text-2xl font-bold text-orange-400">
+                  {(aiStore.sessionStats.totalTTSCharacters / 1000).toFixed(1)}K
+                </div>
+                <div class="text-gray-400 text-sm">TTS chars</div>
+              </div>
+              <div>
                 <div class="text-2xl font-bold text-yellow-400">
                   {formatCost(aiStore.sessionStats.estimatedCost)}
                 </div>
-                <div class="text-gray-400 text-sm">Estimated cost</div>
+                <div class="text-gray-400 text-sm">Total cost</div>
               </div>
             </div>
+
+            <Show when={aiStore.sessionStats.ttsCost > 0}>
+              <div class="mt-3 text-center text-sm text-gray-400">
+                Claude:{" "}
+                {formatCost(
+                  aiStore.sessionStats.estimatedCost -
+                    aiStore.sessionStats.ttsCost
+                )}{" "}
+                • OpenAI TTS: {formatCost(aiStore.sessionStats.ttsCost)}
+              </div>
+            </Show>
           </div>
 
           <div class="p-4 overflow-y-auto max-h-[60vh]">

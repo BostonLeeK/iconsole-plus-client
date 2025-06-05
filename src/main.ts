@@ -24,6 +24,22 @@ const createWindow = (): void => {
     },
   });
 
+  mainWindow.webContents.session.webRequest.onHeadersReceived(
+    (details, callback) => {
+      const isDevelopment = process.env.NODE_ENV === "development";
+      const cspPolicy = isDevelopment
+        ? "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; media-src 'self' blob: data:; img-src 'self' data: blob:; connect-src 'self' ws: wss:;"
+        : "default-src 'self' 'unsafe-inline' data: blob:; media-src 'self' blob: data:; img-src 'self' data: blob:;";
+
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          "Content-Security-Policy": [cspPolicy],
+        },
+      });
+    }
+  );
+
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   mainWindow.on("closed", () => {
@@ -133,6 +149,30 @@ ipcMain.handle("settings:set-claude-api-key", async (event, apiKey: string) => {
 ipcMain.handle("settings:clear-claude-api-key", async () => {
   try {
     settingsService.clearClaudeApiKey();
+  } catch (error) {
+    throw error;
+  }
+});
+
+ipcMain.handle("settings:get-openai-api-key", async () => {
+  try {
+    return settingsService.getOpenAIApiKey();
+  } catch (error) {
+    throw error;
+  }
+});
+
+ipcMain.handle("settings:set-openai-api-key", async (event, apiKey: string) => {
+  try {
+    settingsService.setOpenAIApiKey(apiKey);
+  } catch (error) {
+    throw error;
+  }
+});
+
+ipcMain.handle("settings:clear-openai-api-key", async () => {
+  try {
+    settingsService.clearOpenAIApiKey();
   } catch (error) {
     throw error;
   }
@@ -303,6 +343,38 @@ Respond ONLY JSON: {"resistance": number_1_20, "advice": "specific_advice_in_eng
   } catch (error) {
     console.error("AI Service Error:", error);
     throw new Error(`AI analysis failed: ${error.message}`);
+  }
+});
+
+ipcMain.handle("tts:speak", async (event, text: string, apiKey: string) => {
+  try {
+    const API_URL = "https://api.openai.com/v1/audio/speech";
+
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "tts-1",
+        input: text,
+        voice: "nova",
+        response_format: "mp3",
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("OpenAI TTS Error:", errorText);
+      throw new Error(`TTS API error: ${response.status} - ${errorText}`);
+    }
+
+    const audioBuffer = await response.arrayBuffer();
+    return Buffer.from(audioBuffer);
+  } catch (error) {
+    console.error("TTS Service Error:", error);
+    throw new Error(`TTS synthesis failed: ${error.message}`);
   }
 });
 

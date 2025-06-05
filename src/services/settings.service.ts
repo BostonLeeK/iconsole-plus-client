@@ -2,6 +2,7 @@ import Store from "electron-store";
 
 interface Settings {
   claudeApiKey?: string;
+  openaiApiKey?: string;
 }
 
 class SettingsService {
@@ -24,6 +25,18 @@ class SettingsService {
 
   clearClaudeApiKey(): void {
     (this.store as any).delete("claudeApiKey");
+  }
+
+  getOpenAIApiKey(): string | undefined {
+    return (this.store as any).get("openaiApiKey");
+  }
+
+  setOpenAIApiKey(apiKey: string): void {
+    (this.store as any).set("openaiApiKey", apiKey);
+  }
+
+  clearOpenAIApiKey(): void {
+    (this.store as any).delete("openaiApiKey");
   }
 
   getAllSettings(): Settings {

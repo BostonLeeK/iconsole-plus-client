@@ -96,13 +96,15 @@ The AI Trainer provides intelligent, real-time coaching using Claude AI to optim
 2. **Add API Key** in application settings
 3. **Select Training Goal**: Casual, Weight Loss, Warm-up, or Endurance
 4. **Choose Ride Style**: City, Suburban, Countryside, or Track
-5. **Turn On AI Trainer** and start your session
+5. **Configure Voice Settings** (optional) - select voice, adjust speed and volume
+6. **Turn On AI Trainer** and start your session
 
 #### Features
 
 - **Real-time Analysis** - AI evaluates your performance every 30 seconds
 - **Smart Resistance** - Automatic adjustments based on your metrics and goals
 - **Personalized Advice** - Contextual coaching tips and encouragement
+- **Voice Coaching** - Text-to-speech for hands-free training guidance
 - **Session History** - Complete log of all AI decisions and advice
 - **Cost Tracking** - Monitor API usage and estimated costs in real-time
 - **Goal-based Training** - Different strategies for each training objective
@@ -120,6 +122,15 @@ The AI Trainer provides intelligent, real-time coaching using Claude AI to optim
 - **🏘️ Suburban**: Steady pace with small hills
 - **🌾 Countryside**: Long distances, varied terrain challenges
 - **🏁 Track**: High intensity (12-18), speed and power focused
+
+#### Voice Features
+
+- **Automatic Speech** - AI advice is automatically spoken when received
+- **Manual Replay** - Click speaker icon to repeat any advice
+- **Voice Settings** - Choose from available system voices
+- **Customizable** - Adjust speech rate, pitch, and volume
+- **Hands-free** - Perfect for maintaining focus during workouts
+- **Multi-language** - Supports English and Ukrainian voices (system dependent)
 
 ## 📋 Supported Devices
 
@@ -215,7 +226,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   - Historical performance trends
   - Progress tracking over time
   - Comparative analysis between sessions
-  - Export data to fitness platforms
 
 - **🔬 Advanced AI Analysis** - Enhanced AI capabilities
 
@@ -226,17 +236,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **📅 Training Planner** - Structured workout scheduling
   - Create custom training plans
-  - Weekly/monthly training schedules
   - Progress milestones and achievements
-  - Integration with calendar apps
-
-### 🚀 Future Enhancements
-
-- Multiple device support
-- Cloud sync for training data
-- Social features and challenges
-- Integration with popular fitness apps
-- Voice commands for hands-free control
 
 ## 📞 Support
 

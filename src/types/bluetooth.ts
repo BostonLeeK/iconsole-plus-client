@@ -61,6 +61,10 @@ export interface BluetoothServiceInterface {
   setResistanceLevel(level: number): Promise<void>;
 }
 
+interface TTSService {
+  speak(text: string, apiKey: string): Promise<Buffer>;
+}
+
 export interface ElectronAPI extends ElectronSettingsAPI {
   bluetoothService: {
     startScanning(): Promise<void>;
@@ -84,6 +88,9 @@ export interface ElectronAPI extends ElectronSettingsAPI {
       inputTokens?: number;
       outputTokens?: number;
     }>;
+  };
+  ttsService: {
+    speak(text: string, apiKey: string): Promise<Buffer>;
   };
   saveWorkoutSession(session: WorkoutSession): Promise<void>;
   windowControls: {

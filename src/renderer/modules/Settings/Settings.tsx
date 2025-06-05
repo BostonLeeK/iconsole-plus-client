@@ -3,14 +3,21 @@ import { appActions } from "../../store/app.store";
 
 export function Settings() {
   const [claudeApiKey, setClaudeApiKey] = createSignal("");
+  const [openaiApiKey, setOpenAIApiKey] = createSignal("");
   const [isLoading, setIsLoading] = createSignal(false);
   const [isSaved, setIsSaved] = createSignal(false);
+  const [openaiSaved, setOpenAISaved] = createSignal(false);
 
   onMount(async () => {
     try {
-      const apiKey = await window.electronAPI.settings.getClaudeApiKey();
-      if (apiKey) {
-        setClaudeApiKey(apiKey);
+      const claudeKey = await window.electronAPI.settings.getClaudeApiKey();
+      if (claudeKey) {
+        setClaudeApiKey(claudeKey);
+      }
+
+      const openaiKey = await window.electronAPI.settings.getOpenAIApiKey();
+      if (openaiKey) {
+        setOpenAIApiKey(openaiKey);
       }
     } catch (error) {}
   });
@@ -36,6 +43,33 @@ export function Settings() {
       setClaudeApiKey("");
       setIsSaved(true);
       setTimeout(() => setIsSaved(false), 2000);
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSaveOpenAI = async () => {
+    if (!openaiApiKey().trim()) return;
+
+    setIsLoading(true);
+    try {
+      await window.electronAPI.settings.setOpenAIApiKey(openaiApiKey().trim());
+      setOpenAISaved(true);
+      setTimeout(() => setOpenAISaved(false), 2000);
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleClearOpenAI = async () => {
+    setIsLoading(true);
+    try {
+      await window.electronAPI.settings.clearOpenAIApiKey();
+      setOpenAIApiKey("");
+      setOpenAISaved(true);
+      setTimeout(() => setOpenAISaved(false), 2000);
     } catch (error) {
     } finally {
       setIsLoading(false);
@@ -119,6 +153,73 @@ export function Settings() {
 
               <button
                 onClick={handleClear}
+                disabled={isLoading()}
+                class={`px-4 py-3 rounded-lg font-medium transition-colors ${
+                  isLoading()
+                    ? "bg-gray-600 cursor-not-allowed text-gray-400"
+                    : "bg-red-600 hover:bg-red-700 text-white"
+                }`}
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-2xl shadow-xl border border-gray-700 overflow-hidden mt-6">
+          <div class="bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                <span class="text-lg">🎙️</span>
+              </div>
+              <div class="flex-1">
+                <h2 class="text-xl font-bold text-white">
+                  OpenAI TTS Configuration
+                </h2>
+                <p class="text-blue-100 text-sm">
+                  Configure OpenAI API for premium text-to-speech
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 space-y-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                OpenAI API Key
+              </label>
+              <input
+                type="password"
+                value={openaiApiKey()}
+                onInput={(e) => setOpenAIApiKey(e.target.value)}
+                placeholder="sk-..."
+                class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <p class="text-gray-400 text-sm mt-2">
+                Required for premium OpenAI TTS voices in AI trainer
+              </p>
+            </div>
+
+            <div class="flex gap-3">
+              <button
+                onClick={handleSaveOpenAI}
+                disabled={isLoading() || !openaiApiKey().trim()}
+                class={`flex-1 px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+                  isLoading() || !openaiApiKey().trim()
+                    ? "bg-gray-600 cursor-not-allowed text-gray-400"
+                    : openaiSaved()
+                    ? "bg-green-600 text-white"
+                    : "bg-blue-600 hover:bg-blue-700 text-white"
+                }`}
+              >
+                {isLoading() && (
+                  <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                )}
+                {openaiSaved() ? "✓ Saved" : "Save API Key"}
+              </button>
+
+              <button
+                onClick={handleClearOpenAI}
                 disabled={isLoading()}
                 class={`px-4 py-3 rounded-lg font-medium transition-colors ${
                   isLoading()

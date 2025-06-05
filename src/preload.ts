@@ -20,10 +20,19 @@ const electronAPI: ElectronAPI = {
       ipcRenderer.invoke("settings:set-claude-api-key", apiKey),
     clearClaudeApiKey: () =>
       ipcRenderer.invoke("settings:clear-claude-api-key"),
+    getOpenAIApiKey: () => ipcRenderer.invoke("settings:get-openai-api-key"),
+    setOpenAIApiKey: (apiKey: string) =>
+      ipcRenderer.invoke("settings:set-openai-api-key", apiKey),
+    clearOpenAIApiKey: () =>
+      ipcRenderer.invoke("settings:clear-openai-api-key"),
   },
   aiService: {
     analyzeWorkout: (request: any, apiKey: string) =>
       ipcRenderer.invoke("ai:analyze-workout", request, apiKey),
+  },
+  ttsService: {
+    speak: (text: string, apiKey: string) =>
+      ipcRenderer.invoke("tts:speak", text, apiKey),
   },
   saveWorkoutSession: (session) =>
     ipcRenderer.invoke("save-workout-session", session),
