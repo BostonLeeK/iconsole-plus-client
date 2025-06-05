@@ -10,6 +10,10 @@ A modern Electron application built with SolidJS for connecting to iConsole+ exe
 - 📊 **Real-time Data** - Live workout metrics display
 - 🎛️ **Resistance Control** - Adjust bike resistance remotely (1-20 levels)
 - 📹 **Session Recording** - Record and save workout sessions to JSON files
+- 🤖 **AI Trainer** - Claude-powered intelligent training assistant
+- 📈 **Smart Resistance** - Automatic resistance adjustments based on goals
+- 💰 **Cost Tracking** - Real-time API usage and cost monitoring
+- 📝 **Training History** - Complete log of AI advice and decisions
 - 🎯 **FTMS Protocol** - Full FTMS (Fitness Machine Service) support
 - 💻 **Cross-platform** - Works on Windows, macOS, and Linux
 - 🎨 **Modern UI** - Built with SolidJS and Electron
@@ -66,6 +70,8 @@ npm run package
 5. **Select your bike** from the list
 6. **Connect** and start your workout!
 7. **Control resistance** using the slider (1-20 levels)
+8. **Configure AI Trainer** in settings with your Claude API key
+9. **Select training style** and goals for personalized coaching
 
 ### 📹 Recording Workout Sessions
 
@@ -79,6 +85,41 @@ Recorded sessions are saved to:
 - **Windows**: `%APPDATA%/iconsole-plus-client/data_records/`
 - **macOS**: `~/Library/Application Support/iconsole-plus-client/data_records/`
 - **Linux**: `~/.config/iconsole-plus-client/data_records/`
+
+### 🤖 AI Personal Trainer
+
+The AI Trainer provides intelligent, real-time coaching using Claude AI to optimize your workout experience.
+
+#### Setup
+
+1. **Get Claude API Key** from [Anthropic Console](https://console.anthropic.com)
+2. **Add API Key** in application settings
+3. **Select Training Goal**: Casual, Weight Loss, Warm-up, or Endurance
+4. **Choose Ride Style**: City, Suburban, Countryside, or Track
+5. **Turn On AI Trainer** and start your session
+
+#### Features
+
+- **Real-time Analysis** - AI evaluates your performance every 30 seconds
+- **Smart Resistance** - Automatic adjustments based on your metrics and goals
+- **Personalized Advice** - Contextual coaching tips and encouragement
+- **Session History** - Complete log of all AI decisions and advice
+- **Cost Tracking** - Monitor API usage and estimated costs in real-time
+- **Goal-based Training** - Different strategies for each training objective
+
+#### Training Goals
+
+- **🚶 Casual**: Light resistance (3-8), comfort-focused
+- **🔥 Weight Loss**: Heart rate 120-140 BPM, optimal fat burning
+- **🏃 Warm-up**: Gradual resistance increase, prep for intense training
+- **💪 Endurance**: Medium resistance (8-15), steady pace maintenance
+
+#### Ride Styles
+
+- **🏙️ City**: Variable resistance, simulates traffic and stops
+- **🏘️ Suburban**: Steady pace with small hills
+- **🌾 Countryside**: Long distances, varied terrain challenges
+- **🏁 Track**: High intensity (12-18), speed and power focused
 
 ## 📋 Supported Devices
 
@@ -99,6 +140,8 @@ This application uses the standard **FTMS (Fitness Machine Service)** Bluetooth 
 - **Resistance Range**: 1-20 levels with dual protocol support
 - **Update Frequency**: 2-3 seconds
 - **Recording Frequency**: 1-second intervals
+- **AI Engine**: Claude 3 Haiku - 30-second analysis intervals
+- **Cost Optimization**: $0.25/1M input, $1.25/1M output tokens
 - **Platform**: Electron + SolidJS
 - **Bluetooth Library**: @abandonware/noble
 
@@ -162,6 +205,38 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - iConsole+ for creating quality exercise equipment
 - The Bluetooth SIG for the FTMS specification
 - The open-source community for excellent libraries
+
+## 📋 TODO & Roadmap
+
+### 🎯 Planned Features
+
+- **📊 Workout Analytics** - Visual charts and graphs for session analysis
+
+  - Historical performance trends
+  - Progress tracking over time
+  - Comparative analysis between sessions
+  - Export data to fitness platforms
+
+- **🔬 Advanced AI Analysis** - Enhanced AI capabilities
+
+  - Post-workout performance analysis
+  - Training recommendations based on historical data
+  - Personalized training programs
+  - Integration with fitness goals and metrics
+
+- **📅 Training Planner** - Structured workout scheduling
+  - Create custom training plans
+  - Weekly/monthly training schedules
+  - Progress milestones and achievements
+  - Integration with calendar apps
+
+### 🚀 Future Enhancements
+
+- Multiple device support
+- Cloud sync for training data
+- Social features and challenges
+- Integration with popular fitness apps
+- Voice commands for hands-free control
 
 ## 📞 Support
 

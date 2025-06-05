@@ -72,6 +72,7 @@ export class BluetoothService
   private scanning: boolean = false;
   private discoveredDevices: Set<string> = new Set();
   private pollingInterval: NodeJS.Timeout | null = null;
+  private currentWorkoutData: WorkoutData | null = null;
 
   constructor() {
     super();
@@ -295,6 +296,7 @@ export class BluetoothService
         resistance: data[9] || 0,
       };
 
+      this.currentWorkoutData = workoutData;
       this.emit("dataReceived", workoutData);
     }
   }
@@ -391,6 +393,10 @@ export class BluetoothService
     return null;
   }
 
+  public async setResistance(level: number): Promise<void> {
+    return this.setResistanceLevel(level);
+  }
+
   public async setResistanceLevel(level: number): Promise<void> {
     if (!this.controlCharacteristic || !this.isConnected()) {
       throw new Error(
@@ -432,5 +438,9 @@ export class BluetoothService
         }
       );
     });
+  }
+
+  getCurrentWorkoutData(): WorkoutData | null {
+    return this.currentWorkoutData;
   }
 }

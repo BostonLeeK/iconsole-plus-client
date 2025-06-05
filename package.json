@@ -37,7 +37,7 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.6.0",
     "@electron-forge/plugin-webpack": "^7.6.0",
     "@electron-forge/shared-types": "^7.6.0",
-    "@types/node": "^20.11.24",
+    "@types/node": "^20.17.57",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "autoprefixer": "^10.4.21",
     "babel-loader": "^9.1.3",

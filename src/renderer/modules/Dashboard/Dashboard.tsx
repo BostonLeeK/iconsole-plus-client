@@ -1,6 +1,7 @@
 import { onMount } from "solid-js";
 import { BluetoothService } from "../../services/bluetoothService";
 import { appState } from "../../store/app";
+import { AITrainer } from "../AITrainer/AITrainer";
 import { BikeAnimation } from "../BikeAnimation/BikeAnimation";
 import { DeviceControl } from "../DeviceControl/DeviceControl";
 import { DeviceList } from "../DeviceList/DeviceList";
@@ -76,12 +77,13 @@ export function Dashboard() {
             <div class="space-y-6">
               <DeviceControl />
               <DeviceList />
-              <BikeAnimation />
+              <AITrainer />
             </div>
           </div>
 
           <div class="lg:col-span-8">
             <div class="space-y-6">
+              <BikeAnimation />
               <WorkoutData />
               <SessionRecorder />
               <RawData />

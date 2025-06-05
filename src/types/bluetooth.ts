@@ -74,6 +74,17 @@ export interface ElectronAPI extends ElectronSettingsAPI {
     }>;
     setResistanceLevel(level: number): Promise<void>;
   };
+  aiService: {
+    analyzeWorkout(
+      request: any,
+      apiKey: string
+    ): Promise<{
+      newResistance: number;
+      advice: string;
+      inputTokens?: number;
+      outputTokens?: number;
+    }>;
+  };
   saveWorkoutSession(session: WorkoutSession): Promise<void>;
   windowControls: {
     minimize(): Promise<void>;

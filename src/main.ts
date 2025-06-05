@@ -138,6 +138,174 @@ ipcMain.handle("settings:clear-claude-api-key", async () => {
   }
 });
 
+ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
+  try {
+    const API_URL = "https://api.anthropic.com/v1/messages";
+
+    // Build prompt
+    const RIDE_STYLES = [
+      {
+        id: "city",
+        name: "City",
+        description: "Frequent stops, variable pace",
+      },
+      {
+        id: "suburban",
+        name: "Suburban",
+        description: "Steady pace, small hills",
+      },
+      {
+        id: "countryside",
+        name: "Countryside",
+        description: "Long distances, varied terrain",
+      },
+      {
+        id: "track",
+        name: "Track",
+        description: "Speed, intensity",
+      },
+    ];
+
+    const TRAINING_GOALS = [
+      {
+        id: "casual",
+        name: "Casual",
+        description: "Light workout, relaxation",
+      },
+      {
+        id: "weight_loss",
+        name: "Weight Loss",
+        description: "Burn calories, cardio",
+      },
+      {
+        id: "warmup",
+        name: "Warm-up",
+        description: "Preparation for training",
+      },
+      {
+        id: "endurance",
+        name: "Endurance",
+        description: "Long-duration workouts",
+      },
+    ];
+
+    const style =
+      RIDE_STYLES.find((s) => s.id === request.rideStyle)?.name ||
+      request.rideStyle;
+    const goal =
+      TRAINING_GOALS.find((g) => g.id === request.goal)?.name || request.goal;
+
+    const prompt = `You are a smart cycling trainer AI. Analyze data and provide resistance recommendations (1-20) and advice.
+
+CONTEXT:
+- Ride style: ${style}
+- Training goal: ${goal}
+- Session duration: ${request.sessionDuration} seconds
+- Current metrics:
+  * Speed: ${request.workoutData.speed} km/h
+  * Cadence: ${request.workoutData.rpm} rpm
+  * Power: ${request.workoutData.power} W
+  * Heart rate: ${request.workoutData.heartRate} bpm
+  * Current resistance: ${request.workoutData.currentResistance}/20
+
+RESISTANCE CHANGE RULES:
+- For WEIGHT LOSS: maintain heart rate 120-140, increase resistance if heart rate is low
+- For CASUAL: light resistance 3-8, comfort is more important than intensity
+- For WARM-UP: gradually increase resistance every 30 sec by 1-2 levels
+- For ENDURANCE: medium resistance 8-15, maintain steady pace
+
+LOGIC:
+- If RPM > 80: increase resistance (+2-3)
+- If RPM < 40: decrease resistance (-1-2)
+- If heart rate < 100 and goal is active: increase resistance
+- If heart rate > 160: decrease resistance
+- For city: frequently change resistance (simulate traffic lights)
+- For track: maintain high resistance (12-18)
+
+Respond ONLY JSON: {"resistance": number_1_20, "advice": "specific_advice_in_english"}`;
+
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: "claude-3-haiku-20240307",
+        max_tokens: 200,
+        temperature: 0.7,
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("AI API Error:", errorText);
+      throw new Error(`AI API error: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+
+    const inputTokens = data.usage?.input_tokens || 0;
+    const outputTokens = data.usage?.output_tokens || 0;
+
+    const responseText = data.content[0].text;
+    const jsonMatch = responseText.match(/\{[^}]+\}/);
+
+    if (!jsonMatch) {
+      throw new Error("No JSON found in response");
+    }
+
+    const parsed = JSON.parse(jsonMatch[0]);
+
+    // Ensure resistance is a reasonable number and different from current
+    let newResistance =
+      parsed.resistance || request.workoutData.currentResistance || 5;
+
+    // Apply smart fallback logic if AI gives the same resistance
+    if (newResistance === request.workoutData.currentResistance) {
+      const rpm = request.workoutData.rpm || 50;
+      const heartRate = request.workoutData.heartRate || 0;
+      const currentResistance = request.workoutData.currentResistance || 5;
+
+      // Apply basic training logic
+      if (request.goal === "weight_loss" && heartRate < 120 && heartRate > 0) {
+        newResistance = Math.min(20, currentResistance + 2); // Increase for fat burn
+      } else if (request.goal === "casual" && rpm > 70) {
+        newResistance = Math.max(1, currentResistance - 1); // Decrease for comfort
+      } else if (rpm > 80) {
+        newResistance = Math.min(20, currentResistance + 1); // Increase if spinning too fast
+      } else if (rpm < 40 && rpm > 0) {
+        newResistance = Math.max(1, currentResistance - 1); // Decrease if too slow
+      } else if (
+        request.sessionDuration > 0 &&
+        request.sessionDuration % 60 === 0
+      ) {
+        // Change resistance every minute for variety
+        newResistance = currentResistance + (Math.random() > 0.5 ? 1 : -1);
+      }
+    }
+
+    const result = {
+      newResistance: Math.max(1, Math.min(20, Math.round(newResistance))),
+      advice: parsed.advice || "Continue your workout",
+      inputTokens,
+      outputTokens,
+    };
+
+    return result;
+  } catch (error) {
+    console.error("AI Service Error:", error);
+    throw new Error(`AI analysis failed: ${error.message}`);
+  }
+});
+
 ipcMain.handle(
   "save-workout-session",
   async (event, session: WorkoutSession) => {
@@ -192,7 +360,6 @@ process.on("uncaughtException", (error) => {});
 
 process.on("unhandledRejection", (reason, promise) => {});
 
-// Window control handlers for custom title bar
 ipcMain.handle("window:minimize", () => {
   mainWindow?.minimize();
 });

@@ -21,6 +21,10 @@ const electronAPI: ElectronAPI = {
     clearClaudeApiKey: () =>
       ipcRenderer.invoke("settings:clear-claude-api-key"),
   },
+  aiService: {
+    analyzeWorkout: (request: any, apiKey: string) =>
+      ipcRenderer.invoke("ai:analyze-workout", request, apiKey),
+  },
   saveWorkoutSession: (session) =>
     ipcRenderer.invoke("save-workout-session", session),
   windowControls: {
