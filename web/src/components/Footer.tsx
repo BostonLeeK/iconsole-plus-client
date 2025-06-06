@@ -43,7 +43,7 @@ const Footer: Component = () => {
         <div class="border-t border-white/10 pt-8 flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
           <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 text-sm">
             <p class="text-gray-400">
-              © 2024 iConsole+ Client. All rights reserved.
+              © 2025 iConsole+ Client. All rights reserved.
             </p>
             <div class="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-4 text-gray-400 text-xs">
               <div class="flex items-center space-x-2">

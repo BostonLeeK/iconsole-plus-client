@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@abandonware/noble": "^1.9.2-26",
+    "@timfish/forge-externals-plugin": "^0.2.1",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^10.0.1",
     "lottie-web": "^5.13.0",
@@ -53,60 +54,6 @@
     "tailwindcss": "^3.4.6",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3"
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {
-        "asar": true
-      },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "iconsole_client"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ],
-      "plugins": [
-        {
-          "name": "@electron-forge/plugin-auto-unpack-natives",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/plugin-webpack",
-          "config": {
-            "mainConfig": "./webpack/webpack.main.config.js",
-            "renderer": {
-              "config": "./webpack/webpack.renderer.config.js",
-              "entryPoints": [
-                {
-                  "html": "./src/renderer/index.html",
-                  "js": "./src/renderer/renderer.tsx",
-                  "name": "main_window",
-                  "preload": {
-                    "js": "./src/preload.ts"
-                  }
-                }
-              ]
-            }
-          }
-        }
-      ]
-    }
   },
   "build": {
     "appId": "com.iconsole.client",

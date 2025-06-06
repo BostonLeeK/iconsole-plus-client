@@ -26,32 +26,32 @@ const Download: Component = () => {
       platform: "Windows",
       icon: "🖥️",
       version: "v1.0.0",
-      size: "~45 MB",
+      size: "~132 MB",
       requirements: "Windows 10/11 64-bit",
-      downloadUrl: "#",
+      downloadUrl: "/downloads/iconsole_client_1.0.0_win32.exe",
       recommended: true,
       gradient: "from-blue-500 to-indigo-600",
     },
-    {
-      platform: "macOS",
-      icon: "🍎",
-      version: "v1.0.0",
-      size: "~50 MB",
-      requirements: "macOS 10.15+",
-      downloadUrl: "#",
-      recommended: false,
-      gradient: "from-gray-500 to-gray-700",
-    },
-    {
-      platform: "Linux",
-      icon: "🐧",
-      version: "v1.0.0",
-      size: "~48 MB",
-      requirements: "Ubuntu 20.04+",
-      downloadUrl: "#",
-      recommended: false,
-      gradient: "from-orange-500 to-red-600",
-    },
+    // {
+    //   platform: "macOS",
+    //   icon: "🍎",
+    //   version: "v1.0.0",
+    //   size: "~132 MB",
+    //   requirements: "macOS 10.15+",
+    //   downloadUrl: "#",
+    //   recommended: false,
+    //   gradient: "from-gray-500 to-gray-700",
+    // },
+    // {
+    //   platform: "Linux",
+    //   icon: "🐧",
+    //   version: "v1.0.0",
+    //   size: "~132 MB",
+    //   requirements: "Ubuntu 20.04+",
+    //   downloadUrl: "#",
+    //   recommended: false,
+    //   gradient: "from-orange-500 to-red-600",
+    // },
   ];
 
   return (
@@ -172,7 +172,7 @@ const Download: Component = () => {
                     }`}
                     onClick={() => window.open(option.downloadUrl, "_blank")}
                   >
-                    ⬇️ Download Soon
+                    ⬇️ Download {option.platform}
                   </button>
                 </div>
               </div>
