@@ -60,6 +60,11 @@ const electronAPI: ElectronAPI = {
     close: () => ipcRenderer.invoke("window:close"),
     isMaximized: () => ipcRenderer.invoke("window:is-maximized"),
   },
+  powerManager: {
+    preventSleep: (enable: boolean) =>
+      ipcRenderer.invoke("power:prevent-sleep", enable),
+    isSleepPrevented: () => ipcRenderer.invoke("power:is-sleep-prevented"),
+  },
   on: (channel: string, callback: (...args: any[]) => void) => {
     const validChannels = [
       "device-discovered",

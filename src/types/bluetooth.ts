@@ -112,6 +112,12 @@ export interface ElectronAPI extends ElectronSettingsAPI {
     close(): Promise<void>;
     isMaximized(): Promise<boolean>;
   };
+  powerManager: {
+    preventSleep(
+      enable: boolean
+    ): Promise<{ success: boolean; isActive: boolean }>;
+    isSleepPrevented(): Promise<{ isActive: boolean; isStarted: boolean }>;
+  };
   on(channel: string, callback: (...args: any[]) => void): void;
 }
 

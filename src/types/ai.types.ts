@@ -10,6 +10,13 @@ export interface TrainingGoal {
   description: string;
 }
 
+export interface AdviceHistoryItem {
+  timestamp: string;
+  advice: string;
+  oldResistance: number;
+  newResistance: number;
+}
+
 export interface AITrainingRequest {
   workoutData: {
     time: number;
@@ -22,6 +29,7 @@ export interface AITrainingRequest {
   rideStyle: string;
   goal: string;
   sessionDuration: number;
+  adviceHistory?: AdviceHistoryItem[];
 }
 
 export interface AITrainingResponse {

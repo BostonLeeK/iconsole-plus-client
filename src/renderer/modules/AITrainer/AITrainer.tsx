@@ -112,6 +112,12 @@ export function AITrainer() {
               rideStyle: rideStyle(),
               goal: goal(),
               sessionDuration,
+              adviceHistory: aiStore.sessionHistory.map((entry) => ({
+                timestamp: entry.timestamp,
+                advice: entry.advice,
+                oldResistance: entry.oldResistance,
+                newResistance: entry.newResistance,
+              })),
             },
             apiKey
           );

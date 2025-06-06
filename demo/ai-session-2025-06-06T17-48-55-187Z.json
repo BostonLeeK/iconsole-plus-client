@@ -1,0 +1,319 @@
+{
+  "sessionInfo": {
+    "startTime": "2025-06-06T17:48:55.189Z",
+    "endTime": null,
+    "duration": 636093,
+    "filename": "ai-session-2025-06-06T17-48-55-187Z.json"
+  },
+  "stats": {
+    "totalRequests": 19,
+    "totalInputTokens": 6402,
+    "totalOutputTokens": 953,
+    "totalTTSCharacters": 0,
+    "estimatedCost": 0.00279175,
+    "ttsCost": 0,
+    "sessionStartTime": "2025-06-06T17:48:55.189Z"
+  },
+  "adviceHistory": [
+    {
+      "timestamp": "2025-06-06T17:50:01.486Z",
+      "advice": "Increase resistance to 5 for a comfortable, fat-burning ride and maintain your heart rate within the weight loss zone.",
+      "oldResistance": 1,
+      "newResistance": 5,
+      "workoutData": {
+        "time": 71,
+        "speed": 18.6,
+        "rpm": 50,
+        "power": 43,
+        "heartRate": 0
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:50:31.304Z",
+      "advice": "Increase resistance to 6 to elevate your heart rate for optimal fat-burning during this countryside ride.",
+      "oldResistance": 5,
+      "newResistance": 6,
+      "workoutData": {
+        "time": 101,
+        "speed": 20.1,
+        "rpm": 54,
+        "power": 70,
+        "heartRate": 84
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:51:01.989Z",
+      "advice": "Increase resistance to 7 to boost power output and elevate your heart rate for effective fat-burning during this countryside ride.",
+      "oldResistance": 6,
+      "newResistance": 7,
+      "workoutData": {
+        "time": 132,
+        "speed": 22.7,
+        "rpm": 61,
+        "power": 93,
+        "heartRate": 89
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:51:31.000Z",
+      "advice": "Increase resistance to 8 to challenge your endurance and sustain a steady effort for effective fat-burning during this countryside ride.",
+      "oldResistance": 7,
+      "newResistance": 8,
+      "workoutData": {
+        "time": 160,
+        "speed": 22.4,
+        "rpm": 60,
+        "power": 97,
+        "heartRate": 96
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:52:01.623Z",
+      "advice": "Increase resistance to 9 to elevate your power output and challenge your muscular endurance for enhanced fat-burning during this countryside ride.",
+      "oldResistance": 8,
+      "newResistance": 9,
+      "workoutData": {
+        "time": 191,
+        "speed": 23.1,
+        "rpm": 62,
+        "power": 108,
+        "heartRate": 98
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:52:31.366Z",
+      "advice": "Increase resistance to 10 to elevate your metabolic rate and promote fat-burning through a challenging, steady-state effort.",
+      "oldResistance": 9,
+      "newResistance": 10,
+      "workoutData": {
+        "time": 220,
+        "speed": 22,
+        "rpm": 59,
+        "power": 106,
+        "heartRate": 97
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:53:01.125Z",
+      "advice": "Increase resistance to 11 to boost calorie expenditure and engage more muscle groups for a challenging, full-body fat-burning workout.",
+      "oldResistance": 10,
+      "newResistance": 11,
+      "workoutData": {
+        "time": 250,
+        "speed": 21.2,
+        "rpm": 57,
+        "power": 106,
+        "heartRate": 99
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:53:31.048Z",
+      "advice": "Increase resistance to 12 to elevate your heart rate into the optimal fat-burning zone and challenge your muscular endurance for a more intense calorie burn.",
+      "oldResistance": 11,
+      "newResistance": 12,
+      "workoutData": {
+        "time": 279,
+        "speed": 20.1,
+        "rpm": 54,
+        "power": 102,
+        "heartRate": 97
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:54:01.580Z",
+      "advice": "Increase resistance to 13 to maximize fat-burning by elevating your heart rate and challenging your muscular strength for a more intense calorie-torching ride.",
+      "oldResistance": 12,
+      "newResistance": 13,
+      "workoutData": {
+        "time": 309,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 111,
+        "heartRate": 95
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:54:31.325Z",
+      "advice": "Increase resistance to 14 to stimulate your anaerobic threshold, enhancing fat-burning and muscular endurance for a more challenging, interval-style workout.",
+      "oldResistance": 13,
+      "newResistance": 14,
+      "workoutData": {
+        "time": 339,
+        "speed": 19,
+        "rpm": 51,
+        "power": 100,
+        "heartRate": 76
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:55:01.289Z",
+      "advice": "Increase resistance to 15 to target your anaerobic capacity, elevating your heart rate for a more intense calorie-burning interval session.",
+      "oldResistance": 14,
+      "newResistance": 15,
+      "workoutData": {
+        "time": 369,
+        "speed": 19.7,
+        "rpm": 53,
+        "power": 114,
+        "heartRate": 95
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:55:31.393Z",
+      "advice": "Increase resistance to 16 to boost your anaerobic power, elevating your heart rate for a more intense interval-focused workout to maximize fat-burning.",
+      "oldResistance": 15,
+      "newResistance": 16,
+      "workoutData": {
+        "time": 398,
+        "speed": 20.1,
+        "rpm": 54,
+        "power": 123,
+        "heartRate": 98
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:56:01.094Z",
+      "advice": "Increase resistance to 17 to develop muscular strength and power, driving a higher force output for a more challenging hill-climbing workout.",
+      "oldResistance": 16,
+      "newResistance": 17,
+      "workoutData": {
+        "time": 428,
+        "speed": 20.9,
+        "rpm": 56,
+        "power": 137,
+        "heartRate": 102
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:56:33.025Z",
+      "advice": "Increase resistance to 18 to target muscular endurance, elevating your power output for a more challenging sustained effort to optimize fat-burning.",
+      "oldResistance": 17,
+      "newResistance": 18,
+      "workoutData": {
+        "time": 460,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 152,
+        "heartRate": 106
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:57:01.152Z",
+      "advice": "Increase resistance to 19 to enhance metabolic efficiency, elevating fat-burning through a more challenging steady-state effort.",
+      "oldResistance": 18,
+      "newResistance": 19,
+      "workoutData": {
+        "time": 488,
+        "speed": 21.2,
+        "rpm": 57,
+        "power": 153,
+        "heartRate": 106
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:57:31.508Z",
+      "advice": "Increase resistance to 20 to maximize calorie expenditure and fat-burning through a challenging, high-intensity interval workout.",
+      "oldResistance": 19,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 517,
+        "speed": 23.1,
+        "rpm": 62,
+        "power": 183,
+        "heartRate": 107
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:58:01.243Z",
+      "advice": "Increase resistance to 21 to boost power output and calorie burn, targeting a more intense interval-based workout for enhanced fat loss.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 547,
+        "speed": 23.1,
+        "rpm": 62,
+        "power": 190,
+        "heartRate": 110
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:58:31.313Z",
+      "advice": "Increase resistance to 21 to target higher power output, elevating calorie burn and fat loss through a more intense interval-based workout.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 577,
+        "speed": 22.4,
+        "rpm": 60,
+        "power": 181,
+        "heartRate": 115
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:59:01.140Z",
+      "advice": "Raise resistance to 21 to boost aerobic capacity and fat oxidation through a steady, endurance-focused countryside ride.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 607,
+        "speed": 25.3,
+        "rpm": 68,
+        "power": 220,
+        "heartRate": 120
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    },
+    {
+      "timestamp": "2025-06-06T17:59:31.281Z",
+      "advice": "Increase resistance to 21 to target a more challenging interval-based workout, boosting metabolic rate and fat burning.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 636,
+        "speed": 23.9,
+        "rpm": 64,
+        "power": 200,
+        "heartRate": 123
+      },
+      "rideStyle": "countryside",
+      "goal": "weight_loss"
+    }
+  ]
+}

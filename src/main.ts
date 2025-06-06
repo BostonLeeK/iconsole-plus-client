@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell } from "electron";
+import { app, BrowserWindow, ipcMain, powerSaveBlocker, shell } from "electron";
 import {
   existsSync,
   mkdirSync,
@@ -16,6 +16,7 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 let mainWindow: BrowserWindow | null = null;
 const bluetoothService = new BluetoothService();
+let powerSaveBlockerId: number | null = null;
 
 const createWindow = (): void => {
   mainWindow = new BrowserWindow({
@@ -55,6 +56,7 @@ const createWindow = (): void => {
 
 app.whenReady().then(() => {
   createWindow();
+  powerSaveBlockerId = powerSaveBlocker.start("prevent-app-suspension");
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -66,6 +68,11 @@ app.whenReady().then(() => {
 app.on("window-all-closed", () => {
   bluetoothService.disconnectDevice().catch();
 
+  if (powerSaveBlockerId !== null) {
+    powerSaveBlocker.stop(powerSaveBlockerId);
+    powerSaveBlockerId = null;
+  }
+
   if (process.platform !== "darwin") {
     app.quit();
   }
@@ -75,6 +82,11 @@ app.on("before-quit", async () => {
   try {
     await bluetoothService.disconnectDevice();
   } catch (error) {}
+
+  if (powerSaveBlockerId !== null) {
+    powerSaveBlocker.stop(powerSaveBlockerId);
+    powerSaveBlockerId = null;
+  }
 });
 
 ipcMain.handle("bluetooth:start-scanning", async () => {
@@ -197,7 +209,6 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
   try {
     const API_URL = "https://api.anthropic.com/v1/messages";
 
-    // Build prompt
     const RIDE_STYLES = [
       {
         id: "city",
@@ -214,11 +225,7 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
         name: "Countryside",
         description: "Long distances, varied terrain",
       },
-      {
-        id: "track",
-        name: "Track",
-        description: "Speed, intensity",
-      },
+      { id: "track", name: "Track", description: "Speed, intensity" },
     ];
 
     const TRAINING_GOALS = [
@@ -250,34 +257,48 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
     const goal =
       TRAINING_GOALS.find((g) => g.id === request.goal)?.name || request.goal;
 
-    const prompt = `You are a smart cycling trainer AI. Analyze data and provide resistance recommendations (1-20) and advice.
+    const historyContext =
+      request.adviceHistory && request.adviceHistory.length > 0
+        ? `\nRECENT ADVICE HISTORY (last 3 recommendations):
+${request.adviceHistory
+  .slice(-3)
+  .map(
+    (advice, i) =>
+      `${i + 1}. ${Math.floor(
+        (Date.now() - new Date(advice.timestamp).getTime()) / 1000
+      )}s ago: R${advice.oldResistance}→${advice.newResistance} "${
+        advice.advice
+      }"`
+  )
+  .join("\n")}\n`
+        : "\nFIRST RECOMMENDATION - no previous advice given.\n";
 
-CONTEXT:
-- Ride style: ${style}
-- Training goal: ${goal}
-- Session duration: ${request.sessionDuration} seconds
-- Current metrics:
-  * Speed: ${request.workoutData.speed} km/h
-  * Cadence: ${request.workoutData.rpm} rpm
-  * Power: ${request.workoutData.power} W
-  * Heart rate: ${request.workoutData.heartRate} bpm
-  * Current resistance: ${request.workoutData.currentResistance}/20
+    const prompt = `You are an expert cycling coach. Give concise, progressive advice WITHOUT repeating previous recommendations.
 
-RESISTANCE CHANGE RULES:
-- For WEIGHT LOSS: maintain heart rate 120-140, increase resistance if heart rate is low
-- For CASUAL: light resistance 3-8, comfort is more important than intensity
-- For WARM-UP: gradually increase resistance every 30 sec by 1-2 levels
-- For ENDURANCE: medium resistance 8-15, maintain steady pace
+WORKOUT: ${goal} ${style} ride (${Math.floor(request.sessionDuration / 60)}min)
+CURRENT: Speed ${request.workoutData.speed}km/h, RPM ${
+      request.workoutData.rpm
+    }, Power ${request.workoutData.power}W, HR ${
+      request.workoutData.heartRate
+    }bpm, Resistance ${request.workoutData.currentResistance}/20
+${historyContext}
+RULES:
+• RESISTANCE LIMITS: MIN=1, MAX=20 (NEVER exceed 20!)
+• CASUAL: R3-8, comfort first
+• WEIGHT_LOSS: R6-12, HR 120-140
+• ENDURANCE: R8-15, steady effort  
+• WARM_UP: +1-2 every 30s
+• AT MAX RESISTANCE (20): Focus on maintaining pace, form, or suggest rest intervals
 
-LOGIC:
-- If RPM > 80: increase resistance (+2-3)
-- If RPM < 40: decrease resistance (-1-2)
-- If heart rate < 100 and goal is active: increase resistance
-- If heart rate > 160: decrease resistance
-- For city: frequently change resistance (simulate traffic lights)
-- For track: maintain high resistance (12-18)
+IMPORTANT:
+- Don't repeat previous advice
+- Be specific about WHY you're changing resistance
+- Keep advice under 25 words
+- Focus on progression and variety
+- Never start with "Based on..."
+- If at resistance 20, suggest pace/form changes instead of increasing
 
-Respond ONLY JSON: {"resistance": number_1_20, "advice": "specific_advice_in_english"}`;
+JSON: {"resistance": 1-20, "advice": "brief_specific_advice"}`;
 
     const response = await fetch(API_URL, {
       method: "POST",
@@ -694,4 +715,33 @@ ipcMain.handle("window:close", () => {
 
 ipcMain.handle("window:is-maximized", () => {
   return mainWindow?.isMaximized() || false;
+});
+
+ipcMain.handle("power:prevent-sleep", async (event, enable: boolean) => {
+  try {
+    if (enable) {
+      if (powerSaveBlockerId === null) {
+        powerSaveBlockerId = powerSaveBlocker.start("prevent-app-suspension");
+      }
+    } else {
+      if (powerSaveBlockerId !== null) {
+        powerSaveBlocker.stop(powerSaveBlockerId);
+        powerSaveBlockerId = null;
+      }
+    }
+    return { success: true, isActive: powerSaveBlockerId !== null };
+  } catch (error) {
+    console.error("Power save blocker error:", error);
+    throw error;
+  }
+});
+
+ipcMain.handle("power:is-sleep-prevented", () => {
+  return {
+    isActive: powerSaveBlockerId !== null,
+    isStarted:
+      powerSaveBlockerId !== null
+        ? powerSaveBlocker.isStarted(powerSaveBlockerId)
+        : false,
+  };
 });
