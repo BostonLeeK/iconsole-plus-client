@@ -2,12 +2,14 @@ export interface RideStyle {
   id: string;
   name: string;
   description: string;
+  icon: string;
 }
 
 export interface TrainingGoal {
   id: string;
   name: string;
   description: string;
+  icon: string;
 }
 
 export interface AdviceHistoryItem {

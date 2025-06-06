@@ -6,18 +6,49 @@ import {
 } from "../types/ai.types";
 
 export const RIDE_STYLES: RideStyle[] = [
-  { id: "city", name: "City", description: "Frequent stops, variable pace" },
+  {
+    id: "city",
+    name: "City",
+    description: "Frequent stops, variable pace",
+    icon: "🏙️",
+  },
   {
     id: "suburban",
     name: "Suburban",
     description: "Steady pace, small hills",
+    icon: "🏘️",
   },
   {
     id: "countryside",
     name: "Countryside",
     description: "Long distances, varied terrain",
+    icon: "🌄",
   },
-  { id: "track", name: "Track", description: "Speed, intensity" },
+  { id: "track", name: "Track", description: "Speed, intensity", icon: "🏁" },
+  {
+    id: "mountain",
+    name: "Mountain",
+    description: "High resistance, climbing",
+    icon: "⛰️",
+  },
+  {
+    id: "beach",
+    name: "Beach",
+    description: "Relaxed pace, scenic route",
+    icon: "🏖️",
+  },
+  {
+    id: "forest",
+    name: "Forest",
+    description: "Nature trails, moderate pace",
+    icon: "🌲",
+  },
+  {
+    id: "highway",
+    name: "Highway",
+    description: "Long steady rides, endurance",
+    icon: "🛣️",
+  },
 ];
 
 export const TRAINING_GOALS: TrainingGoal[] = [
@@ -25,17 +56,49 @@ export const TRAINING_GOALS: TrainingGoal[] = [
     id: "casual",
     name: "Casual",
     description: "Light workout, relaxation",
+    icon: "😌",
   },
   {
     id: "weight_loss",
     name: "Weight Loss",
     description: "Burn calories, cardio",
+    icon: "🔥",
   },
-  { id: "warmup", name: "Warm-up", description: "Preparation for training" },
+  {
+    id: "warmup",
+    name: "Warm-up",
+    description: "Preparation for training",
+    icon: "🔄",
+  },
   {
     id: "endurance",
     name: "Endurance",
     description: "Long-duration workouts",
+    icon: "💪",
+  },
+  {
+    id: "hiit",
+    name: "HIIT",
+    description: "High intensity interval training",
+    icon: "⚡",
+  },
+  {
+    id: "recovery",
+    name: "Recovery",
+    description: "Low intensity, active recovery",
+    icon: "🧘",
+  },
+  {
+    id: "strength",
+    name: "Strength",
+    description: "High resistance, muscle building",
+    icon: "🏋️",
+  },
+  {
+    id: "sprint",
+    name: "Sprint",
+    description: "Short bursts, maximum effort",
+    icon: "🚀",
   },
 ];
 

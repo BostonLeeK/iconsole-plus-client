@@ -20,15 +20,25 @@ export interface AIPromptData {
 export class AIPromptsService {
   static generateTrainingPrompt(request: AIPromptData): string {
     const RIDE_STYLES = [
-      { id: "casual", name: "Casual" },
-      { id: "weight_loss", name: "Weight Loss" },
-      { id: "endurance", name: "Endurance" },
+      { id: "city", name: "City" },
+      { id: "suburban", name: "Suburban" },
+      { id: "countryside", name: "Countryside" },
+      { id: "track", name: "Track" },
+      { id: "mountain", name: "Mountain" },
+      { id: "beach", name: "Beach" },
+      { id: "forest", name: "Forest" },
+      { id: "highway", name: "Highway" },
     ];
 
     const TRAINING_GOALS = [
-      { id: "warm_up", name: "Warm Up" },
+      { id: "casual", name: "Casual" },
       { id: "weight_loss", name: "Weight Loss" },
+      { id: "warmup", name: "Warm-up" },
       { id: "endurance", name: "Endurance" },
+      { id: "hiit", name: "HIIT" },
+      { id: "recovery", name: "Recovery" },
+      { id: "strength", name: "Strength" },
+      { id: "sprint", name: "Sprint" },
     ];
 
     const style =
@@ -63,10 +73,27 @@ CURRENT: Speed ${request.workoutData.speed}km/h, RPM ${
 ${historyContext}
 RULES:
 • RESISTANCE LIMITS: MIN=1, MAX=20 (NEVER exceed 20!)
-• CASUAL: R3-8, comfort first
-• WEIGHT_LOSS: R6-12, HR 120-140
-• ENDURANCE: R8-15, steady effort  
-• WARM_UP: +1-2 every 30s
+
+TRAINING GOALS:
+• CASUAL: R3-8, comfort first, gentle pace
+• WEIGHT_LOSS: R6-12, HR 120-140, fat burning zone
+• WARMUP: Start R1-3, +1-2 every 30s, gradual increase
+• ENDURANCE: R8-15, steady sustained effort, build stamina
+• HIIT: Alternate R12-18, intense intervals with recovery
+• RECOVERY: R1-6, very light effort, active rest
+• STRENGTH: R14-20, high resistance, muscle building
+• SPRINT: R8-12, maximum RPM, short bursts
+
+RIDE STYLES:
+• CITY: Variable resistance, simulate stops/starts
+• SUBURBAN: Moderate hills R6-12, steady climbs
+• COUNTRYSIDE: Long gradual changes, scenic pace
+• TRACK: Focus speed/RPM, minimal resistance changes
+• MOUNTAIN: High resistance R12-20, climbing simulation
+• BEACH: Relaxed R3-8, easy cruising pace
+• FOREST: Natural variety R5-14, trail simulation
+• HIGHWAY: Sustained effort R8-15, long distance pace
+
 • AT MAX RESISTANCE (20): Focus on maintaining pace, form, or suggest rest intervals
 
 IMPORTANT:

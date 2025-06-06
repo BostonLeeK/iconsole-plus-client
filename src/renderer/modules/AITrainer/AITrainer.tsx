@@ -1,6 +1,7 @@
 import { createEffect, createSignal, onCleanup } from "solid-js";
 import { RIDE_STYLES, TRAINING_GOALS } from "../../../services/ai.service";
 import { ActionPopup, useActionPopup } from "../../components/ActionPopup";
+import { IconSelector } from "../../components/IconSelector";
 import speechService from "../../services/speechService";
 import { aiActions, aiStore } from "../../store/ai.store";
 import { appState } from "../../store/app";
@@ -11,6 +12,15 @@ export function AITrainer() {
   const [aiEnabled, setAiEnabled] = createSignal(false);
   const [rideStyle, setRideStyle] = createSignal("suburban");
   const [goal, setGoal] = createSignal("casual");
+
+  const handleRideStyleChange = (id: string) => {
+    setRideStyle(id);
+  };
+
+  const handleGoalChange = (id: string) => {
+    setGoal(id);
+  };
+
   const [advice, setAdvice] = createSignal("");
   const [isAnalyzing, setIsAnalyzing] = createSignal(false);
   const [hasApiKey, setHasApiKey] = createSignal(false);
@@ -293,38 +303,30 @@ export function AITrainer() {
           </div>
         )}
 
-        <div class="space-y-3">
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-1">
-              Ride Style
-            </label>
-            <select
-              value={rideStyle()}
-              onChange={(e) => setRideStyle(e.currentTarget.value)}
-              disabled={aiEnabled()}
-              class="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white text-sm disabled:opacity-50"
-            >
-              {RIDE_STYLES.map((style) => (
-                <option value={style.id}>{style.name}</option>
-              ))}
-            </select>
-          </div>
+        <div class="space-y-6">
+          <IconSelector
+            items={RIDE_STYLES}
+            selectedId={rideStyle()}
+            onSelect={handleRideStyleChange}
+            disabled={aiEnabled()}
+            title="Ride Style"
+            getItemId={(item) => item.id}
+            getItemName={(item) => item.name}
+            getItemIcon={(item) => item.icon}
+            getItemDescription={(item) => item.description}
+          />
 
-          <div>
-            <label class="block text-sm font-medium text-gray-300 mb-1">
-              Training Goal
-            </label>
-            <select
-              value={goal()}
-              onChange={(e) => setGoal(e.currentTarget.value)}
-              disabled={aiEnabled()}
-              class="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white text-sm disabled:opacity-50"
-            >
-              {TRAINING_GOALS.map((goalItem) => (
-                <option value={goalItem.id}>{goalItem.name}</option>
-              ))}
-            </select>
-          </div>
+          <IconSelector
+            items={TRAINING_GOALS}
+            selectedId={goal()}
+            onSelect={handleGoalChange}
+            disabled={aiEnabled()}
+            title="Training Goal"
+            getItemId={(item) => item.id}
+            getItemName={(item) => item.name}
+            getItemIcon={(item) => item.icon}
+            getItemDescription={(item) => item.description}
+          />
 
           {advice() && (
             <div
