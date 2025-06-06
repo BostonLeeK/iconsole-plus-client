@@ -7,6 +7,7 @@ import {
   writeFileSync,
 } from "fs";
 import path from "path";
+import { AIPromptData, AIPromptsService } from "./services/ai-prompts.service";
 import { BluetoothService } from "./services/bluetooth.service";
 import settingsService from "./services/settings.service";
 import { WorkoutSession } from "./types/bluetooth";
@@ -209,96 +210,15 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
   try {
     const API_URL = "https://api.anthropic.com/v1/messages";
 
-    const RIDE_STYLES = [
-      {
-        id: "city",
-        name: "City",
-        description: "Frequent stops, variable pace",
-      },
-      {
-        id: "suburban",
-        name: "Suburban",
-        description: "Steady pace, small hills",
-      },
-      {
-        id: "countryside",
-        name: "Countryside",
-        description: "Long distances, varied terrain",
-      },
-      { id: "track", name: "Track", description: "Speed, intensity" },
-    ];
+    const promptData: AIPromptData = {
+      goal: request.goal,
+      style: request.rideStyle,
+      sessionDuration: request.sessionDuration,
+      workoutData: request.workoutData,
+      adviceHistory: request.adviceHistory,
+    };
 
-    const TRAINING_GOALS = [
-      {
-        id: "casual",
-        name: "Casual",
-        description: "Light workout, relaxation",
-      },
-      {
-        id: "weight_loss",
-        name: "Weight Loss",
-        description: "Burn calories, cardio",
-      },
-      {
-        id: "warmup",
-        name: "Warm-up",
-        description: "Preparation for training",
-      },
-      {
-        id: "endurance",
-        name: "Endurance",
-        description: "Long-duration workouts",
-      },
-    ];
-
-    const style =
-      RIDE_STYLES.find((s) => s.id === request.rideStyle)?.name ||
-      request.rideStyle;
-    const goal =
-      TRAINING_GOALS.find((g) => g.id === request.goal)?.name || request.goal;
-
-    const historyContext =
-      request.adviceHistory && request.adviceHistory.length > 0
-        ? `\nRECENT ADVICE HISTORY (last 3 recommendations):
-${request.adviceHistory
-  .slice(-3)
-  .map(
-    (advice, i) =>
-      `${i + 1}. ${Math.floor(
-        (Date.now() - new Date(advice.timestamp).getTime()) / 1000
-      )}s ago: R${advice.oldResistance}→${advice.newResistance} "${
-        advice.advice
-      }"`
-  )
-  .join("\n")}\n`
-        : "\nFIRST RECOMMENDATION - no previous advice given.\n";
-
-    const prompt = `You are an expert cycling coach. Give concise, progressive advice WITHOUT repeating previous recommendations.
-
-WORKOUT: ${goal} ${style} ride (${Math.floor(request.sessionDuration / 60)}min)
-CURRENT: Speed ${request.workoutData.speed}km/h, RPM ${
-      request.workoutData.rpm
-    }, Power ${request.workoutData.power}W, HR ${
-      request.workoutData.heartRate
-    }bpm, Resistance ${request.workoutData.currentResistance}/20
-${historyContext}
-RULES:
-• RESISTANCE LIMITS: MIN=1, MAX=20 (NEVER exceed 20!)
-• CASUAL: R3-8, comfort first
-• WEIGHT_LOSS: R6-12, HR 120-140
-• ENDURANCE: R8-15, steady effort  
-• WARM_UP: +1-2 every 30s
-• AT MAX RESISTANCE (20): Focus on maintaining pace, form, or suggest rest intervals
-
-IMPORTANT:
-- Don't repeat previous advice
-- Be specific about WHY you're changing resistance
-- Keep advice under 25 words
-- Focus on progression and variety
-- Never start with "Based on..."
-- If at resistance 20, suggest pace/form changes instead of increasing
-
-JSON: {"resistance": 1-20, "advice": "brief_specific_advice"}`;
+    const prompt = AIPromptsService.generateTrainingPrompt(promptData);
 
     const response = await fetch(API_URL, {
       method: "POST",
@@ -595,39 +515,7 @@ ipcMain.handle(
     try {
       const API_URL = "https://api.anthropic.com/v1/messages";
 
-      const prompt = `Analyze this cycling workout session and provide detailed insights:
-
-Session Duration: ${Math.floor(session.duration / 1000 / 60)} minutes
-Summary Stats:
-- Max Heart Rate: ${session.summary.maxHeartRate} bpm
-- Avg Heart Rate: ${session.summary.avgHeartRate} bpm  
-- Max Power: ${session.summary.maxPower}W
-- Avg Power: ${session.summary.avgPower}W
-- Max Speed: ${session.summary.maxSpeed} km/h
-- Avg Speed: ${session.summary.avgSpeed} km/h
-- Total Distance: ${session.summary.totalDistance} km
-- Total Calories: ${session.summary.totalCalories}
-
-Data points: ${session.data.length} measurements
-
-Please provide:
-1. Overall performance analysis
-2. Heart rate zones analysis
-3. Power and endurance insights
-4. Specific recommendations for improvement
-5. Performance score (1-100)
-
-Respond in JSON format:
-{
-  "analysis": "detailed analysis text",
-  "recommendations": ["recommendation 1", "recommendation 2", "recommendation 3"],
-  "performance_score": 85,
-  "zones_analysis": {
-    "heart_rate_zones": "analysis of heart rate zones",
-    "power_zones": "analysis of power output",
-    "endurance_assessment": "endurance evaluation"
-  }
-}`;
+      const prompt = AIPromptsService.generateWorkoutAnalysisPrompt(session);
 
       const response = await fetch(API_URL, {
         method: "POST",

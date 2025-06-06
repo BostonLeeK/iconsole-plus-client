@@ -19,13 +19,13 @@ interface WorkoutSession {
   }>;
   summary: {
     maxSpeed: number;
-    avgSpeed: number;
-    maxPower: number;
-    avgPower: number;
+    averageSpeed: number;
+    maxWatt: number;
+    averageWatt: number;
     totalDistance: number;
     totalCalories: number;
     maxHeartRate: number;
-    avgHeartRate: number;
+    averageHeartRate: number;
   };
   aiAnalysis?: {
     timestamp: string;
@@ -200,10 +200,12 @@ export function WorkoutHistory() {
               <div class="absolute inset-0 flex items-end gap-px">
                 <For each={dataPoints}>
                   {(point, index) => {
-                    const height =
+                    const heightPx = Math.max(
                       maxHeartRate > 0
-                        ? (point.heartRate / maxHeartRate) * 100
-                        : 0;
+                        ? (point.heartRate / maxHeartRate) * 192
+                        : 0,
+                      4
+                    );
                     const zone =
                       point.heartRate < 100
                         ? "bg-blue-500"
@@ -216,8 +218,8 @@ export function WorkoutHistory() {
                         : "bg-red-500";
                     return (
                       <div
-                        class={`${zone} flex-1 min-h-1 rounded-t-sm opacity-80 hover:opacity-100 transition-opacity`}
-                        style={{ height: `${height}%` }}
+                        class={`${zone} flex-1 rounded-t-sm opacity-80 hover:opacity-100 transition-opacity min-w-0`}
+                        style={{ height: `${heightPx}px`, "min-width": "2px" }}
                         title={`${Math.floor(point.time / 60)}min: ${
                           point.heartRate
                         } bpm`}
@@ -235,8 +237,10 @@ export function WorkoutHistory() {
               </div>
             </div>
             <div class="flex justify-between items-center text-xs text-gray-400 mt-2">
-              <span>Max: {session.summary.maxHeartRate} bpm</span>
-              <span>Avg: {session.summary.avgHeartRate} bpm</span>
+              <span>Max: {session.summary.maxHeartRate.toFixed(0)} bpm</span>
+              <span>
+                Avg: {session.summary.averageHeartRate.toFixed(0)} bpm
+              </span>
             </div>
             <div class="flex items-center gap-2 mt-2 text-xs">
               <div class="flex items-center gap-1">
@@ -267,12 +271,14 @@ export function WorkoutHistory() {
               <div class="absolute inset-0 flex items-end gap-px">
                 <For each={dataPoints}>
                   {(point) => {
-                    const height =
-                      maxPower > 0 ? (point.watt / maxPower) * 100 : 0;
+                    const heightPx = Math.max(
+                      maxPower > 0 ? (point.watt / maxPower) * 192 : 0,
+                      4
+                    );
                     return (
                       <div
-                        class="bg-gradient-to-t from-yellow-600 to-yellow-400 flex-1 min-h-1 rounded-t-sm opacity-80 hover:opacity-100 transition-opacity"
-                        style={{ height: `${height}%` }}
+                        class="bg-gradient-to-t from-yellow-600 to-yellow-400 flex-1 rounded-t-sm opacity-80 hover:opacity-100 transition-opacity min-w-0"
+                        style={{ height: `${heightPx}px`, "min-width": "2px" }}
                         title={`${Math.floor(point.time / 60)}min: ${
                           point.watt
                         }W`}
@@ -287,8 +293,8 @@ export function WorkoutHistory() {
               </div>
             </div>
             <div class="flex justify-between items-center text-xs text-gray-400 mt-2">
-              <span>Max: {session.summary.maxPower}W</span>
-              <span>Avg: {session.summary.avgPower}W</span>
+              <span>Max: {session.summary.maxWatt}W</span>
+              <span>Avg: {session.summary.averageWatt.toFixed(0)}W</span>
             </div>
           </div>
 
@@ -301,22 +307,29 @@ export function WorkoutHistory() {
               <div class="absolute inset-0 flex items-end gap-px">
                 <For each={dataPoints}>
                   {(point) => {
-                    const speedHeight =
-                      maxSpeed > 0 ? (point.speed / maxSpeed) * 100 : 0;
-                    const rpmHeight =
-                      maxRPM > 0 ? (point.rpm / maxRPM) * 80 : 0;
+                    const speedHeightPx = Math.max(
+                      maxSpeed > 0 ? (point.speed / maxSpeed) * 192 : 0,
+                      4
+                    );
+                    const rpmHeightPx = Math.max(
+                      maxRPM > 0 ? (point.rpm / maxRPM) * 172 : 0,
+                      4
+                    );
                     return (
-                      <div class="flex-1 relative">
+                      <div
+                        class="flex-1 relative min-w-0"
+                        style={{ "min-width": "2px" }}
+                      >
                         <div
-                          class="bg-blue-500 w-full min-h-1 rounded-t-sm opacity-70"
-                          style={{ height: `${speedHeight}%` }}
+                          class="bg-blue-500 w-full rounded-t-sm opacity-80 hover:opacity-100 transition-opacity"
+                          style={{ height: `${speedHeightPx}px` }}
                           title={`${Math.floor(point.time / 60)}min: ${
                             point.speed
                           } km/h`}
                         />
                         <div
-                          class="bg-cyan-400 w-full min-h-1 absolute bottom-0 opacity-60"
-                          style={{ height: `${rpmHeight}%` }}
+                          class="bg-cyan-400 w-full absolute bottom-0 opacity-70 hover:opacity-90 transition-opacity border-t border-cyan-300"
+                          style={{ height: `${rpmHeightPx}px` }}
                           title={`${Math.floor(point.time / 60)}min: ${
                             point.rpm
                           } rpm`}
@@ -351,10 +364,10 @@ export function WorkoutHistory() {
               <div class="absolute inset-0 flex items-end gap-px">
                 <For each={dataPoints}>
                   {(point, index) => {
-                    const height =
+                    const heightPx =
                       maxResistance > 0
-                        ? (point.resistance / maxResistance) * 100
-                        : 10;
+                        ? (point.resistance / maxResistance) * 192
+                        : 20;
                     const prevPoint =
                       index() > 0 ? dataPoints[index() - 1] : point;
                     const isIncreasing =
@@ -368,8 +381,11 @@ export function WorkoutHistory() {
                       : "bg-purple-500";
                     return (
                       <div
-                        class={`${color} flex-1 min-h-1 rounded-t-sm opacity-80 hover:opacity-100 transition-opacity`}
-                        style={{ height: `${height}%` }}
+                        class={`${color} flex-1 rounded-t-sm opacity-80 hover:opacity-100 transition-opacity min-w-0`}
+                        style={{
+                          height: `${Math.max(heightPx, 4)}px`,
+                          "min-width": "2px",
+                        }}
                         title={`${Math.floor(point.time / 60)}min: Level ${
                           point.resistance
                         }`}
@@ -407,41 +423,62 @@ export function WorkoutHistory() {
           <h4 class="text-white font-medium mb-3">
             Training Intensity Overview
           </h4>
-          <div class="h-32 relative bg-gray-900 rounded">
+          <div class="text-xs text-gray-400 mb-2">
+            Max Values: HR {maxHeartRate}, Power {maxPower}W, Speed {maxSpeed}{" "}
+            km/h | Points: {dataPoints.length}
+          </div>
+          <div class="h-48 relative bg-gray-900 rounded overflow-hidden">
             <div class="absolute inset-0 flex items-end">
-              <For each={dataPoints.slice(0, 60)}>
+              <For each={dataPoints}>
                 {(point, index) => {
-                  const hrIntensity =
-                    maxHeartRate > 0 ? point.heartRate / maxHeartRate : 0;
                   const powerIntensity =
-                    maxPower > 0 ? point.watt / maxPower : 0;
-                  const combinedIntensity = (hrIntensity + powerIntensity) / 2;
+                    maxPower > 0 ? Math.min(point.watt / maxPower, 1) : 0;
+                  const hrIntensity =
+                    maxHeartRate > 0
+                      ? Math.min(point.heartRate / maxHeartRate, 1)
+                      : 0;
 
-                  const height = combinedIntensity * 100;
+                  const intensity = Math.max(powerIntensity, hrIntensity);
+
+                  const heightPx = Math.max(
+                    intensity * 192,
+                    intensity > 0 ? 25 : 5
+                  );
                   const time = Math.floor(point.time / 60);
 
                   const intensityColor =
-                    combinedIntensity < 0.3
+                    intensity === 0
+                      ? "bg-gray-600"
+                      : intensity < 0.3
                       ? "bg-blue-500"
-                      : combinedIntensity < 0.5
+                      : intensity < 0.5
                       ? "bg-green-500"
-                      : combinedIntensity < 0.7
+                      : intensity < 0.7
                       ? "bg-yellow-500"
-                      : combinedIntensity < 0.85
+                      : intensity < 0.85
                       ? "bg-orange-500"
                       : "bg-red-500";
-
                   return (
-                    <div class="flex-1 relative group">
+                    <div
+                      class="flex-1 relative group min-w-0"
+                      style={{ "min-width": "2px" }}
+                    >
                       <div
-                        class={`${intensityColor} w-full min-h-1 rounded-t-sm opacity-80 hover:opacity-100 transition-opacity`}
-                        style={{ height: `${Math.max(height, 5)}%` }}
+                        class={`${intensityColor} w-full rounded-t-sm hover:opacity-100 transition-opacity`}
+                        style={{
+                          height: `${heightPx}px`,
+                          opacity: intensity > 0 ? "0.85" : "0.3",
+                        }}
                         title={`${time}min: ${Math.round(
-                          combinedIntensity * 100
-                        )}% intensity`}
+                          intensity * 100
+                        )}% | HR: ${point.heartRate}bpm (${Math.round(
+                          hrIntensity * 100
+                        )}%), Power: ${point.watt}W (${Math.round(
+                          powerIntensity * 100
+                        )}%)`}
                       />
-                      {index() % 10 === 0 && (
-                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-500">
+                      {index() % 15 === 0 && time > 0 && (
+                        <div class="absolute -bottom-5 left-1/2 transform -translate-x-1/2 text-xs text-gray-500 whitespace-nowrap">
                           {time}m
                         </div>
                       )}
@@ -654,7 +691,7 @@ export function WorkoutHistory() {
                       <div class="bg-gray-700 rounded-lg p-3">
                         <div class="text-gray-400 text-xs">Avg HR</div>
                         <div class="text-white font-bold">
-                          {session().summary.avgHeartRate} bpm
+                          {session().summary.averageHeartRate.toFixed(0)} bpm
                         </div>
                       </div>
                     </div>
