@@ -17,6 +17,18 @@ export interface AIPromptData {
   }>;
 }
 
+export interface WorkoutPlanRequest {
+  goal: string;
+  fitnessLevel: "beginner" | "intermediate" | "advanced";
+  availableDays: string[];
+  sessionDuration: number;
+  targetWeeks: number;
+  specificGoals?: string;
+  currentWeight?: number;
+  targetWeight?: number;
+  medicalConditions?: string;
+}
+
 export class AIPromptsService {
   static generateTrainingPrompt(request: AIPromptData): string {
     const RIDE_STYLES = [
@@ -208,5 +220,84 @@ Respond in JSON format:
     "endurance_assessment": "endurance evaluation"
   }
 }`;
+  }
+
+  static generateWorkoutPlanPrompt(request: WorkoutPlanRequest): string {
+    return `You are an expert cycling coach and personal trainer. Create a comprehensive weekly workout plan based on the following requirements:
+
+GOALS & PROFILE:
+- Primary Goal: ${request.goal}
+- Fitness Level: ${request.fitnessLevel}
+- Available Days: ${request.availableDays.join(", ")}
+- Preferred Session Duration: ${request.sessionDuration} minutes
+- Target Duration: ${request.targetWeeks} weeks
+${request.specificGoals ? `- Specific Goals: ${request.specificGoals}` : ""}
+${
+  request.currentWeight && request.targetWeight
+    ? `- Weight: ${request.currentWeight}kg → ${request.targetWeight}kg`
+    : ""
+}
+${
+  request.medicalConditions
+    ? `- Medical Considerations: ${request.medicalConditions}`
+    : ""
+}
+
+CYCLING WORKOUT TYPES:
+- ENDURANCE: Long steady rides, moderate resistance (R8-12), HR 120-140
+- HIIT: High intensity intervals (R12-18), alternating with recovery
+- STRENGTH: High resistance hill climbs (R14-20), muscle building
+- RECOVERY: Light active recovery (R3-6), easy spinning
+- WEIGHT_LOSS: Fat burning zone (R6-12), HR 120-140, longer sessions
+- CASUAL: Comfortable pace (R5-10), enjoyable rides
+
+RIDE STYLES:
+- city: Variable pace, stop/start simulation
+- suburban: Moderate hills, steady climbs
+- countryside: Long gradual changes, scenic
+- track: Speed focus, minimal resistance changes
+- mountain: High resistance climbing simulation
+- beach: Relaxed easy pace
+- forest: Natural variety, trail simulation
+- highway: Sustained endurance pace
+
+PLANNING PRINCIPLES:
+1. ${
+      request.fitnessLevel === "beginner"
+        ? "Start gradually, build base fitness, plenty of recovery"
+        : request.fitnessLevel === "intermediate"
+        ? "Progressive overload, balanced training, structured recovery"
+        : "High intensity, advanced techniques, optimized recovery"
+    }
+2. Include 1-2 rest days per week minimum
+3. Vary intensity and workout types
+4. Include warm-up and cool-down guidance
+5. Progressive difficulty over weeks
+6. Allow for active recovery days
+
+Create a structured weekly plan with specific workouts for each requested day. Respond in JSON format:
+
+{
+  "name": "Descriptive plan name",
+  "description": "Brief plan overview and goals",
+  "weeklySchedule": {
+    "monday": {
+      "type": "training|rest|active_recovery",
+      "rideStyle": "style_name",
+      "goal": "goal_name", 
+      "duration": minutes,
+      "targetResistance": {"min": 1-20, "max": 1-20},
+      "targetHeartRate": {"min": bpm, "max": bpm},
+      "description": "Detailed workout description and instructions"
+    }
+  }
+}
+
+IMPORTANT:
+- Only include days from availableDays list
+- Set non-available days as rest or omit them
+- Keep descriptions detailed but concise
+- Ensure resistance levels match difficulty level
+- Include specific coaching cues and techniques`;
   }
 }

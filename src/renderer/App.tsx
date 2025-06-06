@@ -2,8 +2,9 @@ import { onMount, Show } from "solid-js";
 import { Dashboard } from "./modules/Dashboard/Dashboard";
 import { Settings } from "./modules/Settings/Settings";
 import { TitleBar } from "./modules/TitleBar/TitleBar";
-import { appActions, appState } from "./store/app.store";
 import { WorkoutHistory } from "./modules/WorkoutHistory/WorkoutHistory";
+import { WorkoutPlanner } from "./modules/WorkoutPlanner";
+import { appActions, appState } from "./store/app.store";
 
 function App() {
   onMount(() => {
@@ -27,7 +28,14 @@ function App() {
           fallback={
             <Show
               when={appState().currentScreen === "settings"}
-              fallback={<WorkoutHistory />}
+              fallback={
+                <Show
+                  when={appState().currentScreen === "planner"}
+                  fallback={<WorkoutHistory />}
+                >
+                  <WorkoutPlanner />
+                </Show>
+              }
             >
               <Settings />
             </Show>

@@ -41,6 +41,41 @@ export function TitleBar() {
 
       <div class="flex items-center">
         <button
+          onClick={() => appActions.navigateToDashboard()}
+          class="h-8 px-3 hover:bg-gray-700 transition-colors flex items-center justify-center"
+          style={{ "-webkit-app-region": "no-drag" }}
+          title="Dashboard"
+        >
+          <svg
+            class="w-4 h-4 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+            />
+          </svg>
+        </button>
+        <button
+          onClick={() => appActions.navigateToPlanner()}
+          class="h-8 px-3 hover:bg-gray-700 transition-colors flex items-center justify-center"
+          style={{ "-webkit-app-region": "no-drag" }}
+          title="Workout Planner"
+        >
+          <svg
+            class="w-4 h-4 text-gray-400"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+          </svg>
+        </button>
+
+        <button
           onClick={() => appActions.navigateToWorkoutHistory()}
           class="h-8 px-3 hover:bg-gray-700 transition-colors flex items-center justify-center"
           style={{ "-webkit-app-region": "no-drag" }}

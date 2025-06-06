@@ -101,6 +101,7 @@ export interface ElectronAPI extends ElectronSettingsAPI {
       performance_score: number;
       zones_analysis: any;
     }>;
+    generateWorkoutPlan(request: any, apiKey: string): Promise<any>;
   };
   ttsService: {
     speak(text: string, apiKey: string): Promise<Buffer>;
@@ -119,6 +120,12 @@ export interface ElectronAPI extends ElectronSettingsAPI {
     ): Promise<{ success: boolean; isActive: boolean }>;
     isSleepPrevented(): Promise<{ isActive: boolean; isStarted: boolean }>;
   };
+  storage: {
+    save(key: string, data: any): Promise<void>;
+    load(key: string): Promise<any>;
+    remove(key: string): Promise<void>;
+  };
+
   on(channel: string, callback: (...args: any[]) => void): void;
 }
 

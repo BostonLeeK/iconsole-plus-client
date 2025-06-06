@@ -633,3 +633,104 @@ ipcMain.handle("power:is-sleep-prevented", () => {
         : false,
   };
 });
+
+ipcMain.handle("storage:save", async (event, key: string, data: any) => {
+  try {
+    const userDataPath = app.getPath("userData");
+    const storageDir = path.join(userDataPath, "storage");
+
+    if (!existsSync(storageDir)) {
+      mkdirSync(storageDir, { recursive: true });
+    }
+
+    const filepath = path.join(storageDir, `${key}.json`);
+    writeFileSync(filepath, JSON.stringify(data, null, 2));
+    return { success: true };
+  } catch (error) {
+    console.error("Storage save error:", error);
+    throw error;
+  }
+});
+
+ipcMain.handle("storage:load", async (event, key: string) => {
+  try {
+    const userDataPath = app.getPath("userData");
+    const filepath = path.join(userDataPath, "storage", `${key}.json`);
+
+    if (!existsSync(filepath)) {
+      return null;
+    }
+
+    const content = readFileSync(filepath, "utf-8");
+    return JSON.parse(content);
+  } catch (error) {
+    console.error("Storage load error:", error);
+    return null;
+  }
+});
+
+ipcMain.handle("storage:remove", async (event, key: string) => {
+  try {
+    const userDataPath = app.getPath("userData");
+    const filepath = path.join(userDataPath, "storage", `${key}.json`);
+
+    if (existsSync(filepath)) {
+      const fs = require("fs");
+      fs.unlinkSync(filepath);
+    }
+    return { success: true };
+  } catch (error) {
+    console.error("Storage remove error:", error);
+    throw error;
+  }
+});
+
+ipcMain.handle(
+  "ai:generate-workout-plan",
+  async (event, request: any, apiKey: string) => {
+    try {
+      const API_URL = "https://api.anthropic.com/v1/messages";
+
+      const prompt = AIPromptsService.generateWorkoutPlanPrompt(request);
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify({
+          model: "claude-3-haiku-20240307",
+          max_tokens: 2000,
+          messages: [
+            {
+              role: "user",
+              content: prompt,
+            },
+          ],
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("AI Workout Plan Error:", errorText);
+        throw new Error(`AI API error: ${response.status} - ${errorText}`);
+      }
+
+      const data = await response.json();
+      const responseText = data.content[0].text;
+
+      const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error("No JSON found in response");
+      }
+
+      const planData = JSON.parse(jsonMatch[0]);
+      return planData;
+    } catch (error) {
+      console.error("AI Workout Plan Generation Error:", error);
+      throw new Error(`Workout plan generation failed: ${error.message}`);
+    }
+  }
+);

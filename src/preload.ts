@@ -45,6 +45,8 @@ const electronAPI: ElectronAPI = {
       ipcRenderer.invoke("ai:analyze-workout", request, apiKey),
     analyzeWorkoutSession: (session: any, apiKey: string) =>
       ipcRenderer.invoke("ai:analyze-workout-session", session, apiKey),
+    generateWorkoutPlan: (request: any, apiKey: string) =>
+      ipcRenderer.invoke("ai:generate-workout-plan", request, apiKey),
   },
   ttsService: {
     speak: (text: string, apiKey: string) =>
@@ -65,6 +67,13 @@ const electronAPI: ElectronAPI = {
       ipcRenderer.invoke("power:prevent-sleep", enable),
     isSleepPrevented: () => ipcRenderer.invoke("power:is-sleep-prevented"),
   },
+  storage: {
+    save: (key: string, data: any) =>
+      ipcRenderer.invoke("storage:save", key, data),
+    load: (key: string) => ipcRenderer.invoke("storage:load", key),
+    remove: (key: string) => ipcRenderer.invoke("storage:remove", key),
+  },
+
   on: (channel: string, callback: (...args: any[]) => void) => {
     const validChannels = [
       "device-discovered",
