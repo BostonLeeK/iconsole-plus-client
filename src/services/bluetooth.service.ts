@@ -74,6 +74,14 @@ export class BluetoothService
   private pollingInterval: NodeJS.Timeout | null = null;
   private currentWorkoutData: WorkoutData | null = null;
 
+  private cumulativeDistance: number = 0;
+  private cumulativeCalories: number = 0;
+  private cumulativeTime: number = 0;
+  private lastDeviceDistance: number = 0;
+  private lastDeviceCalories: number = 0;
+  private lastDeviceTime: number = 0;
+  private sessionStarted: boolean = false;
+
   constructor() {
     super();
     this.initialize();
@@ -170,6 +178,8 @@ export class BluetoothService
         this.dataCharacteristic = null;
         this.controlCharacteristic = null;
         this.stopPolling();
+        this.sessionStarted = false;
+        this.resetCumulativeMetrics();
         this.emit("disconnected");
       });
     });
@@ -284,13 +294,27 @@ export class BluetoothService
     if (data.length === 21) {
       const timeInSeconds = data[19] || 0;
       const speedRaw = data[2] | (data[3] << 8);
+      const deviceDistance = data[6] ? data[6] / 1000 : 0;
+      const deviceCalories = data[13] || 0;
+
+      if (!this.sessionStarted) {
+        this.resetCumulativeMetrics();
+        this.sessionStarted = true;
+      }
+
+      const { totalDistance, totalCalories, totalTime } =
+        this.updateCumulativeMetrics(
+          deviceDistance,
+          deviceCalories,
+          timeInSeconds
+        );
 
       const workoutData = {
-        time: timeInSeconds,
+        time: totalTime,
         speed: speedRaw ? speedRaw / 100 : 0,
         rpm: data[4] ? Math.round(data[4] / 2) : 0,
-        distance: data[6] ? data[6] / 1000 : 0,
-        calories: data[13] || 0,
+        distance: totalDistance,
+        calories: totalCalories,
         heartRate: data[18] || 0,
         watt: data[11] || 0,
         resistance: data[9] || 0,
@@ -352,6 +376,8 @@ export class BluetoothService
           this.dataCharacteristic = null;
           this.controlCharacteristic = null;
           this.stopPolling();
+          this.sessionStarted = false;
+          this.resetCumulativeMetrics();
           resolve();
         });
       } else {
@@ -442,5 +468,54 @@ export class BluetoothService
 
   getCurrentWorkoutData(): WorkoutData | null {
     return this.currentWorkoutData;
+  }
+
+  private resetCumulativeMetrics(): void {
+    this.cumulativeDistance = 0;
+    this.cumulativeCalories = 0;
+    this.cumulativeTime = 0;
+    this.lastDeviceDistance = 0;
+    this.lastDeviceCalories = 0;
+    this.lastDeviceTime = 0;
+  }
+
+  private updateCumulativeMetrics(
+    deviceDistance: number,
+    deviceCalories: number,
+    deviceTime: number
+  ): { totalDistance: number; totalCalories: number; totalTime: number } {
+    if (
+      deviceDistance < this.lastDeviceDistance &&
+      this.lastDeviceDistance > 0
+    ) {
+      this.cumulativeDistance += this.lastDeviceDistance;
+    }
+
+    if (
+      deviceCalories < this.lastDeviceCalories &&
+      this.lastDeviceCalories > 0
+    ) {
+      this.cumulativeCalories += this.lastDeviceCalories;
+    }
+
+    if (deviceTime < this.lastDeviceTime && this.lastDeviceTime > 0) {
+      this.cumulativeTime += this.lastDeviceTime;
+    }
+
+    this.lastDeviceDistance = deviceDistance;
+    this.lastDeviceCalories = deviceCalories;
+    this.lastDeviceTime = deviceTime;
+
+    return {
+      totalDistance:
+        Math.round((this.cumulativeDistance + deviceDistance) * 1000) / 1000,
+      totalCalories: this.cumulativeCalories + deviceCalories,
+      totalTime: this.cumulativeTime + deviceTime,
+    };
+  }
+
+  public startNewSession(): void {
+    this.sessionStarted = false;
+    this.resetCumulativeMetrics();
   }
 }

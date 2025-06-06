@@ -20,6 +20,7 @@ export interface WorkoutData {
   heartRate: number;
   watt: number;
   resistance: number;
+  timestamp?: number;
 }
 
 export interface WorkoutSession {
@@ -59,6 +60,7 @@ export interface BluetoothServiceInterface {
     device?: BluetoothDevice;
   }>;
   setResistanceLevel(level: number): Promise<void>;
+  startNewSession(): void;
 }
 
 interface TTSService {
@@ -77,6 +79,7 @@ export interface ElectronAPI extends ElectronSettingsAPI {
       device?: BluetoothDevice;
     }>;
     setResistanceLevel(level: number): Promise<void>;
+    startNewSession(): Promise<{ success: boolean }>;
   };
   aiService: {
     analyzeWorkout(

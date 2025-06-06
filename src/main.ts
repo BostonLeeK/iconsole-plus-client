@@ -125,6 +125,15 @@ ipcMain.handle("bluetooth:check-connection-status", async () => {
   }
 });
 
+ipcMain.handle("bluetooth:start-new-session", async () => {
+  try {
+    bluetoothService.startNewSession();
+    return { success: true };
+  } catch (error) {
+    throw error;
+  }
+});
+
 ipcMain.handle(
   "bluetooth:set-resistance-level",
   async (event, level: number) => {

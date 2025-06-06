@@ -13,6 +13,7 @@ const electronAPI: ElectronAPI = {
       ipcRenderer.invoke("bluetooth:check-connection-status"),
     setResistanceLevel: (level: number) =>
       ipcRenderer.invoke("bluetooth:set-resistance-level", level),
+    startNewSession: () => ipcRenderer.invoke("bluetooth:start-new-session"),
   },
   settings: {
     getClaudeApiKey: () => ipcRenderer.invoke("settings:get-claude-api-key"),

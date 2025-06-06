@@ -170,28 +170,32 @@ export const stopRecording = async () => {
     .filter((v) => v > 0 && !isNaN(v) && isFinite(v));
 
   const sessionSummary = {
+    id: Date.now().toString(),
+    deviceName:
+      appState.devices.find((d) => d.id === appState.selectedDeviceId)?.name ||
+      "Unknown Device",
     startTime: new Date(appState.recording.startTime).toISOString(),
     endTime: new Date().toISOString(),
     duration: Date.now() - appState.recording.startTime,
     data: cleanData,
     summary: {
-      maxSpeed: speeds.length > 0 ? Math.max(...speeds) : 0,
-      avgSpeed:
+      totalDistance: Number(appState.workoutData.distance) || 0,
+      averageSpeed:
         speeds.length > 0
           ? speeds.reduce((sum, v) => sum + v, 0) / speeds.length
           : 0,
-      maxPower: powers.length > 0 ? Math.max(...powers) : 0,
-      avgPower:
-        powers.length > 0
-          ? powers.reduce((sum, v) => sum + v, 0) / powers.length
-          : 0,
-      totalDistance: Number(appState.workoutData.distance) || 0,
+      maxSpeed: speeds.length > 0 ? Math.max(...speeds) : 0,
       totalCalories: Number(appState.workoutData.calories) || 0,
-      maxHeartRate: heartRates.length > 0 ? Math.max(...heartRates) : 0,
-      avgHeartRate:
+      averageHeartRate:
         heartRates.length > 0
           ? heartRates.reduce((sum, v) => sum + v, 0) / heartRates.length
           : 0,
+      maxHeartRate: heartRates.length > 0 ? Math.max(...heartRates) : 0,
+      averageWatt:
+        powers.length > 0
+          ? powers.reduce((sum, v) => sum + v, 0) / powers.length
+          : 0,
+      maxWatt: powers.length > 0 ? Math.max(...powers) : 0,
     },
   };
 
