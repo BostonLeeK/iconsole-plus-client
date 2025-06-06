@@ -291,6 +291,7 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
     const result = {
       newResistance: Math.max(1, Math.min(20, Math.round(newResistance))),
       advice: parsed.advice || "Continue your workout",
+      action: parsed.action || "Keep it up!",
       inputTokens,
       outputTokens,
     };

@@ -77,7 +77,15 @@ IMPORTANT:
 - Never start with "Based on..."
 - If at resistance 20, suggest pace/form changes instead of increasing
 
-JSON: {"resistance": 1-20, "advice": "brief_specific_advice"}`;
+JSON: {"resistance": 1-20, "advice": "brief_specific_advice", "action": "concrete_action"}
+
+Action examples:
+- "Speed up!" - when increasing resistance/intensity
+- "Reduce pace" - when decreasing resistance
+- "Keep it up!" - when maintaining current level
+- "Rest" - for recovery periods
+- "Interval!" - for interval training
+- "Finish!" - for final push`;
   }
 
   static generateWorkoutAnalysisPrompt(session: any): string {

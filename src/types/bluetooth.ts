@@ -88,6 +88,7 @@ export interface ElectronAPI extends ElectronSettingsAPI {
     ): Promise<{
       newResistance: number;
       advice: string;
+      action: string;
       inputTokens?: number;
       outputTokens?: number;
     }>;

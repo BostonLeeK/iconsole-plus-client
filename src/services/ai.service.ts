@@ -94,13 +94,13 @@ class AIService {
     const goal =
       TRAINING_GOALS.find((g) => g.id === request.goal)?.name || request.goal;
 
-    return `Велотренер AI. Аналіз:
-Стиль: ${style}
-Ціль: ${goal}
-Час: ${request.sessionDuration}сек
-Данні: ${request.workoutData.speed}км/г, ${request.workoutData.rpm}об/хв, ${request.workoutData.power}Вт, ${request.workoutData.heartRate}bpm, опір ${request.workoutData.currentResistance}/20
+    return `AI Cycling Trainer. Analysis:
+Style: ${style}
+Goal: ${goal}
+Time: ${request.sessionDuration}sec
+Data: ${request.workoutData.speed}km/h, ${request.workoutData.rpm}rpm, ${request.workoutData.power}W, ${request.workoutData.heartRate}bpm, resistance ${request.workoutData.currentResistance}/20
 
-Дай у форматі JSON: {"resistance": 1-20, "advice": "короткий совет"}`;
+Give in JSON format: {"resistance": 1-20, "advice": "short advice"}`;
   }
 
   private parseResponse(response: string): AITrainingResponse {
@@ -114,12 +114,14 @@ class AIService {
 
       return {
         newResistance: Math.max(1, Math.min(20, parsed.resistance || 1)),
-        advice: parsed.advice || "Продовжуйте тренування",
+        advice: parsed.advice || "Continue your workout",
+        action: parsed.action || "Keep it up!",
       };
     } catch (error) {
       return {
         newResistance: 1,
-        advice: "Помилка AI аналізу",
+        advice: "AI analysis error",
+        action: "Keep it up!",
       };
     }
   }

@@ -1,5 +1,6 @@
 import { createEffect, createSignal, onCleanup } from "solid-js";
 import { RIDE_STYLES, TRAINING_GOALS } from "../../../services/ai.service";
+import { ActionPopup, useActionPopup } from "../../components/ActionPopup";
 import speechService from "../../services/speechService";
 import { aiActions, aiStore } from "../../store/ai.store";
 import { appState } from "../../store/app";
@@ -13,6 +14,8 @@ export function AITrainer() {
   const [advice, setAdvice] = createSignal("");
   const [isAnalyzing, setIsAnalyzing] = createSignal(false);
   const [hasApiKey, setHasApiKey] = createSignal(false);
+
+  const actionPopup = useActionPopup();
   const [sessionStartTime, setSessionStartTime] = createSignal(0);
   const [isSpeaking, setIsSpeaking] = createSignal(false);
   const [hasShownWelcome, setHasShownWelcome] = createSignal(false);
@@ -125,6 +128,7 @@ export function AITrainer() {
           setAdvice(response.advice);
           setIsWelcomeMessage(false);
 
+          actionPopup.showAction(response.action || "Keep it up!");
           speakAdvice(response.advice);
 
           await aiActions.addAdviceEntry({
@@ -426,6 +430,11 @@ export function AITrainer() {
         </div>
       </div>
       <AISessionHistory />
+      <ActionPopup
+        action={actionPopup.currentAction()}
+        isVisible={actionPopup.isVisible()}
+        onClose={actionPopup.closeAction}
+      />
     </>
   );
 }

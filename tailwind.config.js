@@ -23,6 +23,36 @@ module.exports = {
           600: "#dc2626",
         },
       },
+      animation: {
+        "bounce-in": "bounceIn 0.5s ease-out",
+        "fade-out": "fadeOut 0.3s ease-in forwards",
+      },
+      keyframes: {
+        bounceIn: {
+          "0%": {
+            opacity: "0",
+            transform: "scale(0.3) translateY(-50px)",
+          },
+          "50%": {
+            opacity: "1",
+            transform: "scale(1.1) translateY(-10px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "scale(1) translateY(0)",
+          },
+        },
+        fadeOut: {
+          "0%": {
+            opacity: "1",
+            transform: "scale(1)",
+          },
+          "100%": {
+            opacity: "0",
+            transform: "scale(0.8)",
+          },
+        },
+      },
     },
   },
   plugins: [],
