@@ -125,6 +125,18 @@ export interface ElectronAPI extends ElectronSettingsAPI {
     load(key: string): Promise<any>;
     remove(key: string): Promise<void>;
   };
+  websocket: {
+    getStatus(): Promise<{
+      isRunning: boolean;
+      port: number;
+      connectedClients: number;
+      hasApiKey: boolean;
+    }>;
+    broadcastSessionStatus(data: {
+      type: "session-started" | "session-stopped";
+      timestamp: string;
+    }): Promise<{ success: boolean }>;
+  };
 
   on(channel: string, callback: (...args: any[]) => void): void;
 }

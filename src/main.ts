@@ -10,6 +10,7 @@ import path from "path";
 import { AIPromptData, AIPromptsService } from "./services/ai-prompts.service";
 import { BluetoothService } from "./services/bluetooth.service";
 import settingsService from "./services/settings.service";
+import { WebSocketService } from "./services/websocket.service";
 import { WorkoutSession } from "./types/bluetooth";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -17,6 +18,7 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 let mainWindow: BrowserWindow | null = null;
 const bluetoothService = new BluetoothService();
+const websocketService = new WebSocketService();
 let powerSaveBlockerId: number | null = null;
 
 if (require("electron-squirrel-startup")) app.quit();
@@ -66,8 +68,9 @@ app.whenReady().then(() => {
   });
 });
 
-app.on("window-all-closed", () => {
+app.on("window-all-closed", async () => {
   bluetoothService.disconnectDevice().catch();
+  await websocketService.stop().catch();
 
   if (powerSaveBlockerId !== null) {
     powerSaveBlocker.stop(powerSaveBlockerId);
@@ -82,6 +85,7 @@ app.on("window-all-closed", () => {
 app.on("before-quit", async () => {
   try {
     await bluetoothService.disconnectDevice();
+    await websocketService.stop();
   } catch (error) {}
 
   if (powerSaveBlockerId !== null) {
@@ -225,6 +229,118 @@ ipcMain.handle(
   }
 );
 
+ipcMain.handle("settings:get-websocket-api-key", async () => {
+  try {
+    return settingsService.getWebSocketApiKey();
+  } catch (error) {
+    return undefined;
+  }
+});
+
+ipcMain.handle(
+  "settings:set-websocket-api-key",
+  async (event, apiKey: string) => {
+    try {
+      settingsService.setWebSocketApiKey(apiKey);
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+ipcMain.handle("settings:clear-websocket-api-key", async () => {
+  try {
+    settingsService.clearWebSocketApiKey();
+  } catch (error) {
+    throw error;
+  }
+});
+
+ipcMain.handle("settings:generate-websocket-api-key", async () => {
+  try {
+    return settingsService.generateWebSocketApiKey();
+  } catch (error) {
+    throw error;
+  }
+});
+
+ipcMain.handle("settings:get-websocket-port", async () => {
+  try {
+    return settingsService.getWebSocketPort();
+  } catch (error) {
+    return 8080;
+  }
+});
+
+ipcMain.handle("settings:set-websocket-port", async (event, port: number) => {
+  try {
+    settingsService.setWebSocketPort(port);
+  } catch (error) {
+    throw error;
+  }
+});
+
+ipcMain.handle("settings:get-websocket-enabled", async () => {
+  try {
+    return settingsService.getWebSocketEnabled();
+  } catch (error) {
+    return false;
+  }
+});
+
+ipcMain.handle(
+  "settings:set-websocket-enabled",
+  async (event, enabled: boolean) => {
+    try {
+      settingsService.setWebSocketEnabled(enabled);
+
+      if (enabled) {
+        const apiKey = settingsService.getWebSocketApiKey();
+        const port = settingsService.getWebSocketPort();
+
+        if (apiKey) {
+          try {
+            await websocketService.start(port, apiKey);
+          } catch (error) {
+            console.error("Failed to start WebSocket service:", error);
+            throw error;
+          }
+        } else {
+          throw new Error("API key required to start WebSocket service");
+        }
+      } else {
+        await websocketService.stop();
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+ipcMain.handle("websocket:get-status", async () => {
+  try {
+    return websocketService.getStatus();
+  } catch (error) {
+    return { isRunning: false, connectedClients: 0 };
+  }
+});
+
+ipcMain.handle(
+  "websocket:broadcast-session-status",
+  async (
+    event,
+    data: { type: "session-started" | "session-stopped"; timestamp: string }
+  ) => {
+    try {
+      websocketService.broadcastSessionStatus(data);
+      return { success: true };
+    } catch (error) {
+      console.error("Failed to broadcast session status:", error);
+      throw error;
+    }
+  }
+);
+
 ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
   try {
     const API_URL = "https://api.anthropic.com/v1/messages";
@@ -315,6 +431,23 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
       outputTokens,
     };
 
+    websocketService.broadcastAIAdvice({
+      timestamp: new Date().toISOString(),
+      advice: result.advice,
+      action: result.action,
+      oldResistance: request.workoutData.currentResistance,
+      newResistance: result.newResistance,
+      rideStyle: request.rideStyle,
+      goal: request.goal,
+      workoutData: {
+        time: request.workoutData.time,
+        speed: request.workoutData.speed,
+        rpm: request.workoutData.rpm,
+        power: request.workoutData.power,
+        heartRate: request.workoutData.heartRate,
+      },
+    });
+
     return result;
   } catch (error) {
     console.error("AI Service Error:", error);
@@ -370,6 +503,20 @@ ipcMain.handle(
       const filepath = path.join(recordsDir, filename);
 
       writeFileSync(filepath, JSON.stringify(session, null, 2));
+
+      websocketService.broadcastWorkoutStatistics({
+        totalDistance: session.summary.totalDistance,
+        averageSpeed: session.summary.averageSpeed,
+        maxSpeed: session.summary.maxSpeed,
+        totalCalories: session.summary.totalCalories,
+        averageHeartRate: session.summary.averageHeartRate,
+        maxHeartRate: session.summary.maxHeartRate,
+        averageWatt: session.summary.averageWatt,
+        maxWatt: session.summary.maxWatt,
+        duration: session.duration,
+        timestamp: session.endTime,
+      });
+
       return { success: true, filepath };
     } catch (error) {
       console.error("Failed to save workout session:", error);
@@ -420,10 +567,20 @@ bluetoothService.on("dataReceived", (data) => {
   if (mainWindow?.webContents) {
     mainWindow.webContents.send("data-received", data);
   }
+
+  websocketService.broadcastWorkoutData(data);
 });
 
 bluetoothService.on("rawDataReceived", (rawBytes) => {
   mainWindow?.webContents.send("raw-data-received", rawBytes);
+});
+
+bluetoothService.on("deviceConnected", (device) => {
+  websocketService.broadcastDeviceStatus("connected", device?.name);
+});
+
+bluetoothService.on("deviceDisconnected", () => {
+  websocketService.broadcastDeviceStatus("disconnected");
 });
 
 bluetoothService.on("error", (error) => {

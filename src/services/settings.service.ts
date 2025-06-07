@@ -4,6 +4,9 @@ interface Settings {
   claudeApiKey?: string;
   openaiApiKey?: string;
   aiAnalysisInterval?: number;
+  websocketApiKey?: string;
+  websocketPort?: number;
+  websocketEnabled?: boolean;
 }
 
 class SettingsService {
@@ -14,6 +17,8 @@ class SettingsService {
       name: "settings",
       defaults: {
         aiAnalysisInterval: 30,
+        websocketPort: 8080,
+        websocketEnabled: false,
       },
     });
   }
@@ -48,6 +53,41 @@ class SettingsService {
 
   setAIAnalysisInterval(interval: number): void {
     (this.store as any).set("aiAnalysisInterval", interval);
+  }
+
+  getWebSocketApiKey(): string | undefined {
+    return (this.store as any).get("websocketApiKey");
+  }
+
+  setWebSocketApiKey(apiKey: string): void {
+    (this.store as any).set("websocketApiKey", apiKey);
+  }
+
+  clearWebSocketApiKey(): void {
+    (this.store as any).delete("websocketApiKey");
+  }
+
+  getWebSocketPort(): number {
+    return (this.store as any).get("websocketPort", 8080);
+  }
+
+  setWebSocketPort(port: number): void {
+    (this.store as any).set("websocketPort", port);
+  }
+
+  getWebSocketEnabled(): boolean {
+    return (this.store as any).get("websocketEnabled", false);
+  }
+
+  setWebSocketEnabled(enabled: boolean): void {
+    (this.store as any).set("websocketEnabled", enabled);
+  }
+
+  generateWebSocketApiKey(): string {
+    const { v4: uuidv4 } = require("uuid");
+    const apiKey = uuidv4();
+    this.setWebSocketApiKey(apiKey);
+    return apiKey;
   }
 
   getAllSettings(): Settings {

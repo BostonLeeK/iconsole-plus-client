@@ -102,7 +102,7 @@ export const setSelectedDevice = (deviceId: string) => {
   setAppState("selectedDeviceId", deviceId);
 };
 
-export const startRecording = () => {
+export const startRecording = async () => {
   setAppState("recording", {
     isRecording: true,
     startTime: Date.now(),
@@ -133,6 +133,15 @@ export const startRecording = () => {
       ]);
     }
   }, 1000);
+
+  try {
+    await window.electronAPI.websocket.broadcastSessionStatus({
+      type: "session-started",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Failed to broadcast session start:", error);
+  }
 
   updateStatus("Recording started", "success");
 };
@@ -204,6 +213,15 @@ export const stopRecording = async () => {
     updateStatus("Session saved successfully", "success");
   } catch (error) {
     updateStatus(`Failed to save session: ${error.message}`, "error");
+  }
+
+  try {
+    await window.electronAPI.websocket.broadcastSessionStatus({
+      type: "session-stopped",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Failed to broadcast session stop:", error);
   }
 
   setAppState("recording", {

@@ -7,6 +7,14 @@ export interface SettingsServiceInterface {
   clearOpenAIApiKey(): void;
   getAIAnalysisInterval(): number;
   setAIAnalysisInterval(interval: number): void;
+  getWebSocketApiKey(): string | undefined;
+  setWebSocketApiKey(apiKey: string): void;
+  clearWebSocketApiKey(): void;
+  getWebSocketPort(): number;
+  setWebSocketPort(port: number): void;
+  getWebSocketEnabled(): boolean;
+  setWebSocketEnabled(enabled: boolean): void;
+  generateWebSocketApiKey(): string;
 }
 
 export interface ElectronSettingsAPI {
@@ -19,6 +27,14 @@ export interface ElectronSettingsAPI {
     clearOpenAIApiKey(): Promise<void>;
     getAIAnalysisInterval(): Promise<number>;
     setAIAnalysisInterval(interval: number): Promise<void>;
+    getWebSocketApiKey(): Promise<string | undefined>;
+    setWebSocketApiKey(apiKey: string): Promise<void>;
+    clearWebSocketApiKey(): Promise<void>;
+    getWebSocketPort(): Promise<number>;
+    setWebSocketPort(port: number): Promise<void>;
+    getWebSocketEnabled(): Promise<boolean>;
+    setWebSocketEnabled(enabled: boolean): Promise<void>;
+    generateWebSocketApiKey(): Promise<string>;
     openLogsDirectory(): Promise<void>;
     getWorkoutSessions(): Promise<any[]>;
     getWorkoutSessionData(filename: string): Promise<any>;

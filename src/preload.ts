@@ -30,6 +30,21 @@ const electronAPI: ElectronAPI = {
       ipcRenderer.invoke("settings:get-ai-analysis-interval"),
     setAIAnalysisInterval: (interval: number) =>
       ipcRenderer.invoke("settings:set-ai-analysis-interval", interval),
+    getWebSocketApiKey: () =>
+      ipcRenderer.invoke("settings:get-websocket-api-key"),
+    setWebSocketApiKey: (apiKey: string) =>
+      ipcRenderer.invoke("settings:set-websocket-api-key", apiKey),
+    clearWebSocketApiKey: () =>
+      ipcRenderer.invoke("settings:clear-websocket-api-key"),
+    generateWebSocketApiKey: () =>
+      ipcRenderer.invoke("settings:generate-websocket-api-key"),
+    getWebSocketPort: () => ipcRenderer.invoke("settings:get-websocket-port"),
+    setWebSocketPort: (port: number) =>
+      ipcRenderer.invoke("settings:set-websocket-port", port),
+    getWebSocketEnabled: () =>
+      ipcRenderer.invoke("settings:get-websocket-enabled"),
+    setWebSocketEnabled: (enabled: boolean) =>
+      ipcRenderer.invoke("settings:set-websocket-enabled", enabled),
     openLogsDirectory: () => ipcRenderer.invoke("settings:open-logs-directory"),
     getWorkoutSessions: () =>
       ipcRenderer.invoke("settings:get-workout-sessions"),
@@ -76,6 +91,13 @@ const electronAPI: ElectronAPI = {
       ipcRenderer.invoke("storage:save", key, data),
     load: (key: string) => ipcRenderer.invoke("storage:load", key),
     remove: (key: string) => ipcRenderer.invoke("storage:remove", key),
+  },
+  websocket: {
+    getStatus: () => ipcRenderer.invoke("websocket:get-status"),
+    broadcastSessionStatus: (data: {
+      type: "session-started" | "session-stopped";
+      timestamp: string;
+    }) => ipcRenderer.invoke("websocket:broadcast-session-status", data),
   },
 
   on: (channel: string, callback: (...args: any[]) => void) => {

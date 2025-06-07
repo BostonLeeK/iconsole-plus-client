@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>iConsole+ WebSocket Test Client</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        color: #333;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 2.5em;
+        font-weight: 300;
+      }
+
+      .header p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+        font-size: 1.1em;
+      }
+
+      .content {
+        padding: 30px;
+      }
+
+      .connection-panel {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 30px;
+        border-left: 5px solid #667eea;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+      }
+
+      input[type="text"]:focus,
+      input[type="number"]:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        min-width: 120px;
+      }
+
+      .btn-primary {
+        background: #667eea;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #5a6fd8;
+        transform: translateY(-2px);
+      }
+
+      .btn-danger {
+        background: #e74c3c;
+        color: white;
+      }
+
+      .btn-danger:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+        background: #6c757d;
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+      }
+
+      .status {
+        padding: 15px;
+        border-radius: 8px;
+        margin: 20px 0;
+        font-weight: 600;
+      }
+
+      .status.connected {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .status.disconnected {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .status.connecting {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 30px 0;
+      }
+
+      .metric-card {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        border-left: 4px solid #667eea;
+        transition: transform 0.3s;
+      }
+
+      .metric-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .metric-value {
+        font-size: 2em;
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 5px;
+      }
+
+      .metric-label {
+        color: #666;
+        font-size: 0.9em;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .log-container {
+        background: #2c3e50;
+        color: #ecf0f1;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 30px;
+        max-height: 400px;
+        overflow-y: auto;
+        font-family: "Courier New", monospace;
+      }
+
+      .log-entry {
+        margin-bottom: 10px;
+        padding: 8px;
+        border-radius: 4px;
+        border-left: 3px solid #3498db;
+        background: rgba(52, 152, 219, 0.1);
+      }
+
+      .log-entry.workout-data {
+        border-left-color: #2ecc71;
+        background: rgba(46, 204, 113, 0.1);
+      }
+
+      .log-entry.ai-advice {
+        border-left-color: #9b59b6;
+        background: rgba(155, 89, 182, 0.1);
+      }
+
+      .log-entry.statistics {
+        border-left-color: #f39c12;
+        background: rgba(243, 156, 18, 0.1);
+      }
+
+      .log-entry.session {
+        border-left-color: #e74c3c;
+        background: rgba(231, 76, 60, 0.1);
+      }
+
+      .timestamp {
+        color: #95a5a6;
+        font-size: 0.8em;
+      }
+
+      .ai-advice-panel {
+        background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        display: none;
+      }
+
+      .ai-advice-panel.show {
+        display: block;
+      }
+
+      .statistics-panel {
+        background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        display: none;
+      }
+
+      .statistics-panel.show {
+        display: block;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .stat-item {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 10px;
+        border-radius: 8px;
+      }
+
+      .stat-value {
+        font-size: 1.5em;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .stat-label {
+        font-size: 0.8em;
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🚴‍♂️ iConsole+ WebSocket Client</h1>
+        <p>Real-time workout data, AI advice, and session statistics</p>
+      </div>
+
+      <div class="content">
+        <div class="connection-panel">
+          <h3>🔗 Connection Settings</h3>
+          <div class="form-group">
+            <label for="serverUrl">Server URL:</label>
+            <input
+              type="text"
+              id="serverUrl"
+              value="ws://localhost:8080"
+              placeholder="ws://localhost:8080"
+            />
+          </div>
+          <div class="form-group">
+            <label for="apiKey">API Key:</label>
+            <input type="text" id="apiKey" placeholder="Enter your API key" />
+          </div>
+          <div class="button-group">
+            <button id="connectBtn" class="btn-primary">Connect</button>
+            <button id="disconnectBtn" class="btn-danger" disabled>
+              Disconnect
+            </button>
+            <button id="clearLogBtn" class="btn-secondary">Clear Log</button>
+          </div>
+          <div id="connectionStatus" class="status disconnected">
+            Disconnected
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-value" id="speed">0</div>
+            <div class="metric-label">Speed (km/h)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="power">0</div>
+            <div class="metric-label">Power (W)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="heartRate">0</div>
+            <div class="metric-label">Heart Rate (bpm)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="rpm">0</div>
+            <div class="metric-label">Cadence (RPM)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="resistance">0</div>
+            <div class="metric-label">Resistance</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="calories">0</div>
+            <div class="metric-label">Calories</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="distance">0</div>
+            <div class="metric-label">Distance (km)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="time">0</div>
+            <div class="metric-label">Time (s)</div>
+          </div>
+        </div>
+
+        <div id="aiAdvicePanel" class="ai-advice-panel">
+          <h3>🤖 AI Trainer Advice</h3>
+          <div id="aiAdviceText"></div>
+          <div id="aiAdviceDetails"></div>
+        </div>
+
+        <div id="statisticsPanel" class="statistics-panel">
+          <h3>📊 Workout Statistics</h3>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-value" id="statDistance">0</div>
+              <div class="stat-label">Total Distance (km)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="statAvgSpeed">0</div>
+              <div class="stat-label">Avg Speed (km/h)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="statMaxSpeed">0</div>
+              <div class="stat-label">Max Speed (km/h)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="statCalories">0</div>
+              <div class="stat-label">Total Calories</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="statAvgHR">0</div>
+              <div class="stat-label">Avg HR (bpm)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="statMaxHR">0</div>
+              <div class="stat-label">Max HR (bpm)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="statAvgPower">0</div>
+              <div class="stat-label">Avg Power (W)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="statMaxPower">0</div>
+              <div class="stat-label">Max Power (W)</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="statDuration">0</div>
+              <div class="stat-label">Duration (min)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="log-container">
+          <h3>📝 Message Log</h3>
+          <div id="messageLog"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let ws = null;
+      let isConnected = false;
+
+      const elements = {
+        connectBtn: document.getElementById("connectBtn"),
+        disconnectBtn: document.getElementById("disconnectBtn"),
+        clearLogBtn: document.getElementById("clearLogBtn"),
+        serverUrl: document.getElementById("serverUrl"),
+        apiKey: document.getElementById("apiKey"),
+        connectionStatus: document.getElementById("connectionStatus"),
+        messageLog: document.getElementById("messageLog"),
+        aiAdvicePanel: document.getElementById("aiAdvicePanel"),
+        statisticsPanel: document.getElementById("statisticsPanel"),
+      };
+
+      // Metric elements
+      const metrics = [
+        "speed",
+        "power",
+        "heartRate",
+        "rpm",
+        "resistance",
+        "calories",
+        "distance",
+        "time",
+      ];
+      const metricElements = {};
+      metrics.forEach((metric) => {
+        metricElements[metric] = document.getElementById(metric);
+      });
+
+      // Statistics elements
+      const statElements = {
+        distance: document.getElementById("statDistance"),
+        avgSpeed: document.getElementById("statAvgSpeed"),
+        maxSpeed: document.getElementById("statMaxSpeed"),
+        calories: document.getElementById("statCalories"),
+        avgHR: document.getElementById("statAvgHR"),
+        maxHR: document.getElementById("statMaxHR"),
+        avgPower: document.getElementById("statAvgPower"),
+        maxPower: document.getElementById("statMaxPower"),
+        duration: document.getElementById("statDuration"),
+      };
+
+      function updateConnectionStatus(status, message) {
+        elements.connectionStatus.className = `status ${status}`;
+        elements.connectionStatus.textContent = message;
+      }
+
+      function addLogEntry(type, message, data = null) {
+        const logEntry = document.createElement("div");
+        logEntry.className = `log-entry ${type}`;
+
+        const timestamp = new Date().toLocaleTimeString();
+        let content = `<span class="timestamp">[${timestamp}]</span> ${message}`;
+
+        if (data) {
+          content += `<br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        logEntry.innerHTML = content;
+        elements.messageLog.appendChild(logEntry);
+        elements.messageLog.scrollTop = elements.messageLog.scrollHeight;
+      }
+
+      function updateMetrics(data) {
+        metricElements.speed.textContent = data.speed?.toFixed(1) || "0";
+        metricElements.power.textContent = data.watt || "0";
+        metricElements.heartRate.textContent = data.heartRate || "0";
+        metricElements.rpm.textContent = data.rpm || "0";
+        metricElements.resistance.textContent = data.resistance || "0";
+        metricElements.calories.textContent = data.calories || "0";
+        metricElements.distance.textContent = data.distance?.toFixed(2) || "0";
+        metricElements.time.textContent = data.time || "0";
+      }
+
+      function showAIAdvice(data) {
+        elements.aiAdvicePanel.classList.add("show");
+        document.getElementById("aiAdviceText").innerHTML = `
+                <strong>💡 ${data.advice}</strong><br>
+                <em>Action: ${data.action}</em>
+            `;
+        document.getElementById("aiAdviceDetails").innerHTML = `
+                <small>
+                    Resistance: ${data.oldResistance} → ${data.newResistance} | 
+                    Style: ${data.rideStyle} | 
+                    Goal: ${data.goal}
+                </small>
+            `;
+
+        // Auto-hide after 10 seconds
+        setTimeout(() => {
+          elements.aiAdvicePanel.classList.remove("show");
+        }, 10000);
+      }
+
+      function showStatistics(data) {
+        elements.statisticsPanel.classList.add("show");
+
+        statElements.distance.textContent =
+          data.totalDistance?.toFixed(2) || "0";
+        statElements.avgSpeed.textContent =
+          data.averageSpeed?.toFixed(1) || "0";
+        statElements.maxSpeed.textContent = data.maxSpeed?.toFixed(1) || "0";
+        statElements.calories.textContent = data.totalCalories || "0";
+        statElements.avgHR.textContent =
+          data.averageHeartRate?.toFixed(0) || "0";
+        statElements.maxHR.textContent = data.maxHeartRate || "0";
+        statElements.avgPower.textContent = data.averageWatt?.toFixed(0) || "0";
+        statElements.maxPower.textContent = data.maxWatt || "0";
+        statElements.duration.textContent =
+          Math.round(data.duration / 60000) || "0";
+
+        // Auto-hide after 15 seconds
+        setTimeout(() => {
+          elements.statisticsPanel.classList.remove("show");
+        }, 15000);
+      }
+
+      function connect() {
+        const url = elements.serverUrl.value;
+        const apiKey = elements.apiKey.value;
+
+        if (!url || !apiKey) {
+          alert("Please enter both server URL and API key");
+          return;
+        }
+
+        const wsUrl = `${url}?apiKey=${apiKey}`;
+        updateConnectionStatus("connecting", "Connecting...");
+
+        try {
+          ws = new WebSocket(wsUrl);
+
+          ws.onopen = function () {
+            isConnected = true;
+            updateConnectionStatus("connected", "Connected");
+            elements.connectBtn.disabled = true;
+            elements.disconnectBtn.disabled = false;
+            addLogEntry("info", "Connected to iConsole+ WebSocket server");
+          };
+
+          ws.onmessage = function (event) {
+            try {
+              const message = JSON.parse(event.data);
+
+              switch (message.type) {
+                case "connected":
+                  addLogEntry("info", "Connection confirmed", message);
+                  break;
+
+                case "workout-data":
+                  updateMetrics(message.data);
+                  addLogEntry(
+                    "workout-data",
+                    "Workout data received",
+                    message.data
+                  );
+                  break;
+
+                case "ai-advice":
+                  showAIAdvice(message.data);
+                  addLogEntry(
+                    "ai-advice",
+                    `AI Advice: ${message.data.advice}`,
+                    message.data
+                  );
+                  break;
+
+                case "workout-statistics":
+                  showStatistics(message.data);
+                  addLogEntry(
+                    "statistics",
+                    "Workout statistics received",
+                    message.data
+                  );
+                  break;
+
+                case "session-started":
+                  addLogEntry("session", "Workout session started");
+                  break;
+
+                case "session-stopped":
+                  addLogEntry("session", "Workout session stopped");
+                  break;
+
+                case "device-connected":
+                  addLogEntry(
+                    "info",
+                    `Device connected: ${message.deviceName || "Unknown"}`
+                  );
+                  break;
+
+                case "device-disconnected":
+                  addLogEntry("info", "Device disconnected");
+                  break;
+
+                case "server-shutdown":
+                  addLogEntry("info", "Server is shutting down");
+                  break;
+
+                default:
+                  addLogEntry(
+                    "info",
+                    `Unknown message type: ${message.type}`,
+                    message
+                  );
+              }
+            } catch (error) {
+              addLogEntry("error", `Failed to parse message: ${error.message}`);
+            }
+          };
+
+          ws.onclose = function (event) {
+            isConnected = false;
+            updateConnectionStatus("disconnected", "Disconnected");
+            elements.connectBtn.disabled = false;
+            elements.disconnectBtn.disabled = true;
+
+            if (event.code === 1008) {
+              addLogEntry("error", "Connection rejected: Invalid API key");
+            } else {
+              addLogEntry("info", `Connection closed (Code: ${event.code})`);
+            }
+          };
+
+          ws.onerror = function (error) {
+            addLogEntry("error", "WebSocket error occurred");
+            updateConnectionStatus("disconnected", "Connection error");
+          };
+        } catch (error) {
+          addLogEntry("error", `Failed to connect: ${error.message}`);
+          updateConnectionStatus("disconnected", "Connection failed");
+        }
+      }
+
+      function disconnect() {
+        if (ws && isConnected) {
+          ws.close();
+          addLogEntry("info", "Disconnected by user");
+        }
+      }
+
+      function clearLog() {
+        elements.messageLog.innerHTML = "";
+      }
+
+      // Event listeners
+      elements.connectBtn.addEventListener("click", connect);
+      elements.disconnectBtn.addEventListener("click", disconnect);
+      elements.clearLogBtn.addEventListener("click", clearLog);
+
+      // Enter key support for inputs
+      elements.serverUrl.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") connect();
+      });
+
+      elements.apiKey.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") connect();
+      });
+
+      // Load saved settings
+      const savedUrl = localStorage.getItem("iconsole-ws-url");
+      const savedApiKey = localStorage.getItem("iconsole-ws-apikey");
+
+      if (savedUrl) elements.serverUrl.value = savedUrl;
+      if (savedApiKey) elements.apiKey.value = savedApiKey;
+
+      // Save settings on change
+      elements.serverUrl.addEventListener("change", function () {
+        localStorage.setItem("iconsole-ws-url", this.value);
+      });
+
+      elements.apiKey.addEventListener("change", function () {
+        localStorage.setItem("iconsole-ws-apikey", this.value);
+      });
+
+      // Initial log entry
+      addLogEntry(
+        "info",
+        "WebSocket test client ready. Enter your connection details and click Connect."
+      );
+    </script>
+  </body>
+</html>
