@@ -1,4 +1,5 @@
 import { createResource, createSignal, For, Show } from "solid-js";
+import { pdfExportService } from "../../services/pdf-export.service";
 import { appActions } from "../../store/app.store";
 
 interface WorkoutSession {
@@ -44,6 +45,7 @@ export function WorkoutHistory() {
   const [selectedSession, setSelectedSession] =
     createSignal<WorkoutSession | null>(null);
   const [isAnalyzing, setIsAnalyzing] = createSignal(false);
+  const [isExportingPDF, setIsExportingPDF] = createSignal(false);
 
   const [sessions, { refetch: refetchSessions }] = createResource(async () => {
     try {
@@ -129,6 +131,21 @@ export function WorkoutHistory() {
     }
   };
 
+  const exportToPDF = async () => {
+    const session = selectedSession();
+    if (!session || isExportingPDF()) return;
+
+    try {
+      setIsExportingPDF(true);
+      await pdfExportService.exportWorkoutReport(session);
+    } catch (error) {
+      console.error("Failed to export PDF:", error);
+      alert("Failed to export PDF: " + error.message);
+    } finally {
+      setIsExportingPDF(false);
+    }
+  };
+
   const deleteSession = async (filename: string, sessionDate: string) => {
     const confirmed = confirm(
       `Are you sure you want to delete this workout session?\n\nDate: ${sessionDate}\n\nThis action cannot be undone.`
@@ -191,7 +208,7 @@ export function WorkoutHistory() {
     return (
       <div class="space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="bg-gray-800 p-4 rounded-lg">
+          <div class="chart-heart-rate bg-gray-800 p-4 rounded-lg">
             <div class="flex justify-between items-center mb-3">
               <h4 class="text-white font-medium">Heart Rate Zones</h4>
               <span class="text-xs text-gray-400">bpm</span>
@@ -262,7 +279,7 @@ export function WorkoutHistory() {
             </div>
           </div>
 
-          <div class="bg-gray-800 p-4 rounded-lg">
+          <div class="chart-power bg-gray-800 p-4 rounded-lg">
             <div class="flex justify-between items-center mb-3">
               <h4 class="text-white font-medium">Power Output</h4>
               <span class="text-xs text-gray-400">watts</span>
@@ -298,7 +315,7 @@ export function WorkoutHistory() {
             </div>
           </div>
 
-          <div class="bg-gray-800 p-4 rounded-lg">
+          <div class="chart-speed-cadence bg-gray-800 p-4 rounded-lg">
             <div class="flex justify-between items-center mb-3">
               <h4 class="text-white font-medium">Speed & Cadence</h4>
               <span class="text-xs text-gray-400">km/h | rpm</span>
@@ -355,7 +372,7 @@ export function WorkoutHistory() {
             </div>
           </div>
 
-          <div class="bg-gray-800 p-4 rounded-lg">
+          <div class="chart-resistance bg-gray-800 p-4 rounded-lg">
             <div class="flex justify-between items-center mb-3">
               <h4 class="text-white font-medium">Resistance Profile</h4>
               <span class="text-xs text-gray-400">level</span>
@@ -644,6 +661,35 @@ export function WorkoutHistory() {
                         </button>
 
                         <button
+                          onClick={exportToPDF}
+                          disabled={isExportingPDF()}
+                          class="px-3 py-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white text-sm rounded-md transition-colors flex items-center gap-2"
+                          title="Export workout report to PDF"
+                        >
+                          {isExportingPDF() ? (
+                            <>
+                              <div class="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
+                              Exporting...
+                            </>
+                          ) : (
+                            <>
+                              <svg
+                                class="w-4 h-4"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                                <path d="M14 2v6h6" />
+                                <path d="M16 13H8" />
+                                <path d="M16 17H8" />
+                                <path d="M10 9H8" />
+                              </svg>
+                              Export PDF
+                            </>
+                          )}
+                        </button>
+
+                        <button
                           onClick={() =>
                             deleteSession(
                               session().filename!,
@@ -701,7 +747,9 @@ export function WorkoutHistory() {
                     <h3 class="text-lg font-semibold text-white mb-4">
                       Performance Charts
                     </h3>
-                    {renderChart(session())}
+                    <div class="performance-charts">
+                      {renderChart(session())}
+                    </div>
                   </div>
 
                   <Show when={session().aiAnalysis}>
