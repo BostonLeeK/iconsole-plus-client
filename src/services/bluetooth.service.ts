@@ -80,6 +80,9 @@ export class BluetoothService
   private lastDeviceDistance: number = 0;
   private lastDeviceCalories: number = 0;
   private lastDeviceTime: number = 0;
+  private cumulativePower: number = 0;
+  private lastDevicePower: number = 0;
+  private powerOverflowCount: number = 0;
   private sessionStarted: boolean = false;
 
   constructor() {
@@ -296,6 +299,7 @@ export class BluetoothService
       const speedRaw = data[2] | (data[3] << 8);
       const deviceDistance = data[6] ? data[6] / 1000 : 0;
       const deviceCalories = data[13] || 0;
+      const devicePower = data[11] || 0;
 
       if (!this.sessionStarted) {
         this.resetCumulativeMetrics();
@@ -309,6 +313,8 @@ export class BluetoothService
           timeInSeconds
         );
 
+      const adjustedPower = this.handlePowerOverflow(devicePower);
+
       const workoutData = {
         time: totalTime,
         speed: speedRaw ? speedRaw / 100 : 0,
@@ -316,7 +322,7 @@ export class BluetoothService
         distance: totalDistance,
         calories: totalCalories,
         heartRate: data[18] || 0,
-        watt: data[11] || 0,
+        watt: adjustedPower,
         resistance: data[9] || 0,
       };
 
@@ -477,6 +483,23 @@ export class BluetoothService
     this.lastDeviceDistance = 0;
     this.lastDeviceCalories = 0;
     this.lastDeviceTime = 0;
+    this.cumulativePower = 0;
+    this.lastDevicePower = 0;
+    this.powerOverflowCount = 0;
+  }
+
+  private handlePowerOverflow(devicePower: number): number {
+    if (this.lastDevicePower > 230 && devicePower < 30) {
+      this.powerOverflowCount++;
+      console.log(
+        `Power overflow detected: ${this.lastDevicePower}W → ${devicePower}W (overflow #${this.powerOverflowCount})`
+      );
+    }
+
+    this.lastDevicePower = devicePower;
+    const adjustedPower = devicePower + this.powerOverflowCount * 256;
+
+    return adjustedPower;
   }
 
   private updateCumulativeMetrics(
