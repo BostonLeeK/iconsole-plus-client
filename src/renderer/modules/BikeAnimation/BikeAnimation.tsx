@@ -1,11 +1,12 @@
 import lottie, { AnimationItem } from "lottie-web";
-import { createEffect, createMemo, onCleanup } from "solid-js";
+import { createEffect, createMemo, createSignal, onCleanup } from "solid-js";
 import { appState } from "../../store/app";
-import cyclingAnimation from "./cycling-animation.json";
 
 export function BikeAnimation() {
   let lottieContainer: HTMLDivElement | undefined;
   let animationInstance: AnimationItem | null = null;
+  const [animationData, setAnimationData] = createSignal(null);
+  const [isLoading, setIsLoading] = createSignal(false);
 
   const animationState = createMemo(() => {
     if (!appState.isConnected) return "garage";
@@ -21,8 +22,21 @@ export function BikeAnimation() {
   const currentPower = createMemo(() => appState.workoutData.watt || 0);
   const currentRPM = createMemo(() => appState.workoutData.rpm || 0);
 
+  const loadAnimationData = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch("../resources/cycling-animation.json");
+      const data = await response.json();
+      setAnimationData(data);
+    } catch (error) {
+      console.error("Failed to load animation data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const initializeAnimation = () => {
-    if (!lottieContainer || animationInstance) return;
+    if (!lottieContainer || animationInstance || !animationData()) return;
 
     try {
       lottieContainer.innerHTML = "";
@@ -32,7 +46,7 @@ export function BikeAnimation() {
         renderer: "svg",
         loop: true,
         autoplay: false,
-        animationData: cyclingAnimation,
+        animationData: animationData(),
         rendererSettings: {
           preserveAspectRatio: "xMidYMid meet",
         },
@@ -41,6 +55,11 @@ export function BikeAnimation() {
   };
 
   createEffect(() => {
+    if (!animationData() && !isLoading()) {
+      loadAnimationData();
+      return;
+    }
+
     if (animationState() === "garage") {
       if (animationInstance) {
         animationInstance.destroy();
@@ -49,7 +68,7 @@ export function BikeAnimation() {
       return;
     }
 
-    if (lottieContainer && !animationInstance) {
+    if (lottieContainer && !animationInstance && animationData()) {
       setTimeout(initializeAnimation, 100);
     }
 

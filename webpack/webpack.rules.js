@@ -39,4 +39,11 @@ module.exports = [
       },
     ],
   },
+  {
+    test: /\.json$/,
+    type: "asset/resource",
+    generator: {
+      filename: "resources/[name][ext]",
+    },
+  },
 ];

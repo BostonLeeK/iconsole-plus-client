@@ -20,6 +20,7 @@
   "dependencies": {
     "@abandonware/noble": "^1.9.2-26",
     "@timfish/forge-externals-plugin": "^0.2.1",
+    "copy-webpack-plugin": "^13.0.0",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^10.0.1",
     "lottie-web": "^5.13.0",

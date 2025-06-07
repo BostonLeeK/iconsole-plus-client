@@ -34,10 +34,8 @@ const createWindow = (): void => {
 
   mainWindow.webContents.session.webRequest.onHeadersReceived(
     (details, callback) => {
-      const isDevelopment = process.env.NODE_ENV === "development";
-      const cspPolicy = isDevelopment
-        ? "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; media-src 'self' blob: data:; img-src 'self' data: blob:; connect-src 'self' ws: wss:;"
-        : "default-src 'self' 'unsafe-inline' data: blob:; media-src 'self' blob: data:; img-src 'self' data: blob:;";
+      const cspPolicy =
+        "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; media-src 'self' blob: data:; img-src 'self' data: blob:; connect-src 'self' ws: wss:;";
 
       callback({
         responseHeaders: {
