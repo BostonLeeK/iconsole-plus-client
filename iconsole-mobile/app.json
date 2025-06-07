@@ -22,11 +22,17 @@
         "backgroundColor": "#000000"
       },
       "package": "com.iconsole.mobile",
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "usesCleartextTraffic": true,
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "plugins": ["./plugins/android-network-security.js"],
     "extra": {
       "eas": {
         "projectId": "71c40b42-2363-4dea-b9dc-5160679c623c"

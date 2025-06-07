@@ -57,9 +57,23 @@ const createWindow = (): void => {
   });
 };
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   createWindow();
   powerSaveBlockerId = powerSaveBlocker.start("prevent-app-suspension");
+
+  try {
+    const isWebSocketEnabled = settingsService.getWebSocketEnabled();
+    if (isWebSocketEnabled) {
+      const apiKey = settingsService.getWebSocketApiKey();
+      const port = settingsService.getWebSocketPort();
+
+      if (apiKey) {
+        await websocketService.start(port, apiKey);
+      }
+    }
+  } catch (error) {
+    console.error("Failed to auto-start WebSocket service:", error);
+  }
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {

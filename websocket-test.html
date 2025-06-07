@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebSocket Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .log {
+        background: #f0f0f0;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        font-family: monospace;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 5px;
+      }
+      input {
+        padding: 5px;
+        margin: 5px;
+        width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>iConsole+ WebSocket Test</h1>
+
+    <div>
+      <input type="text" id="host" value="192.168.50.201" placeholder="Host" />
+      <input type="text" id="port" value="8080" placeholder="Port" />
+      <input type="text" id="apiKey" value="" placeholder="API Key" />
+      <br />
+      <button onclick="connect()">Connect</button>
+      <button onclick="disconnect()">Disconnect</button>
+      <button onclick="clearLogs()">Clear Logs</button>
+    </div>
+
+    <div id="status">Disconnected</div>
+    <div id="logs"></div>
+
+    <script>
+      let ws = null;
+
+      function log(message) {
+        const logs = document.getElementById("logs");
+        const div = document.createElement("div");
+        div.className = "log";
+        div.textContent = new Date().toLocaleTimeString() + " - " + message;
+        logs.appendChild(div);
+        logs.scrollTop = logs.scrollHeight;
+      }
+
+      function updateStatus(status) {
+        document.getElementById("status").textContent = "Status: " + status;
+      }
+
+      function connect() {
+        if (ws) {
+          log("Already connected");
+          return;
+        }
+
+        const host = document.getElementById("host").value;
+        const port = document.getElementById("port").value;
+        const apiKey = document.getElementById("apiKey").value;
+
+        if (!apiKey) {
+          log("ERROR: Please enter API Key");
+          return;
+        }
+
+        const url = `ws://${host}:${port}?apiKey=${encodeURIComponent(apiKey)}`;
+        log("Connecting to: " + url);
+        updateStatus("Connecting...");
+
+        try {
+          ws = new WebSocket(url);
+
+          ws.onopen = function (event) {
+            log("✅ Connected successfully!");
+            updateStatus("Connected");
+          };
+
+          ws.onmessage = function (event) {
+            log("📨 Received: " + event.data);
+          };
+
+          ws.onclose = function (event) {
+            log(
+              `🔌 Connection closed (code: ${event.code}, reason: ${event.reason})`
+            );
+            updateStatus("Disconnected");
+            ws = null;
+          };
+
+          ws.onerror = function (error) {
+            log("❌ WebSocket error: " + error);
+            updateStatus("Error");
+          };
+        } catch (error) {
+          log("❌ Failed to create WebSocket: " + error);
+          updateStatus("Error");
+        }
+      }
+
+      function disconnect() {
+        if (ws) {
+          ws.close();
+          ws = null;
+          log("Disconnected by user");
+          updateStatus("Disconnected");
+        }
+      }
+
+      function clearLogs() {
+        document.getElementById("logs").innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

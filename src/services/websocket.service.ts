@@ -22,6 +22,175 @@ export class WebSocketService extends EventEmitter {
 
   private setupExpressRoutes(): void {
     this.app.use(express.json());
+    this.app.get("/", (req, res) => {
+      const uptime = this.isRunning ? process.uptime() : 0;
+      const uptimeFormatted = this.formatUptime(uptime);
+
+      res.setHeader("Content-Type", "text/html");
+      res.send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>iConsole+ WebSocket Server</title>
+            <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    min-height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .container {
+                    background: rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 20px;
+                    padding: 40px;
+                    max-width: 600px;
+                    width: 90%;
+                    text-align: center;
+                    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+                }
+                .logo {
+                    font-size: 3rem;
+                    margin-bottom: 10px;
+                    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+                }
+                .title {
+                    font-size: 2.5rem;
+                    font-weight: 300;
+                    margin-bottom: 30px;
+                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                }
+                .status-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                    margin: 30px 0;
+                }
+                .status-card {
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 15px;
+                    padding: 25px;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    transition: all 0.3s ease;
+                }
+                .status-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+                }
+                .status-value {
+                    font-size: 2.5rem;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                    color: #00ff88;
+                    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+                }
+                .status-label {
+                    font-size: 1rem;
+                    opacity: 0.8;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                .endpoints {
+                    background: rgba(0, 0, 0, 0.2);
+                    border-radius: 15px;
+                    padding: 25px;
+                    margin: 30px 0;
+                    text-align: left;
+                }
+                .endpoint {
+                    margin: 15px 0;
+                    padding: 10px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 8px;
+                    font-family: 'Courier New', monospace;
+                    font-size: 0.9rem;
+                    word-break: break-all;
+                }
+                .endpoint-label {
+                    font-weight: bold;
+                    color: #00ff88;
+                    margin-bottom: 5px;
+                }
+                .pulse {
+                    animation: pulse 2s infinite;
+                }
+                @keyframes pulse {
+                    0% { opacity: 1; }
+                    50% { opacity: 0.7; }
+                    100% { opacity: 1; }
+                }
+                .footer {
+                    margin-top: 30px;
+                    opacity: 0.7;
+                    font-size: 0.9rem;
+                }
+            </style>
+            <script>
+                setTimeout(() => {
+                    window.location.reload();
+                }, 30000); // Auto-refresh every 30 seconds
+            </script>
+        </head>
+        <body>
+            <div class="container">
+                <div class="logo">🚴‍♂️</div>
+                <h1 class="title">iConsole+ Server</h1>
+                
+                <div class="status-grid">
+                    <div class="status-card">
+                        <div class="status-value pulse">${
+                          this.isRunning ? "🟢" : "🔴"
+                        }</div>
+                        <div class="status-label">Server Status</div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-value">${
+                          this.authenticatedClients.size
+                        }</div>
+                        <div class="status-label">Connected Clients</div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-value">${this.port}</div>
+                        <div class="status-label">Port</div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-value">${uptimeFormatted}</div>
+                        <div class="status-label">Uptime</div>
+                    </div>
+                </div>
+                
+                <div class="endpoints">
+                    <h3 style="margin-bottom: 20px; color: #00ff88;">📡 API Endpoints</h3>
+                    <div class="endpoint">
+                        <div class="endpoint-label">WebSocket:</div>
+                        ws://${req.get("host")}?apiKey=YOUR_API_KEY
+                    </div>
+                    <div class="endpoint">
+                        <div class="endpoint-label">Status API:</div>
+                        http://${req.get("host")}/api/status
+                    </div>
+                    <div class="endpoint">
+                        <div class="endpoint-label">Info API:</div>
+                        http://${req.get("host")}/api/info
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <p>Last updated: ${new Date().toLocaleString()}</p>
+                    <p>Auto-refresh in 30 seconds</p>
+                </div>
+            </div>
+        </body>
+        </html>
+      `);
+    });
 
     this.app.get("/api/status", (req, res) => {
       res.json({
@@ -29,19 +198,23 @@ export class WebSocketService extends EventEmitter {
         connectedClients: this.authenticatedClients.size,
         timestamp: new Date().toISOString(),
         service: "iConsole+ WebSocket API",
+        uptime: process.uptime(),
+        port: this.port,
+        isRunning: this.isRunning,
       });
     });
 
     this.app.get("/api/info", (req, res) => {
       res.json({
         endpoints: {
-          websocket: `ws://localhost:${this.port}`,
-          status: `http://localhost:${this.port}/api/status`,
+          websocket: `ws://${req.get("host")}?apiKey=YOUR_API_KEY`,
+          status: `http://${req.get("host")}/api/status`,
+          dashboard: `http://${req.get("host")}/`,
         },
         authentication: {
           required: true,
           method: "API Key in WebSocket connection query parameter",
-          example: `ws://localhost:${this.port}?apiKey=YOUR_API_KEY`,
+          example: `ws://${req.get("host")}?apiKey=YOUR_API_KEY`,
         },
         events: [
           "workout-data",
@@ -56,6 +229,20 @@ export class WebSocketService extends EventEmitter {
     });
   }
 
+  private formatUptime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+
+    if (hours > 0) {
+      return `${hours}h ${minutes}m`;
+    } else if (minutes > 0) {
+      return `${minutes}m ${secs}s`;
+    } else {
+      return `${secs}s`;
+    }
+  }
+
   public start(port: number, apiKey: string): Promise<void> {
     return new Promise((resolve, reject) => {
       if (this.isRunning) {
@@ -65,17 +252,9 @@ export class WebSocketService extends EventEmitter {
       this.port = port;
       this.apiKey = apiKey;
 
-      console.log(`🚀 Starting WebSocket server on port ${port}`);
-      console.log(`🔑 API Key configured: ${apiKey ? "YES" : "NO"}`);
-
       this.server = http.createServer(this.app);
 
-      // Логування всіх HTTP запитів
-      this.server.on("request", (req, res) => {
-        console.log(
-          `📡 HTTP ${req.method} ${req.url} from ${req.socket.remoteAddress}`
-        );
-      });
+      this.server.on("request", (req, res) => {});
 
       this.wss = new WebSocket.WebSocketServer({
         server: this.server,
@@ -94,15 +273,9 @@ export class WebSocketService extends EventEmitter {
           }
 
           this.authenticatedClients.add(ws);
-          console.log(
-            `WebSocket client connected. Total clients: ${this.authenticatedClients.size}`
-          );
 
           ws.on("close", () => {
             this.authenticatedClients.delete(ws);
-            console.log(
-              `WebSocket client disconnected. Total clients: ${this.authenticatedClients.size}`
-            );
           });
 
           ws.on("error", (error) => {
@@ -122,12 +295,14 @@ export class WebSocketService extends EventEmitter {
 
       this.server.listen(port, "0.0.0.0", () => {
         this.isRunning = true;
-        console.log(`WebSocket service started on port ${port}`);
         resolve();
       });
 
       this.server.on("error", (error) => {
         console.error("WebSocket server error:", error);
+        this.isRunning = false;
+        this.server = null;
+        this.wss = null;
         reject(error);
       });
     });
@@ -135,35 +310,41 @@ export class WebSocketService extends EventEmitter {
 
   public stop(): Promise<void> {
     return new Promise((resolve) => {
-      if (!this.isRunning) {
+      if (!this.isRunning && !this.server) {
         return resolve();
       }
 
       this.authenticatedClients.forEach((client) => {
-        client.send(
-          JSON.stringify({
-            type: "server-shutdown",
-            message: "Server is shutting down",
-            timestamp: new Date().toISOString(),
-          })
-        );
-        client.close();
+        try {
+          client.send(
+            JSON.stringify({
+              type: "server-shutdown",
+              message: "Server is shutting down",
+              timestamp: new Date().toISOString(),
+            })
+          );
+          client.close();
+        } catch (error) {
+          console.error("Error closing client connection:", error);
+        }
       });
 
       this.authenticatedClients.clear();
 
       if (this.wss) {
         this.wss.close();
+        this.wss = null;
       }
 
       if (this.server) {
         this.server.close(() => {
           this.isRunning = false;
-          console.log("WebSocket service stopped");
+          this.server = null;
           resolve();
         });
       } else {
         this.isRunning = false;
+        this.server = null;
         resolve();
       }
     });
@@ -174,7 +355,6 @@ export class WebSocketService extends EventEmitter {
     const clientApiKey = url.searchParams.get("apiKey");
 
     if (!clientApiKey || clientApiKey !== this.apiKey) {
-      console.log("WebSocket connection rejected: invalid API key");
       return false;
     }
 
@@ -183,7 +363,6 @@ export class WebSocketService extends EventEmitter {
 
   private verifyApiKey(providedApiKey: string | null): boolean {
     if (providedApiKey !== this.apiKey) {
-      console.log("WebSocket connection rejected: invalid API key");
       return false;
     }
     return true;
@@ -303,11 +482,17 @@ export class WebSocketService extends EventEmitter {
   }
 
   public getStatus() {
+    const serverListening = this.server ? this.server.listening : false;
+    const actuallyRunning =
+      this.isRunning && serverListening && this.wss !== null;
+
     return {
-      isRunning: this.isRunning,
+      isRunning: actuallyRunning,
       port: this.port,
       connectedClients: this.authenticatedClients.size,
       hasApiKey: !!this.apiKey,
+      serverListening,
+      hasWebSocketServer: this.wss !== null,
     };
   }
 }
