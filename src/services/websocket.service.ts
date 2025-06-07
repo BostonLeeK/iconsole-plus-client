@@ -65,7 +65,18 @@ export class WebSocketService extends EventEmitter {
       this.port = port;
       this.apiKey = apiKey;
 
+      console.log(`🚀 Starting WebSocket server on port ${port}`);
+      console.log(`🔑 API Key configured: ${apiKey ? "YES" : "NO"}`);
+
       this.server = http.createServer(this.app);
+
+      // Логування всіх HTTP запитів
+      this.server.on("request", (req, res) => {
+        console.log(
+          `📡 HTTP ${req.method} ${req.url} from ${req.socket.remoteAddress}`
+        );
+      });
+
       this.wss = new WebSocket.WebSocketServer({
         server: this.server,
         verifyClient: (info) => this.verifyClient(info),
