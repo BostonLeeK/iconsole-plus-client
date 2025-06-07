@@ -3,6 +3,7 @@ import Store from "electron-store";
 interface Settings {
   claudeApiKey?: string;
   openaiApiKey?: string;
+  aiAnalysisInterval?: number;
 }
 
 class SettingsService {
@@ -11,7 +12,9 @@ class SettingsService {
   constructor() {
     this.store = new Store<Settings>({
       name: "settings",
-      defaults: {},
+      defaults: {
+        aiAnalysisInterval: 30,
+      },
     });
   }
 
@@ -37,6 +40,14 @@ class SettingsService {
 
   clearOpenAIApiKey(): void {
     (this.store as any).delete("openaiApiKey");
+  }
+
+  getAIAnalysisInterval(): number {
+    return (this.store as any).get("aiAnalysisInterval", 30);
+  }
+
+  setAIAnalysisInterval(interval: number): void {
+    (this.store as any).set("aiAnalysisInterval", interval);
   }
 
   getAllSettings(): Settings {

@@ -19,7 +19,7 @@ let mainWindow: BrowserWindow | null = null;
 const bluetoothService = new BluetoothService();
 let powerSaveBlockerId: number | null = null;
 
-if (require('electron-squirrel-startup')) app.quit();
+if (require("electron-squirrel-startup")) app.quit();
 
 const createWindow = (): void => {
   mainWindow = new BrowserWindow({
@@ -205,6 +205,25 @@ ipcMain.handle("settings:clear-openai-api-key", async () => {
     throw error;
   }
 });
+
+ipcMain.handle("settings:get-ai-analysis-interval", async () => {
+  try {
+    return settingsService.getAIAnalysisInterval();
+  } catch (error) {
+    return 30;
+  }
+});
+
+ipcMain.handle(
+  "settings:set-ai-analysis-interval",
+  async (event, interval: number) => {
+    try {
+      settingsService.setAIAnalysisInterval(interval);
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 
 ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
   try {

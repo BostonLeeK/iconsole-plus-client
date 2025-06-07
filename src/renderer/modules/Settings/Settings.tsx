@@ -4,9 +4,11 @@ import { appActions } from "../../store/app.store";
 export function Settings() {
   const [claudeApiKey, setClaudeApiKey] = createSignal("");
   const [openaiApiKey, setOpenAIApiKey] = createSignal("");
+  const [aiAnalysisInterval, setAiAnalysisInterval] = createSignal(30);
   const [isLoading, setIsLoading] = createSignal(false);
   const [isSaved, setIsSaved] = createSignal(false);
   const [openaiSaved, setOpenAISaved] = createSignal(false);
+  const [intervalSaved, setIntervalSaved] = createSignal(false);
 
   onMount(async () => {
     try {
@@ -19,6 +21,10 @@ export function Settings() {
       if (openaiKey) {
         setOpenAIApiKey(openaiKey);
       }
+
+      const interval =
+        await window.electronAPI.settings.getAIAnalysisInterval();
+      setAiAnalysisInterval(interval);
     } catch (error) {}
   });
 
@@ -70,6 +76,21 @@ export function Settings() {
       setOpenAIApiKey("");
       setOpenAISaved(true);
       setTimeout(() => setOpenAISaved(false), 2000);
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSaveInterval = async () => {
+    const interval = aiAnalysisInterval();
+    if (interval < 10 || interval > 300) return;
+
+    setIsLoading(true);
+    try {
+      await window.electronAPI.settings.setAIAnalysisInterval(interval);
+      setIntervalSaved(true);
+      setTimeout(() => setIntervalSaved(false), 2000);
     } catch (error) {
     } finally {
       setIsLoading(false);
@@ -231,6 +252,70 @@ export function Settings() {
             </div>
           </div>
         </div>
+
+        <div class="bg-gray-800 rounded-2xl shadow-xl border border-gray-700 overflow-hidden mt-6">
+          <div class="bg-gradient-to-r from-orange-600 to-red-600 px-6 py-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                <span class="text-lg">⏱️</span>
+              </div>
+              <div class="flex-1">
+                <h2 class="text-xl font-bold text-white">
+                  AI Trainer Settings
+                </h2>
+                <p class="text-orange-100 text-sm">
+                  Configure AI analysis behavior
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 space-y-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                AI Analysis Interval (seconds)
+              </label>
+              <input
+                type="number"
+                min="10"
+                max="300"
+                value={aiAnalysisInterval()}
+                onInput={(e) =>
+                  setAiAnalysisInterval(parseInt(e.target.value) || 30)
+                }
+                class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              />
+              <p class="text-gray-400 text-xs mt-2">
+                How often AI analyzes your workout (10-300 seconds). Default: 30
+                seconds
+              </p>
+            </div>
+
+            <button
+              onClick={handleSaveInterval}
+              disabled={
+                isLoading() ||
+                aiAnalysisInterval() < 10 ||
+                aiAnalysisInterval() > 300
+              }
+              class={`w-full px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+                isLoading() ||
+                aiAnalysisInterval() < 10 ||
+                aiAnalysisInterval() > 300
+                  ? "bg-gray-600 cursor-not-allowed text-gray-400"
+                  : intervalSaved()
+                  ? "bg-green-600 text-white"
+                  : "bg-orange-600 hover:bg-orange-700 text-white"
+              }`}
+            >
+              {isLoading() && (
+                <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              )}
+              {intervalSaved() ? "✓ Saved" : "Save Interval"}
+            </button>
+          </div>
+        </div>
+
         <div class="bg-gray-800 rounded-2xl shadow-xl border border-gray-700 overflow-hidden mt-6">
           <div class="bg-gradient-to-r from-gray-600 to-gray-700 px-6 py-4">
             <div class="flex items-center gap-3">

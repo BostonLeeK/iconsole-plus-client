@@ -5,6 +5,8 @@ export interface SettingsServiceInterface {
   getOpenAIApiKey(): string | undefined;
   setOpenAIApiKey(apiKey: string): void;
   clearOpenAIApiKey(): void;
+  getAIAnalysisInterval(): number;
+  setAIAnalysisInterval(interval: number): void;
 }
 
 export interface ElectronSettingsAPI {
@@ -15,6 +17,8 @@ export interface ElectronSettingsAPI {
     getOpenAIApiKey(): Promise<string | undefined>;
     setOpenAIApiKey(apiKey: string): Promise<void>;
     clearOpenAIApiKey(): Promise<void>;
+    getAIAnalysisInterval(): Promise<number>;
+    setAIAnalysisInterval(interval: number): Promise<void>;
     openLogsDirectory(): Promise<void>;
     getWorkoutSessions(): Promise<any[]>;
     getWorkoutSessionData(filename: string): Promise<any>;

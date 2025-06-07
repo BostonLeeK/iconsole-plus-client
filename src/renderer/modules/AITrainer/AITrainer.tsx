@@ -89,8 +89,11 @@ export function AITrainer() {
     speakAdvice(welcomeMessage);
   };
 
-  const startAIAnalysis = () => {
+  const startAIAnalysis = async () => {
     const firstAnalysisDelay = 5000;
+    const intervalSeconds =
+      await window.electronAPI.settings.getAIAnalysisInterval();
+    const intervalMs = intervalSeconds * 1000;
 
     setTimeout(() => {
       analysisInterval = setInterval(async () => {
@@ -194,7 +197,7 @@ export function AITrainer() {
         } finally {
           setIsAnalyzing(false);
         }
-      }, 30000);
+      }, intervalMs);
     }, firstAnalysisDelay);
   };
 

@@ -26,6 +26,10 @@ const electronAPI: ElectronAPI = {
       ipcRenderer.invoke("settings:set-openai-api-key", apiKey),
     clearOpenAIApiKey: () =>
       ipcRenderer.invoke("settings:clear-openai-api-key"),
+    getAIAnalysisInterval: () =>
+      ipcRenderer.invoke("settings:get-ai-analysis-interval"),
+    setAIAnalysisInterval: (interval: number) =>
+      ipcRenderer.invoke("settings:set-ai-analysis-interval", interval),
     openLogsDirectory: () => ipcRenderer.invoke("settings:open-logs-directory"),
     getWorkoutSessions: () =>
       ipcRenderer.invoke("settings:get-workout-sessions"),
