@@ -1,0 +1,41 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="128" cy="128" r="120" fill="url(#gradient1)" stroke="#1E293B" stroke-width="4"/>
+  
+  <!-- Bike Wheel 1 -->
+  <circle cx="80" cy="150" r="35" fill="none" stroke="#FFFFFF" stroke-width="6"/>
+  <circle cx="80" cy="150" r="20" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+  <circle cx="80" cy="150" r="8" fill="#FFFFFF"/>
+  
+  <!-- Bike Wheel 2 -->
+  <circle cx="176" cy="150" r="35" fill="none" stroke="#FFFFFF" stroke-width="6"/>
+  <circle cx="176" cy="150" r="20" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+  <circle cx="176" cy="150" r="8" fill="#FFFFFF"/>
+  
+  <!-- Bike Frame -->
+  <path d="M80 150 L128 100 L176 150 L128 120 L80 150" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M128 120 L128 100" stroke="#FFFFFF" stroke-width="5"/>
+  <path d="M128 100 L140 85" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Pedals -->
+  <ellipse cx="128" cy="140" rx="15" ry="8" fill="url(#gradient2)"/>
+  
+  <!-- Lightning Bolt (Power indicator) -->
+  <path d="M128 45 L118 70 L130 70 L120 90 L135 65 L125 65 L128 45" fill="#FCD34D" stroke="#F59E0B" stroke-width="1"/>
+  
+  <!-- Console/Display -->
+  <rect x="115" y="75" width="26" height="15" rx="3" fill="#1F2937" stroke="#FFFFFF" stroke-width="2"/>
+  <rect x="118" y="78" width="20" height="9" rx="1" fill="#06B6D4"/>
+</svg> 

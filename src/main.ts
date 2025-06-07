@@ -19,12 +19,15 @@ let mainWindow: BrowserWindow | null = null;
 const bluetoothService = new BluetoothService();
 let powerSaveBlockerId: number | null = null;
 
+if (require('electron-squirrel-startup')) app.quit();
+
 const createWindow = (): void => {
   mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
     frame: false,
     titleBarStyle: "hidden",
+    icon: path.join(__dirname, "../resources/icon.png"),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,

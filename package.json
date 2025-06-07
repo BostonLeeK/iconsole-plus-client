@@ -9,7 +9,8 @@
     "dev": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "generate-icons": "node scripts/generate-icons.js && node scripts/generate-ico.js"
   },
   "keywords": [],
   "author": {
@@ -46,13 +47,16 @@
     "babel-preset-solid": "^1.8.15",
     "css-loader": "^7.1.2",
     "electron": "^29.4.6",
+    "electron-icon-builder": "^2.0.1",
     "fork-ts-checker-webpack-plugin": "^9.0.2",
     "html-webpack-plugin": "^5.6.3",
     "node-loader": "^2.0.0",
     "postcss": "^8.5.4",
     "postcss-loader": "^8.1.1",
+    "sharp": "^0.34.2",
     "style-loader": "^4.0.0",
     "tailwindcss": "^3.4.6",
+    "to-ico": "^1.1.5",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3"
   },

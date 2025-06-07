@@ -8,6 +8,7 @@ import type { ForgeConfig } from "@electron-forge/shared-types";
 
 const config: ForgeConfig = {
   packagerConfig: {
+    icon: "./src/resources/icon",
     asar: {
       unpack: "**/node_modules/@abandonware/**/*",
     },
@@ -17,12 +18,27 @@ const config: ForgeConfig = {
     new MakerSquirrel(
       {
         name: "iconsole_client",
+        setupIcon: "./src/resources/icon.ico",
       },
       ["win32"]
     ),
     new MakerZIP({}, ["darwin"]),
-    new MakerDeb({}, ["linux"]),
-    new MakerRpm({}, ["linux"]),
+    new MakerDeb(
+      {
+        options: {
+          icon: "./src/resources/icon.png",
+        },
+      },
+      ["linux"]
+    ),
+    new MakerRpm(
+      {
+        options: {
+          icon: "./src/resources/icon.png",
+        },
+      },
+      ["linux"]
+    ),
   ],
   plugins: [
     new AutoUnpackNativesPlugin({}),
