@@ -82,6 +82,7 @@ export default function App() {
   const [aiAdviceTimer, setAiAdviceTimer] = useState<NodeJS.Timeout | null>(
     null
   );
+  const [targetSpeed, setTargetSpeed] = useState<number | null>(null);
 
   useEffect(() => {
     loadSettings();
@@ -135,6 +136,9 @@ export default function App() {
     });
 
     wsService.onAIAdvice((advice) => {
+      if (advice.targetSpeed) {
+        setTargetSpeed(advice.targetSpeed);
+      }
       showAIAdvice(advice);
     });
   };
@@ -268,6 +272,11 @@ export default function App() {
         >
           <Text style={styles.speedValue}>{currentData.speed.toFixed(1)}</Text>
           <Text style={styles.speedUnit}>km/h</Text>
+          {targetSpeed && (
+            <Text style={styles.targetSpeedValue}>
+              Target: {targetSpeed} km/h
+            </Text>
+          )}
           <Text style={styles.speedLabel}>SPEED</Text>
         </View>
 
@@ -480,6 +489,13 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     marginTop: 5,
     letterSpacing: 2,
+  },
+  targetSpeedValue: {
+    fontSize: 14,
+    color: colors.accentPurple,
+    marginTop: 4,
+    fontWeight: "500",
+    letterSpacing: 1,
   },
   speedLabel: {
     fontSize: 14,

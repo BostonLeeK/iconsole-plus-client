@@ -156,7 +156,16 @@ TIMING CONSIDERATIONS:
 
 IMPORTANT: Always provide both resistance AND target speed for optimal training guidance.
 
-JSON: {"resistance": 1-20, "targetSpeed": 10-38, "advice": "specific_interval_instruction", "action": "clear_action"}
+RESPONSE FORMAT (IMPORTANT):
+Return ONLY valid JSON in this exact format:
+{"resistance": 12, "targetSpeed": 28, "advice": "Start hill climb interval", "action": "Climb!"}
+
+Rules:
+- Use double quotes only
+- No trailing commas
+- Numbers without quotes
+- Keep advice under 80 characters
+- Action should be short (1-2 words + !)
 
 Action examples: "Interval!" "Recovery!" "Climb!" "Sprint!" "Cruise!" "Cool down!"`;
   }

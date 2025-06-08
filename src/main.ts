@@ -401,25 +401,51 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
     const outputTokens = data.usage?.output_tokens || 0;
 
     const responseText = data.content[0].text;
-    const jsonMatch = responseText.match(/\{[^}]+\}/);
 
-    if (!jsonMatch) {
+    let jsonMatch;
+    try {
+      jsonMatch = responseText.match(/\{[\s\S]*?\}/);
+
+      if (!jsonMatch) {
+        const codeBlockMatch = responseText.match(
+          /```(?:json)?\s*(\{[\s\S]*?\})\s*```/
+        );
+        if (codeBlockMatch) {
+          jsonMatch = [codeBlockMatch[1]];
+        }
+      }
+
+      if (!jsonMatch) {
+        throw new Error("No JSON found in response");
+      }
+    } catch (error) {
+      console.error("JSON extraction error:", error);
       throw new Error("No JSON found in response");
     }
 
-    const parsed = JSON.parse(jsonMatch[0]);
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonMatch[0]);
+    } catch (parseError) {
+      console.error("JSON parse error:", parseError);
+      console.error("Raw JSON text:", jsonMatch[0]);
 
-    // Ensure resistance is a reasonable number and different from current
+      parsed = {
+        resistance: 5,
+        targetSpeed: 25,
+        advice: "Continue your workout at steady pace",
+        action: "Keep it up!",
+      };
+    }
+
     let newResistance =
       parsed.resistance || request.workoutData.currentResistance || 5;
 
-    // Apply smart fallback logic if AI gives the same resistance
     if (newResistance === request.workoutData.currentResistance) {
       const rpm = request.workoutData.rpm || 50;
       const heartRate = request.workoutData.heartRate || 0;
       const currentResistance = request.workoutData.currentResistance || 5;
 
-      // Apply basic training logic
       if (request.goal === "weight_loss" && heartRate < 120 && heartRate > 0) {
         newResistance = Math.min(20, currentResistance + 2); // Increase for fat burn
       } else if (request.goal === "casual" && rpm > 70) {
@@ -451,6 +477,8 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
       outputTokens,
     };
 
+    const currentWorkoutData = bluetoothService.getCurrentWorkoutData();
+
     websocketService.broadcastAIAdvice({
       timestamp: new Date().toISOString(),
       advice: result.advice,
@@ -464,7 +492,7 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
         time: request.workoutData.time,
         speed: request.workoutData.speed,
         rpm: request.workoutData.rpm,
-        power: request.workoutData.power,
+        power: currentWorkoutData?.watt || request.workoutData.power,
         heartRate: request.workoutData.heartRate,
       },
     });

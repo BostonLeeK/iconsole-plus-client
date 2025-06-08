@@ -17,6 +17,7 @@ A modern Electron application built with SolidJS for connecting to iConsole+ exe
 - 🎯 **FTMS Protocol** - Full FTMS (Fitness Machine Service) support
 - 💻 **Cross-platform** - Works on Windows, macOS, and Linux
 - 🎨 **Modern UI** - Built with SolidJS and Electron
+- 📱 **Mobile Companion** - React Native mobile app for remote monitoring
 
 ## 📈 Supported Metrics
 
