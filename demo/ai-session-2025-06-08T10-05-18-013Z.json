@@ -1,0 +1,1339 @@
+{
+  "sessionInfo": {
+    "startTime": "2025-06-08T10:05:18.018Z",
+    "endTime": null,
+    "duration": 2646946,
+    "filename": "ai-session-2025-06-08T10-05-18-013Z.json"
+  },
+  "stats": {
+    "totalRequests": 87,
+    "totalInputTokens": 59047,
+    "totalOutputTokens": 15887,
+    "totalTTSCharacters": 0,
+    "estimatedCost": 0.0346205,
+    "ttsCost": 0,
+    "sessionStartTime": "2025-06-08T10:05:18.018Z"
+  },
+  "adviceHistory": [
+    {
+      "timestamp": "2025-06-08T10:05:54.209Z",
+      "advice": "Increase resistance to 5 to simulate a gentle forest trail. Focus on maintaining a steady, comfortable pace.",
+      "oldResistance": 1,
+      "newResistance": 5,
+      "workoutData": {
+        "time": 35,
+        "speed": 17.9,
+        "rpm": 48,
+        "power": 40,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:06:24.795Z",
+      "advice": "Increase resistance to 6 to enter the fat-burning zone. Maintain a steady, moderate pace to maximize calorie burn.",
+      "oldResistance": 5,
+      "newResistance": 6,
+      "workoutData": {
+        "time": 66,
+        "speed": 18.6,
+        "rpm": 50,
+        "power": 61,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:06:55.178Z",
+      "advice": "Increase resistance to 7 to simulate rolling forest terrain. Focus on maintaining a steady, moderate pace to build endurance.",
+      "oldResistance": 6,
+      "newResistance": 7,
+      "workoutData": {
+        "time": 96,
+        "speed": 17.9,
+        "rpm": 48,
+        "power": 60,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:07:25.179Z",
+      "advice": "Increase resistance to 8 to build endurance. Maintain a steady, moderate pace and focus on your form.",
+      "oldResistance": 7,
+      "newResistance": 8,
+      "workoutData": {
+        "time": 126,
+        "speed": 23.1,
+        "rpm": 62,
+        "power": 102,
+        "heartRate": 72
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:07:55.247Z",
+      "advice": "Increase resistance to 9 to build muscular endurance. Maintain a steady, moderate cadence and focus on proper pedaling technique.",
+      "oldResistance": 8,
+      "newResistance": 9,
+      "workoutData": {
+        "time": 156,
+        "speed": 24.2,
+        "rpm": 65,
+        "power": 117,
+        "heartRate": 89
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:08:25.164Z",
+      "advice": "Increase resistance to 10 to challenge your endurance. Maintain a steady, moderate cadence and focus on efficient pedaling.",
+      "oldResistance": 9,
+      "newResistance": 10,
+      "workoutData": {
+        "time": 185,
+        "speed": 23.9,
+        "rpm": 64,
+        "power": 122,
+        "heartRate": 97
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:08:55.310Z",
+      "advice": "Increase resistance to 11 to challenge your cardiovascular fitness. Maintain a steady, high cadence and focus on breathing control.",
+      "oldResistance": 10,
+      "newResistance": 11,
+      "workoutData": {
+        "time": 216,
+        "speed": 23.5,
+        "rpm": 63,
+        "power": 125,
+        "heartRate": 98
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:09:24.804Z",
+      "advice": "Increase resistance to 12 to challenge your anaerobic capacity. Focus on powerful, explosive pedal strokes and maintain control of your breathing.",
+      "oldResistance": 11,
+      "newResistance": 12,
+      "workoutData": {
+        "time": 245,
+        "speed": 22.7,
+        "rpm": 61,
+        "power": 126,
+        "heartRate": 101
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:09:54.810Z",
+      "advice": "Increase resistance to 13 to build muscular endurance. Maintain a steady, moderate cadence and focus on applying power through the entire pedal stroke.",
+      "oldResistance": 12,
+      "newResistance": 13,
+      "workoutData": {
+        "time": 274,
+        "speed": 23.1,
+        "rpm": 62,
+        "power": 136,
+        "heartRate": 99
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:10:25.079Z",
+      "advice": "Increase resistance to 14 to build muscular strength. Emphasize powerful pedal strokes and maintain a steady, controlled cadence.",
+      "oldResistance": 13,
+      "newResistance": 14,
+      "workoutData": {
+        "time": 304,
+        "speed": 23.5,
+        "rpm": 63,
+        "power": 147,
+        "heartRate": 97
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:10:54.827Z",
+      "advice": "Increase resistance to 15 to build endurance. Maintain a steady, moderate cadence and focus on smooth, controlled pedal strokes.",
+      "oldResistance": 14,
+      "newResistance": 15,
+      "workoutData": {
+        "time": 334,
+        "speed": 21.2,
+        "rpm": 57,
+        "power": 130,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:11:25.075Z",
+      "advice": "Increase resistance to 16 to build power. Apply maximum force on each pedal stroke and maintain a steady, controlled cadence.",
+      "oldResistance": 15,
+      "newResistance": 16,
+      "workoutData": {
+        "time": 364,
+        "speed": 23.1,
+        "rpm": 62,
+        "power": 156,
+        "heartRate": 101
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:11:55.280Z",
+      "advice": "Increase resistance to 17 to build power. Apply explosive force on each pedal stroke and maintain a steady, controlled cadence.",
+      "oldResistance": 16,
+      "newResistance": 17,
+      "workoutData": {
+        "time": 394,
+        "speed": 22,
+        "rpm": 59,
+        "power": 150,
+        "heartRate": 107
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:12:25.292Z",
+      "advice": "Increase resistance to 18 to challenge your anaerobic capacity. Apply explosive power on each pedal stroke and maintain a quick, responsive cadence.",
+      "oldResistance": 17,
+      "newResistance": 18,
+      "workoutData": {
+        "time": 424,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 152,
+        "heartRate": 103
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:12:54.813Z",
+      "advice": "Increase resistance to 19 to further challenge your anaerobic capacity. Apply maximum explosive power on each pedal stroke and maintain a quick, responsive cadence.",
+      "oldResistance": 18,
+      "newResistance": 19,
+      "workoutData": {
+        "time": 453,
+        "speed": 21.2,
+        "rpm": 57,
+        "power": 153,
+        "heartRate": 102
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:13:24.979Z",
+      "advice": "Maintain a steady, controlled cadence to preserve form and endurance. Consider brief recovery intervals to recharge.",
+      "oldResistance": 19,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 483,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 164,
+        "heartRate": 103
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:13:54.924Z",
+      "advice": "Maintain consistent pedaling cadence to preserve form and endurance. Consider brief recovery intervals to recharge.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 512,
+        "speed": 19.7,
+        "rpm": 53,
+        "power": 145,
+        "heartRate": 105
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:14:25.095Z",
+      "advice": "Maintain your cadence and focus on efficient pedaling technique to sustain this high resistance.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 542,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 108
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:14:53.993Z",
+      "advice": "Maintain a steady, controlled pace to preserve form and conserve energy. Consider a brief recovery interval to recharge.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 571,
+        "speed": 21.2,
+        "rpm": 57,
+        "power": 165,
+        "heartRate": 104
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:15:24.817Z",
+      "advice": "Maintain steady cadence to manage fatigue. Consider brief recovery interval to recharge.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 602,
+        "speed": 21.2,
+        "rpm": 57,
+        "power": 165,
+        "heartRate": 107
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:15:55.286Z",
+      "advice": "Maintain a steady, controlled pedal stroke to manage fatigue. Consider a brief recovery interval to recharge.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 632,
+        "speed": 22,
+        "rpm": 59,
+        "power": 175,
+        "heartRate": 109
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:16:24.873Z",
+      "advice": "Maintain a steady, controlled cadence to manage fatigue. Briefly reduce resistance to allow muscles to recover.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 661,
+        "speed": 16.4,
+        "rpm": 44,
+        "power": 104,
+        "heartRate": 101
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:16:55.343Z",
+      "advice": "Maintain cadence and focus on form. Brief recovery interval may help manage fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 692,
+        "speed": 17.5,
+        "rpm": 47,
+        "power": 117,
+        "heartRate": 102
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:17:23.922Z",
+      "advice": "Maintain a steady, efficient pedal stroke to conserve energy. Consider a brief recovery interval to recharge.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 720,
+        "speed": 20.1,
+        "rpm": 54,
+        "power": 150,
+        "heartRate": 104
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:17:55.296Z",
+      "advice": "Maintain steady power output and focus on efficient pedal technique to conserve energy.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 751,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 109
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:18:24.580Z",
+      "advice": "Maintain a steady, controlled cadence to manage fatigue. Consider a brief recovery interval to recharge.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 779,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 108
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:18:54.681Z",
+      "advice": "Maintain steady power output. Focus on efficient pedaling to conserve energy during this high-resistance interval.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 810,
+        "speed": 20.9,
+        "rpm": 56,
+        "power": 160,
+        "heartRate": 109
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:19:24.824Z",
+      "advice": "Maintain steady pace and focus on smooth, efficient pedal technique to conserve energy during this high-resistance interval.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 840,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 106
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:19:54.956Z",
+      "advice": "Focus on maintaining your cadence and power output. Consider brief recovery intervals to sustain this high-resistance effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 869,
+        "speed": 20.9,
+        "rpm": 56,
+        "power": 160,
+        "heartRate": 107
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:20:24.978Z",
+      "advice": "Maintain a steady, controlled pedal stroke to sustain this high-resistance effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 899,
+        "speed": 20.9,
+        "rpm": 56,
+        "power": 160,
+        "heartRate": 104
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:20:54.851Z",
+      "advice": "Concentrate on your pedal technique to maintain power and efficiency at this high resistance.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 929,
+        "speed": 19.7,
+        "rpm": 53,
+        "power": 145,
+        "heartRate": 106
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:21:25.117Z",
+      "advice": "Maintain your form and pace, but consider brief recovery intervals to sustain this high-resistance effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 959,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 106
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:21:55.334Z",
+      "advice": "Maintain steady cadence to sustain high power output. Consider brief recovery intervals to avoid fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 990,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 106
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:22:24.747Z",
+      "advice": "Maintain steady cadence to sustain power. Consider brief recovery intervals to avoid fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1019,
+        "speed": 16.8,
+        "rpm": 45,
+        "power": 108,
+        "heartRate": 100
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:22:54.893Z",
+      "advice": "Maintain your cadence and focus on form to sustain this high-resistance effort. Consider a brief recovery interval to prevent fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1048,
+        "speed": 19.4,
+        "rpm": 52,
+        "power": 140,
+        "heartRate": 100
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:23:24.852Z",
+      "advice": "Maintain steady pace and focus on form. Consider a brief recovery interval to prevent fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1078,
+        "speed": 19,
+        "rpm": 51,
+        "power": 135,
+        "heartRate": 99
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:23:54.523Z",
+      "advice": "Maintain your form and power output. Consider a brief recovery interval to prevent fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1107,
+        "speed": 18.6,
+        "rpm": 50,
+        "power": 130,
+        "heartRate": 103
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:24:25.511Z",
+      "advice": "Maintain your power output and focus on efficient pedaling technique to sustain this challenging effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1138,
+        "speed": 19.7,
+        "rpm": 53,
+        "power": 145,
+        "heartRate": 100
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:24:54.967Z",
+      "advice": "Maintain steady cadence and focus on efficient pedaling technique to sustain this high-intensity effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1167,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 170,
+        "heartRate": 104
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:25:24.556Z",
+      "advice": "Maintain steady cadence and power output. Consider a brief recovery interval to avoid fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1197,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 106
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:25:54.889Z",
+      "advice": "Maintain efficient pedaling technique to manage fatigue. Consider a brief recovery interval to recharge for the next push.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1227,
+        "speed": 20.1,
+        "rpm": 54,
+        "power": 150,
+        "heartRate": 104
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:26:25.275Z",
+      "advice": "Maintain efficient pedaling technique to manage fatigue. Consider a brief recovery interval to recharge for the next push.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1257,
+        "speed": 20.1,
+        "rpm": 54,
+        "power": 150,
+        "heartRate": 105
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:26:55.534Z",
+      "advice": "Maintain your cadence and focus on efficient pedaling technique to manage the high resistance.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1286,
+        "speed": 19.4,
+        "rpm": 52,
+        "power": 140,
+        "heartRate": 105
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:27:25.184Z",
+      "advice": "Maintain smooth, efficient pedal strokes to sustain power. Consider a short recovery interval to recharge for the next effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1316,
+        "speed": 20.9,
+        "rpm": 56,
+        "power": 160,
+        "heartRate": 106
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:27:53.844Z",
+      "advice": "Maintain your cadence and focus on smooth, powerful pedal strokes to sustain this high resistance.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1345,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 107
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:28:24.967Z",
+      "advice": "Maintain steady, controlled pedal strokes to sustain this high resistance. Consider a brief recovery interval to recharge for the next effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1375,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 103
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:28:55.294Z",
+      "advice": "Maintain consistent, efficient pedal strokes to sustain this high resistance. Consider a short recovery interval to recharge for the next effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1406,
+        "speed": 20.9,
+        "rpm": 56,
+        "power": 160,
+        "heartRate": 107
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:29:25.148Z",
+      "advice": "Maintain steady cadence and focus on efficient pedal technique to sustain this high resistance. Consider a short recovery interval to recharge.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1435,
+        "speed": 19.7,
+        "rpm": 53,
+        "power": 145,
+        "heartRate": 105
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:29:55.282Z",
+      "advice": "Maintain steady cadence and efficient technique to sustain this high resistance. Consider a short recovery interval to recharge for the next effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1466,
+        "speed": 22,
+        "rpm": 59,
+        "power": 175,
+        "heartRate": 106
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:30:24.915Z",
+      "advice": "Excellent work maintaining high resistance. Focus on smooth, controlled pedal strokes to preserve form and efficiency.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1495,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 106
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:30:55.165Z",
+      "advice": "Excellent work maintaining high resistance. To preserve form, focus on smooth, even pedal strokes and engage your core.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1525,
+        "speed": 19.4,
+        "rpm": 52,
+        "power": 140,
+        "heartRate": 106
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:31:24.973Z",
+      "advice": "Excellent work maintaining high resistance. To prevent fatigue, focus on efficient pedaling technique and engage your core.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1554,
+        "speed": 20.1,
+        "rpm": 54,
+        "power": 150,
+        "heartRate": 102
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:31:55.348Z",
+      "advice": "Excellent work maintaining high resistance. To avoid fatigue, focus on efficient pedal technique and engage your core to stabilize your upper body.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1584,
+        "speed": 19,
+        "rpm": 51,
+        "power": 135,
+        "heartRate": 103
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:32:25.120Z",
+      "advice": "Maintain steady, efficient pedaling to conserve energy for the next interval.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1613,
+        "speed": 20.1,
+        "rpm": 54,
+        "power": 150,
+        "heartRate": 104
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:32:54.921Z",
+      "advice": "Maintain your cadence and focus on smooth pedal strokes to conserve energy for the next interval.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1643,
+        "speed": 19.7,
+        "rpm": 53,
+        "power": 145,
+        "heartRate": 100
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:33:24.950Z",
+      "advice": "Maintain your steady cadence and focus on smooth, efficient pedal strokes to conserve energy for the final push.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1673,
+        "speed": 19.4,
+        "rpm": 52,
+        "power": 140,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:33:54.971Z",
+      "advice": "Maintain your powerful pedal strokes to sustain this high resistance. Shift your focus to controlling your breathing and keeping good form.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1703,
+        "speed": 19.7,
+        "rpm": 53,
+        "power": 145,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:34:25.379Z",
+      "advice": "Maintain your powerful pedal strokes, but focus on your breathing and form to sustain this high resistance.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1733,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:34:54.895Z",
+      "advice": "Maintain your powerful pedal strokes, but focus on your breathing and form to sustain this high resistance. Prepare for a brief recovery interval.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1763,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 170,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:35:24.958Z",
+      "advice": "Maintain steady cadence and focus on efficient pedaling technique to sustain this high resistance.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1792,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:35:55.080Z",
+      "advice": "Maintain a steady, controlled cadence to sustain this high resistance. Focus on even, smooth pedal strokes.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1822,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 106
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:36:24.979Z",
+      "advice": "Maintain steady, controlled pedaling to sustain this high resistance. Focus on even, smooth strokes to preserve power.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1852,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 107
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:36:55.403Z",
+      "advice": "Maintain steady, controlled cadence to preserve power. Shift focus to efficient pedal stroke and upper body relaxation.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1882,
+        "speed": 20.9,
+        "rpm": 56,
+        "power": 160,
+        "heartRate": 103
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:37:25.019Z",
+      "advice": "Maintain steady cadence and focus on efficient pedal stroke to preserve power at this high resistance.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1911,
+        "speed": 19.4,
+        "rpm": 52,
+        "power": 140,
+        "heartRate": 99
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:37:54.558Z",
+      "advice": "Maintain steady, controlled cadence to preserve power. Consider short recovery intervals to manage fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1941,
+        "speed": 20.9,
+        "rpm": 56,
+        "power": 160,
+        "heartRate": 102
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:38:25.069Z",
+      "advice": "Maintain steady, controlled cadence to preserve power. Consider short bursts of increased RPM to build explosive leg strength.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 1971,
+        "speed": 19.4,
+        "rpm": 52,
+        "power": 140,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:38:54.901Z",
+      "advice": "Maintain consistent pedal stroke and focus on efficient technique to preserve power output during this high-resistance effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2001,
+        "speed": 19.7,
+        "rpm": 53,
+        "power": 145,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:39:24.941Z",
+      "advice": "Focus on maintaining consistent pedal stroke and efficient technique to preserve power output during this high-resistance effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2031,
+        "speed": 20.9,
+        "rpm": 56,
+        "power": 160,
+        "heartRate": 102
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:39:55.201Z",
+      "advice": "Emphasize smooth, even pedal strokes to maintain power output despite high resistance.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2060,
+        "speed": 22.4,
+        "rpm": 60,
+        "power": 181,
+        "heartRate": 108
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:40:23.820Z",
+      "advice": "Maintain steady, controlled pedal cadence to preserve power output during this high-resistance effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2089,
+        "speed": 22.4,
+        "rpm": 60,
+        "power": 181,
+        "heartRate": 110
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:40:55.375Z",
+      "advice": "Maintain steady cadence to preserve power output. Avoid sudden changes that could compromise technique.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2120,
+        "speed": 20.1,
+        "rpm": 54,
+        "power": 150,
+        "heartRate": 106
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:41:25.343Z",
+      "advice": "Maintain steady, controlled cadence to preserve power output. Consider short recovery intervals to sustain this high-resistance effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2150,
+        "speed": 19,
+        "rpm": 51,
+        "power": 135,
+        "heartRate": 107
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:41:55.207Z",
+      "advice": "Maintain steady, controlled cadence to preserve form. Consider short recovery intervals to sustain this high-resistance effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2179,
+        "speed": 19.4,
+        "rpm": 52,
+        "power": 140,
+        "heartRate": 104
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:42:24.836Z",
+      "advice": "Maintain steady, controlled cadence to preserve form. Consider short recovery intervals to sustain this high-resistance effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2209,
+        "speed": 17.9,
+        "rpm": 48,
+        "power": 121,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:42:54.968Z",
+      "advice": "Maintain steady cadence and focus on proper form to sustain this high-resistance effort. Consider brief recovery intervals to prevent fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2239,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 155,
+        "heartRate": 101
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:43:25.015Z",
+      "advice": "Maintain steady cadence and focus on form to sustain this high-resistance effort. Consider brief recovery intervals to prevent fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2269,
+        "speed": 24.6,
+        "rpm": 66,
+        "power": 210,
+        "heartRate": 107
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:43:55.118Z",
+      "advice": "Maintain steady RPM and focus on powerful, controlled pedal strokes to sustain this high-resistance effort.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2298,
+        "speed": 23.5,
+        "rpm": 63,
+        "power": 195,
+        "heartRate": 107
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:44:25.350Z",
+      "advice": "Maintain steady cadence and concentrate on powerful, controlled pedal strokes to sustain this high-resistance effort. Consider brief recovery intervals to prevent fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2328,
+        "speed": 12.3,
+        "rpm": 33,
+        "power": 61,
+        "heartRate": 109
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:44:55.097Z",
+      "advice": "Maintain steady power output by adjusting your cadence. Consider brief recovery intervals to prevent fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2357,
+        "speed": 22,
+        "rpm": 59,
+        "power": 175,
+        "heartRate": 106
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:45:24.839Z",
+      "advice": "Maintain steady power output by adjusting your cadence. Consider brief recovery intervals to prevent fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2387,
+        "speed": 17.1,
+        "rpm": 46,
+        "power": 112,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:45:55.351Z",
+      "advice": "Focus on maintaining a steady, controlled pedal stroke. Adjust your cadence as needed to sustain the power output.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2418,
+        "speed": 19,
+        "rpm": 51,
+        "power": 135,
+        "heartRate": 105
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:46:24.966Z",
+      "advice": "Maintain a smooth, controlled pedal stroke to sustain the high resistance. Consider brief recovery periods to avoid premature fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2447,
+        "speed": 22.4,
+        "rpm": 60,
+        "power": 181,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:46:55.113Z",
+      "advice": "Maintain your cadence and focus on smooth pedal strokes to sustain the high resistance. Consider brief recovery periods to avoid fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2477,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 170,
+        "heartRate": 76
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:47:23.867Z",
+      "advice": "Maintain your cadence and focus on powerful, consistent pedal strokes to sustain the high resistance. Consider brief recovery periods to prevent fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2506,
+        "speed": 22.7,
+        "rpm": 61,
+        "power": 185,
+        "heartRate": 109
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:47:54.863Z",
+      "advice": "Maintain your cadence and focus on a smooth, powerful pedal stroke to sustain the high resistance. Consider brief recovery periods to prevent fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2537,
+        "speed": 33.9,
+        "rpm": 91,
+        "power": 91,
+        "heartRate": 118
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:48:25.379Z",
+      "advice": "Focus on maintaining your cadence and power output. Consider brief recovery periods to prevent fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2566,
+        "speed": 37.3,
+        "rpm": 100,
+        "power": 140,
+        "heartRate": 125
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:48:55.082Z",
+      "advice": "Shift your weight back and engage your core to maintain power and control at this high resistance.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2596,
+        "speed": 19.7,
+        "rpm": 53,
+        "power": 145,
+        "heartRate": 125
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    },
+    {
+      "timestamp": "2025-06-08T10:49:24.963Z",
+      "advice": "Maintain your cadence and focus on even, powerful pedal strokes to sustain this high resistance. Consider brief recovery periods to prevent fatigue.",
+      "oldResistance": 20,
+      "newResistance": 20,
+      "workoutData": {
+        "time": 2625,
+        "speed": 0,
+        "rpm": 0,
+        "power": 0,
+        "heartRate": 0
+      },
+      "rideStyle": "forest",
+      "goal": "hiit"
+    }
+  ]
+}

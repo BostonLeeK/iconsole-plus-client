@@ -448,6 +448,7 @@ export class WebSocketService extends EventEmitter {
     action: string;
     oldResistance: number;
     newResistance: number;
+    targetSpeed: number;
     rideStyle: string;
     goal: string;
     workoutData: {

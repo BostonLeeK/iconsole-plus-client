@@ -13,6 +13,7 @@ export interface AIPromptData {
     timestamp: string;
     oldResistance: number;
     newResistance: number;
+    targetSpeed: number;
     advice: string;
   }>;
 }
@@ -67,64 +68,97 @@ ${request.adviceHistory
     (advice, i) =>
       `${i + 1}. ${Math.floor(
         (Date.now() - new Date(advice.timestamp).getTime()) / 1000
-      )}s ago: R${advice.oldResistance}→${advice.newResistance} "${
-        advice.advice
-      }"`
+      )}s ago: R${advice.oldResistance}→${advice.newResistance}, Target: ${
+        advice.targetSpeed
+      }km/h "${advice.advice}"`
   )
   .join("\n")}\n`
         : "\nFIRST RECOMMENDATION - no previous advice given.\n";
 
-    return `You are an expert cycling coach. Give concise, progressive advice WITHOUT repeating previous recommendations.
+    return `You are an expert cycling coach specializing in dynamic interval training. Create varied, progressive workouts that adapt to current performance.
 
-WORKOUT: ${goal} ${style} ride (${Math.floor(request.sessionDuration / 60)}min)
+WORKOUT: ${goal} ${style} ride (${Math.floor(
+      request.sessionDuration / 60
+    )}min elapsed)
 CURRENT: Speed ${request.workoutData.speed}km/h, RPM ${
       request.workoutData.rpm
     }, Power ${request.workoutData.power}W, HR ${
       request.workoutData.heartRate
     }bpm, Resistance ${request.workoutData.currentResistance}/20
 ${historyContext}
-RULES:
-• RESISTANCE LIMITS: MIN=1, MAX=20 (NEVER exceed 20!)
+CRITICAL RULES:
+• RESISTANCE LIMITS: MIN=1, MAX=20 (NEVER exceed!)
+• VARY RESISTANCE frequently - avoid staying at same level too long
+• Max speed is 38km/h
+• Create intervals and recovery periods
+• Match resistance to current performance and fatigue level
 
-TRAINING GOALS:
-• CASUAL: R3-8, comfort first, gentle pace
-• WEIGHT_LOSS: R6-12, HR 120-140, fat burning zone
-• WARMUP: Start R1-3, +1-2 every 30s, gradual increase
-• ENDURANCE: R8-15, steady sustained effort, build stamina
-• HIIT: Alternate R12-18, intense intervals with recovery
-• RECOVERY: R1-6, very light effort, active rest
-• STRENGTH: R14-20, high resistance, muscle building
-• SPRINT: R8-12, maximum RPM, short bursts
+SPEED TARGETS BY GOAL:
+• CASUAL: 15-25km/h, comfortable cruising
+• WEIGHT_LOSS: 20-30km/h, optimal fat burn zone
+• WARMUP: 10-20km/h, gradual progression
+• ENDURANCE: 25-35km/h, sustained effort
+• HIIT: 15-35km/h, varies with intervals
+• RECOVERY: 10-20km/h, easy spinning
+• STRENGTH: 15-25km/h, power over speed
+• SPRINT: 30-38km/h, maximum velocity
 
-RIDE STYLES:
-• CITY: Variable resistance, simulate stops/starts
-• SUBURBAN: Moderate hills R6-12, steady climbs
-• COUNTRYSIDE: Long gradual changes, scenic pace
-• TRACK: Focus speed/RPM, minimal resistance changes
-• MOUNTAIN: High resistance R12-20, climbing simulation
-• BEACH: Relaxed R3-8, easy cruising pace
-• FOREST: Natural variety R5-14, trail simulation
-• HIGHWAY: Sustained effort R8-15, long distance pace
+DYNAMIC TRAINING PROTOCOLS:
 
-• AT MAX RESISTANCE (20): Focus on maintaining pace, form, or suggest rest intervals
+HIIT PROTOCOL (High Intensity Intervals):
+- Work intervals: R14-18, target 28-35km/h for 30-90 seconds
+- Recovery intervals: R4-8, target 15-22km/h for 30-60 seconds
+- Progress: Start moderate, build to max, then recover
+- If HR >150: Increase work intensity
+- If HR <120: Extend work interval or increase resistance
+- NEVER stay at R20 for more than 2 minutes!
 
-IMPORTANT:
-- Don't repeat previous advice
-- Be specific about WHY you're changing resistance
-- Keep advice under 25 words
-- Focus on progression and variety
-- Never start with "Based on..."
-- If at resistance 20, suggest pace/form changes instead of increasing
+FOREST PROTOCOL (Natural Trail Simulation):
+- Simulate varied terrain with frequent changes
+- Flat sections: R5-9, target 22-28km/h (cruise pace)
+- Uphill sections: R12-16, target 18-25km/h (30-60 seconds)
+- Downhill/recovery: R2-6, target 25-32km/h (20-40 seconds)
+- Technical sections: R10-14, target 20-26km/h with RPM focus
+- Create rolling hills pattern, not constant high resistance
 
-JSON: {"resistance": 1-20, "advice": "brief_specific_advice", "action": "concrete_action"}
+OTHER GOALS:
+• CASUAL: R3-8, gentle variations every 2-3 minutes
+• WEIGHT_LOSS: R6-12, moderate intervals, fat burn focus
+• WARMUP: Progressive R1→8 over first 5 minutes
+• ENDURANCE: R8-15, steady with small variations
+• RECOVERY: R1-6, very easy spinning
+• STRENGTH: R14-20, short power intervals
+• SPRINT: R6-12, RPM focus, short bursts
 
-Action examples:
-- "Speed up!" - when increasing resistance/intensity
-- "Reduce pace" - when decreasing resistance
-- "Keep it up!" - when maintaining current level
-- "Rest" - for recovery periods
-- "Interval!" - for interval training
-- "Finish!" - for final push`;
+RIDE STYLE ADAPTATIONS:
+• CITY: Frequent stops/starts, variable R3-15
+• SUBURBAN: Rolling hills R6-14, moderate climbs
+• COUNTRYSIDE: Gentle long changes R5-12
+• TRACK: Speed focus R6-10, consistent effort
+• MOUNTAIN: Steep climbs R12-20, recovery valleys R3-8
+• BEACH: Easy cruise R3-8, relaxed rhythm
+• FOREST: Most varied R4-16, constant terrain changes
+• HIGHWAY: Sustained R8-15, slight variations for wind
+
+DYNAMIC DECISION LOGIC:
+- If same resistance >3 recommendations: MUST change
+- If resistance trending only up: Add recovery period
+- If low power despite high resistance: Reduce and recover
+- If high RPM + low resistance: Increase challenge
+- If low RPM + high resistance: Reduce for better cadence
+
+TIMING CONSIDERATIONS:
+- First 5 min: Gradual warm-up regardless of goal
+- Minutes 5-15: Build to target intensity
+- Middle phase: Implement full protocol with intervals
+- Final 10 min: Begin gradual cool-down
+- Last 5 min: Easy recovery R3-6
+
+IMPORTANT: Always provide both resistance AND target speed for optimal training guidance.
+
+JSON: {"resistance": 1-20, "targetSpeed": 10-38, "advice": "specific_interval_instruction", "action": "clear_action"}
+
+Action examples: "Interval!" "Recovery!" "Climb!" "Sprint!" "Cruise!" "Cool down!"`;
   }
 
   static generateWorkoutAnalysisPrompt(session: any): string {

@@ -163,7 +163,7 @@ Goal: ${goal}
 Time: ${request.sessionDuration}sec
 Data: ${request.workoutData.speed}km/h, ${request.workoutData.rpm}rpm, ${request.workoutData.power}W, ${request.workoutData.heartRate}bpm, resistance ${request.workoutData.currentResistance}/20
 
-Give in JSON format: {"resistance": 1-20, "advice": "short advice"}`;
+Give in JSON format: {"resistance": 1-20, "targetSpeed": 10-38, "advice": "short advice"}`;
   }
 
   private parseResponse(response: string): AITrainingResponse {
@@ -177,12 +177,14 @@ Give in JSON format: {"resistance": 1-20, "advice": "short advice"}`;
 
       return {
         newResistance: Math.max(1, Math.min(20, parsed.resistance || 1)),
+        targetSpeed: Math.max(10, Math.min(38, parsed.targetSpeed || 25)),
         advice: parsed.advice || "Continue your workout",
         action: parsed.action || "Keep it up!",
       };
     } catch (error) {
       return {
         newResistance: 1,
+        targetSpeed: 25,
         advice: "AI analysis error",
         action: "Keep it up!",
       };

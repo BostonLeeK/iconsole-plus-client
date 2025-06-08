@@ -437,8 +437,14 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
       }
     }
 
+    const targetSpeed = Math.max(
+      10,
+      Math.min(38, Math.round(parsed.targetSpeed || 25))
+    );
+
     const result = {
       newResistance: Math.max(1, Math.min(20, Math.round(newResistance))),
+      targetSpeed: targetSpeed,
       advice: parsed.advice || "Continue your workout",
       action: parsed.action || "Keep it up!",
       inputTokens,
@@ -451,6 +457,7 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
       action: result.action,
       oldResistance: request.workoutData.currentResistance,
       newResistance: result.newResistance,
+      targetSpeed: result.targetSpeed,
       rideStyle: request.rideStyle,
       goal: request.goal,
       workoutData: {

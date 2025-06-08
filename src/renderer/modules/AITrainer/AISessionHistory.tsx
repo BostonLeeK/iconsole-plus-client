@@ -79,6 +79,10 @@ export function AISessionHistory() {
             {props.entry.oldResistance} → {props.entry.newResistance}
           </span>
         </div>
+        <div class="bg-blue-800 rounded px-2 py-1">
+          <span class="text-blue-300">Target Speed:</span>
+          <span class="text-white ml-1">{props.entry.targetSpeed} km/h</span>
+        </div>
         <div class="bg-gray-800 rounded px-2 py-1">
           <span class="text-gray-400">Speed:</span>
           <span class="text-white ml-1">

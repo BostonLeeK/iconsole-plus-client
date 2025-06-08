@@ -36,6 +36,7 @@ export interface AITrainingRequest {
 
 export interface AITrainingResponse {
   newResistance: number;
+  targetSpeed: number;
   advice: string;
   action: string;
   reasoning?: string;

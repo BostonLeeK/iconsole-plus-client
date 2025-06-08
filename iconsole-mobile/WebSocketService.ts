@@ -31,6 +31,7 @@ interface AIAdvice {
   action: string;
   oldResistance: number;
   newResistance: number;
+  targetSpeed: number;
   rideStyle: string;
   goal: string;
   workoutData: WorkoutData;

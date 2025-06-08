@@ -133,6 +133,7 @@ export function AITrainer() {
                 advice: entry.advice,
                 oldResistance: entry.oldResistance,
                 newResistance: entry.newResistance,
+                targetSpeed: entry.targetSpeed || 25,
               })),
             },
             apiKey
@@ -149,6 +150,7 @@ export function AITrainer() {
             advice: response.advice,
             oldResistance,
             newResistance: response.newResistance,
+            targetSpeed: response.targetSpeed,
             workoutData: {
               time: workoutData.time,
               speed: workoutData.speed,

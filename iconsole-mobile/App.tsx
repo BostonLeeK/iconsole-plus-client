@@ -295,10 +295,24 @@ export default function App() {
           </View>
 
           <View style={[styles.cornerMetric, styles.bottomRight]}>
-            <Text style={styles.cornerValue}>
-              {Math.round(currentData.calories)}
+            <Text
+              style={[
+                styles.cornerValue,
+                {
+                  color:
+                    currentData.resistance <= 5
+                      ? colors.accentGreen
+                      : currentData.resistance <= 10
+                      ? colors.warningOrange
+                      : currentData.resistance <= 15
+                      ? colors.chartOrange
+                      : colors.errorRed,
+                },
+              ]}
+            >
+              R{currentData.resistance}
             </Text>
-            <Text style={styles.cornerLabel}>🔥 KCAL</Text>
+            <Text style={styles.cornerLabel}>🎯 LEVEL</Text>
           </View>
         </View>
       </View>
@@ -312,37 +326,24 @@ export default function App() {
         </View>
 
         <View style={styles.secondaryMetric}>
+          <Text style={styles.secondaryValue}>{currentData.rpm}</Text>
+          <Text style={styles.secondaryLabel}>RPM</Text>
+        </View>
+
+        <View style={styles.secondaryMetric}>
+          <Text style={styles.secondaryValue}>
+            {Math.round(currentData.calories)}
+          </Text>
+          <Text style={styles.secondaryLabel}>🔥 KCAL</Text>
+        </View>
+
+        <View style={styles.secondaryMetric}>
           <Text style={styles.secondaryValue}>
             {calculatePace(currentData.speed)}
           </Text>
           <Text style={styles.secondaryLabel}>PACE (/km)</Text>
         </View>
-
-        <View style={styles.secondaryMetric}>
-          <Text style={styles.secondaryValue}>{currentData.rpm}</Text>
-          <Text style={styles.secondaryLabel}>RPM</Text>
-        </View>
       </View>
-
-      {isConnected && (
-        <View style={styles.statusContainer}>
-          <View
-            style={[
-              styles.statusBadge,
-              {
-                backgroundColor: isSessionActive
-                  ? colors.successGreen
-                  : colors.warningOrange,
-              },
-            ]}
-          >
-            <Text style={styles.statusBadgeText}>
-              {isSessionActive ? "🚴 RIDING" : "⏸️ READY"}
-            </Text>
-          </View>
-        </View>
-      )}
-
       <View style={styles.controlsContainer}>
         <TouchableOpacity
           style={[
@@ -380,6 +381,11 @@ export default function App() {
                   🎯 Resistance: {currentAiAdvice.oldResistance} →{" "}
                   {currentAiAdvice.newResistance}
                 </Text>
+                {currentAiAdvice.targetSpeed && (
+                  <Text style={styles.modalTargetSpeed}>
+                    🚀 Target Speed: {currentAiAdvice.targetSpeed} km/h
+                  </Text>
+                )}
                 <Text style={styles.modalAutoClose}>
                   ⏰ Auto-closes in 3 seconds
                 </Text>
@@ -619,6 +625,13 @@ const styles = StyleSheet.create({
   modalResistance: {
     fontSize: 16,
     color: colors.textSecondary,
+    textAlign: "center",
+    marginBottom: 10,
+    fontWeight: "600",
+  },
+  modalTargetSpeed: {
+    fontSize: 16,
+    color: colors.accentPurple,
     textAlign: "center",
     marginBottom: 15,
     fontWeight: "600",

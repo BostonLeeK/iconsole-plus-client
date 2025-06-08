@@ -82,7 +82,7 @@ export class BluetoothService
   private lastDeviceTime: number = 0;
   private cumulativePower: number = 0;
   private lastDevicePower: number = 0;
-  private powerOverflowCount: number = 0;
+  private lastSpeed: number = 0;
   private sessionStarted: boolean = false;
 
   constructor() {
@@ -313,11 +313,12 @@ export class BluetoothService
           timeInSeconds
         );
 
-      const adjustedPower = this.handlePowerOverflow(devicePower);
+      const currentSpeed = speedRaw ? speedRaw / 100 : 0;
+      const adjustedPower = this.handlePowerOverflow(devicePower, currentSpeed);
 
       const workoutData = {
         time: totalTime,
-        speed: speedRaw ? speedRaw / 100 : 0,
+        speed: currentSpeed,
         rpm: data[4] ? Math.round(data[4] / 2) : 0,
         distance: totalDistance,
         calories: totalCalories,
@@ -325,6 +326,8 @@ export class BluetoothService
         watt: adjustedPower,
         resistance: data[9] || 0,
       };
+
+      this.lastSpeed = currentSpeed;
 
       this.currentWorkoutData = workoutData;
       this.emit("dataReceived", workoutData);
@@ -485,21 +488,25 @@ export class BluetoothService
     this.lastDeviceTime = 0;
     this.cumulativePower = 0;
     this.lastDevicePower = 0;
-    this.powerOverflowCount = 0;
+    this.lastSpeed = 0;
   }
 
-  private handlePowerOverflow(devicePower: number): number {
-    if (this.lastDevicePower > 230 && devicePower < 30) {
-      this.powerOverflowCount++;
-      console.log(
-        `Power overflow detected: ${this.lastDevicePower}W → ${devicePower}W (overflow #${this.powerOverflowCount})`
-      );
+  private handlePowerOverflow(
+    devicePower: number,
+    currentSpeed: number
+  ): number {
+    if (
+      this.lastDevicePower >= 250 &&
+      devicePower <= 50 &&
+      currentSpeed >= this.lastSpeed
+    ) {
+      const adjustedPower = 255 + devicePower;
+      this.lastDevicePower = adjustedPower;
+      return adjustedPower;
     }
 
     this.lastDevicePower = devicePower;
-    const adjustedPower = devicePower + this.powerOverflowCount * 256;
-
-    return adjustedPower;
+    return devicePower;
   }
 
   private updateCumulativeMetrics(

@@ -5,6 +5,7 @@ export interface AIAdviceEntry {
   advice: string;
   oldResistance: number;
   newResistance: number;
+  targetSpeed: number;
   workoutData: {
     time: number;
     speed: number;
