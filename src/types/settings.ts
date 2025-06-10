@@ -14,6 +14,8 @@ export interface SettingsServiceInterface {
   setWebSocketPort(port: number): void;
   getWebSocketEnabled(): boolean;
   setWebSocketEnabled(enabled: boolean): void;
+  getCaloriesDivisor(): number;
+  setCaloriesDivisor(divisor: number): void;
   generateWebSocketApiKey(): string;
 }
 
@@ -34,6 +36,8 @@ export interface ElectronSettingsAPI {
     setWebSocketPort(port: number): Promise<void>;
     getWebSocketEnabled(): Promise<boolean>;
     setWebSocketEnabled(enabled: boolean): Promise<void>;
+    getCaloriesDivisor(): Promise<number>;
+    setCaloriesDivisor(divisor: number): Promise<void>;
     generateWebSocketApiKey(): Promise<string>;
     openLogsDirectory(): Promise<void>;
     getWorkoutSessions(): Promise<any[]>;

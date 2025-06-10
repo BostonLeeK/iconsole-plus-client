@@ -12,11 +12,13 @@ export function Settings() {
     isRunning: false,
     connectedClients: 0,
   });
+  const [caloriesDivisor, setCaloriesDivisor] = createSignal(3.5);
   const [isLoading, setIsLoading] = createSignal(false);
   const [isSaved, setIsSaved] = createSignal(false);
   const [openaiSaved, setOpenAISaved] = createSignal(false);
   const [intervalSaved, setIntervalSaved] = createSignal(false);
   const [websocketSaved, setWebsocketSaved] = createSignal(false);
+  const [caloriesSaved, setCaloriesSaved] = createSignal(false);
 
   onMount(async () => {
     try {
@@ -47,6 +49,9 @@ export function Settings() {
 
       const wsStatus = await window.electronAPI.websocket.getStatus();
       setWebsocketStatus(wsStatus);
+
+      const divisor = await window.electronAPI.settings.getCaloriesDivisor();
+      setCaloriesDivisor(divisor);
     } catch (error) {}
   });
 
@@ -113,6 +118,21 @@ export function Settings() {
       await window.electronAPI.settings.setAIAnalysisInterval(interval);
       setIntervalSaved(true);
       setTimeout(() => setIntervalSaved(false), 2000);
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSaveCaloriesDivisor = async () => {
+    const divisor = caloriesDivisor();
+    if (divisor <= 0 || divisor > 10) return;
+
+    setIsLoading(true);
+    try {
+      await window.electronAPI.settings.setCaloriesDivisor(divisor);
+      setCaloriesSaved(true);
+      setTimeout(() => setCaloriesSaved(false), 2000);
     } catch (error) {
     } finally {
       setIsLoading(false);
@@ -391,6 +411,46 @@ export function Settings() {
                 <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               )}
               {intervalSaved() ? "✓ Saved" : "Save Interval"}
+            </button>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Calories Divisor
+              </label>
+              <input
+                type="number"
+                min="0.1"
+                max="10"
+                step="0.1"
+                value={caloriesDivisor()}
+                onInput={(e) =>
+                  setCaloriesDivisor(parseFloat(e.target.value) || 3.5)
+                }
+                class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              />
+              <p class="text-gray-400 text-xs mt-2">
+                Divide calories by this number to reduce values. Default: 3.5
+                (0.1-10.0)
+              </p>
+            </div>
+
+            <button
+              onClick={handleSaveCaloriesDivisor}
+              disabled={
+                isLoading() || caloriesDivisor() <= 0 || caloriesDivisor() > 10
+              }
+              class={`w-full px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+                isLoading() || caloriesDivisor() <= 0 || caloriesDivisor() > 10
+                  ? "bg-gray-600 cursor-not-allowed text-gray-400"
+                  : caloriesSaved()
+                  ? "bg-green-600 text-white"
+                  : "bg-orange-600 hover:bg-orange-700 text-white"
+              }`}
+            >
+              {isLoading() && (
+                <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              )}
+              {caloriesSaved() ? "✓ Saved" : "Save Divisor"}
             </button>
           </div>
         </div>

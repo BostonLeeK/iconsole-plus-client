@@ -45,6 +45,10 @@ const electronAPI: ElectronAPI = {
       ipcRenderer.invoke("settings:get-websocket-enabled"),
     setWebSocketEnabled: (enabled: boolean) =>
       ipcRenderer.invoke("settings:set-websocket-enabled", enabled),
+    getCaloriesDivisor: () =>
+      ipcRenderer.invoke("settings:get-calories-divisor"),
+    setCaloriesDivisor: (divisor: number) =>
+      ipcRenderer.invoke("settings:set-calories-divisor", divisor),
     openLogsDirectory: () => ipcRenderer.invoke("settings:open-logs-directory"),
     getWorkoutSessions: () =>
       ipcRenderer.invoke("settings:get-workout-sessions"),

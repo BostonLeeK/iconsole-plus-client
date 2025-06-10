@@ -5,6 +5,7 @@ import {
   BluetoothServiceInterface,
   WorkoutData,
 } from "../types/bluetooth";
+import { settingsService } from "./settings.service";
 
 interface NoblePeripheral extends EventEmitter {
   id: string;
@@ -316,12 +317,15 @@ export class BluetoothService
       const currentSpeed = speedRaw ? speedRaw / 100 : 0;
       const adjustedPower = this.handlePowerOverflow(devicePower, currentSpeed);
 
+      const caloriesDivisor = settingsService.getCaloriesDivisor();
+      const adjustedCalories = Math.round(totalCalories / caloriesDivisor);
+
       const workoutData = {
         time: totalTime,
         speed: currentSpeed,
         rpm: data[4] ? Math.round(data[4] / 2) : 0,
         distance: totalDistance,
-        calories: totalCalories,
+        calories: adjustedCalories,
         heartRate: data[18] || 0,
         watt: adjustedPower,
         resistance: data[9] || 0,

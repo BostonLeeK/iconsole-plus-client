@@ -302,6 +302,25 @@ ipcMain.handle("settings:get-websocket-enabled", async () => {
   }
 });
 
+ipcMain.handle("settings:get-calories-divisor", async () => {
+  try {
+    return settingsService.getCaloriesDivisor();
+  } catch (error) {
+    return 3.5;
+  }
+});
+
+ipcMain.handle(
+  "settings:set-calories-divisor",
+  async (event, divisor: number) => {
+    try {
+      settingsService.setCaloriesDivisor(divisor);
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 ipcMain.handle(
   "settings:set-websocket-enabled",
   async (event, enabled: boolean) => {

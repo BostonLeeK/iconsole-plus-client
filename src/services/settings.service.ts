@@ -7,6 +7,7 @@ interface Settings {
   websocketApiKey?: string;
   websocketPort?: number;
   websocketEnabled?: boolean;
+  caloriesDivisor?: number;
 }
 
 class SettingsService {
@@ -19,6 +20,7 @@ class SettingsService {
         aiAnalysisInterval: 30,
         websocketPort: 8080,
         websocketEnabled: false,
+        caloriesDivisor: 3.5,
       },
     });
   }
@@ -81,6 +83,14 @@ class SettingsService {
 
   setWebSocketEnabled(enabled: boolean): void {
     (this.store as any).set("websocketEnabled", enabled);
+  }
+
+  getCaloriesDivisor(): number {
+    return (this.store as any).get("caloriesDivisor", 3.5);
+  }
+
+  setCaloriesDivisor(divisor: number): void {
+    (this.store as any).set("caloriesDivisor", divisor);
   }
 
   generateWebSocketApiKey(): string {
