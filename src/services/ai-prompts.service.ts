@@ -88,9 +88,8 @@ CURRENT: Speed ${request.workoutData.speed}km/h, RPM ${
 ${historyContext}
 CRITICAL RULES:
 • RESISTANCE LIMITS: MIN=1, MAX=20 (NEVER exceed!)
-• VARY RESISTANCE frequently - avoid staying at same level too long
+• RESPECT THE SELECTED GOAL - ${goal.toUpperCase()} mode requirements MUST be followed
 • Max speed is 38km/h
-• Create intervals and recovery periods
 • Match resistance to current performance and fatigue level
 
 SPEED TARGETS BY GOAL:
@@ -121,13 +120,13 @@ FOREST PROTOCOL (Natural Trail Simulation):
 - Technical sections: R10-14, target 20-26km/h with RPM focus
 - Create rolling hills pattern, not constant high resistance
 
-OTHER GOALS:
-• CASUAL: R3-8, gentle variations every 2-3 minutes
-• WEIGHT_LOSS: R6-12, moderate intervals, fat burn focus
-• WARMUP: Progressive R1→8 over first 5 minutes
-• ENDURANCE: R8-15, steady with small variations
-• RECOVERY: R1-6, very easy spinning
-• STRENGTH: R14-20, short power intervals
+GOAL-SPECIFIC PROTOCOLS:
+• CASUAL: R3-8, gentle variations every 2-3 minutes, comfortable pace, NO HIIT intervals
+• WEIGHT_LOSS: R6-12, moderate intervals, fat burn focus, steady heart rate zones
+• WARMUP: Progressive R1→8 over first 5 minutes, gradual intensity increase
+• ENDURANCE: R8-15, steady with small variations, sustained effort
+• RECOVERY: R1-6, very easy spinning, active rest
+• STRENGTH: R14-20, short power intervals, muscle building focus
 • SPRINT: R6-12, RPM focus, short bursts
 
 RIDE STYLE ADAPTATIONS:
@@ -140,12 +139,14 @@ RIDE STYLE ADAPTATIONS:
 • FOREST: Most varied R4-16, constant terrain changes
 • HIGHWAY: Sustained R8-15, slight variations for wind
 
-DYNAMIC DECISION LOGIC:
-- If same resistance >3 recommendations: MUST change
-- If resistance trending only up: Add recovery period
-- If low power despite high resistance: Reduce and recover
-- If high RPM + low resistance: Increase challenge
-- If low RPM + high resistance: Reduce for better cadence
+DECISION LOGIC BY GOAL:
+CASUAL MODE: Keep resistance steady R3-8, gentle changes only every 2-3 minutes, prioritize comfort
+HIIT MODE: Alternate high/low resistance, create work/recovery intervals
+WEIGHT_LOSS: Moderate steady resistance R6-12, maintain fat burn heart rate zone
+ENDURANCE: Gradual resistance changes R8-15, avoid sudden spikes
+RECOVERY: Very low resistance R1-6, prioritize easy spinning
+STRENGTH: Use high resistance R14-20 for power building
+SPRINT: Focus on speed with moderate resistance R6-12
 
 TIMING CONSIDERATIONS:
 - First 5 min: Gradual warm-up regardless of goal
@@ -154,7 +155,10 @@ TIMING CONSIDERATIONS:
 - Final 10 min: Begin gradual cool-down
 - Last 5 min: Easy recovery R3-6
 
-IMPORTANT: Always provide both resistance AND target speed for optimal training guidance.
+IMPORTANT: 
+- Always provide both resistance AND target speed for optimal training guidance
+- STRICTLY follow the ${goal.toUpperCase()} goal requirements - do NOT switch to HIIT unless goal is HIIT
+- For CASUAL mode: Use gentle resistance R3-8, comfortable speeds 15-25km/h, avoid "HIIT interval" advice
 
 RESPONSE FORMAT (IMPORTANT):
 Return ONLY valid JSON in this exact format:
@@ -164,10 +168,26 @@ Rules:
 - Use double quotes only
 - No trailing commas
 - Numbers without quotes
-- Keep advice under 80 characters
+- Keep advice under 80 characters and match the selected goal
 - Action should be short (1-2 words + !)
 
-Action examples: "Interval!" "Recovery!" "Climb!" "Sprint!" "Cruise!" "Cool down!"`;
+Action examples for ${goal.toUpperCase()}: ${
+      goal === "casual"
+        ? '"Cruise!" "Relax!" "Gentle!" "Easy!"'
+        : goal === "hiit"
+        ? '"Interval!" "Sprint!" "Push!" "Recover!"'
+        : goal === "endurance"
+        ? '"Steady!" "Sustain!" "Build!" "Maintain!"'
+        : goal === "weight_loss"
+        ? '"Burn!" "Steady!" "Zone!" "Maintain!"'
+        : goal === "recovery"
+        ? '"Easy!" "Gentle!" "Rest!" "Relax!"'
+        : goal === "strength"
+        ? '"Power!" "Climb!" "Strong!" "Build!"'
+        : goal === "sprint"
+        ? '"Fast!" "Sprint!" "Speed!" "Quick!"'
+        : '"Interval!" "Recovery!" "Climb!" "Sprint!" "Cruise!" "Cool down!"'
+    }`;
   }
 
   static generateWorkoutAnalysisPrompt(session: any): string {

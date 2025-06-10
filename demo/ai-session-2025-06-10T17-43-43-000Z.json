@@ -1,0 +1,979 @@
+{
+  "sessionInfo": {
+    "startTime": "2025-06-10T17:43:43.004Z",
+    "endTime": null,
+    "duration": 1807269,
+    "filename": "ai-session-2025-06-10T17-43-43-000Z.json"
+  },
+  "stats": {
+    "totalRequests": 59,
+    "totalInputTokens": 70114,
+    "totalOutputTokens": 6017,
+    "totalTTSCharacters": 0,
+    "estimatedCost": 0.02504975,
+    "ttsCost": 0,
+    "sessionStartTime": "2025-06-10T17:43:43.004Z"
+  },
+  "adviceHistory": [
+    {
+      "timestamp": "2025-06-10T17:44:20.081Z",
+      "advice": "Begin a gentle rolling hills section to warm up",
+      "oldResistance": 1,
+      "newResistance": 8,
+      "targetSpeed": 24,
+      "workoutData": {
+        "time": 48,
+        "speed": 19.7,
+        "rpm": 53,
+        "power": 47,
+        "heartRate": 0
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:44:49.377Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 8,
+      "newResistance": 12,
+      "targetSpeed": 23,
+      "workoutData": {
+        "time": 77,
+        "speed": 23.9,
+        "rpm": 64,
+        "power": 114,
+        "heartRate": 0
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:45:19.614Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 12,
+      "newResistance": 12,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 107,
+        "speed": 20.1,
+        "rpm": 54,
+        "power": 107,
+        "heartRate": 0
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:45:50.019Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 12,
+      "newResistance": 12,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 137,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 121,
+        "heartRate": 0
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:46:19.298Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 12,
+      "newResistance": 12,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 167,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 121,
+        "heartRate": 0
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:46:49.650Z",
+      "advice": "Begin hill climb interval to build power",
+      "oldResistance": 12,
+      "newResistance": 14,
+      "targetSpeed": 28,
+      "workoutData": {
+        "time": 197,
+        "speed": 22.7,
+        "rpm": 61,
+        "power": 132,
+        "heartRate": 0
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:47:19.018Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 14,
+      "newResistance": 14,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 226,
+        "speed": 23.1,
+        "rpm": 62,
+        "power": 149,
+        "heartRate": 0
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:47:49.890Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 14,
+      "newResistance": 14,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 256,
+        "speed": 26.1,
+        "rpm": 70,
+        "power": 181,
+        "heartRate": 0
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:48:20.373Z",
+      "advice": "Begin gradual warm-up with rolling hills",
+      "oldResistance": 14,
+      "newResistance": 8,
+      "targetSpeed": 22,
+      "workoutData": {
+        "time": 286,
+        "speed": 24.6,
+        "rpm": 66,
+        "power": 165,
+        "heartRate": 102
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:48:49.365Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 8,
+      "newResistance": 14,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 315,
+        "speed": 22.7,
+        "rpm": 61,
+        "power": 105,
+        "heartRate": 99
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:49:19.299Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 14,
+      "newResistance": 12,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 345,
+        "speed": 23.9,
+        "rpm": 64,
+        "power": 157,
+        "heartRate": 103
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:49:49.808Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 12,
+      "newResistance": 14,
+      "targetSpeed": 26,
+      "workoutData": {
+        "time": 375,
+        "speed": 24.6,
+        "rpm": 66,
+        "power": 150,
+        "heartRate": 100
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:50:19.455Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 14,
+      "newResistance": 14,
+      "targetSpeed": 27,
+      "workoutData": {
+        "time": 405,
+        "speed": 25.7,
+        "rpm": 69,
+        "power": 177,
+        "heartRate": 101
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:50:50.891Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 14,
+      "newResistance": 12,
+      "targetSpeed": 26,
+      "workoutData": {
+        "time": 436,
+        "speed": 26.8,
+        "rpm": 72,
+        "power": 189,
+        "heartRate": 109
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:51:29.650Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 12,
+      "newResistance": 14,
+      "targetSpeed": 26,
+      "workoutData": {
+        "time": 475,
+        "speed": 25.7,
+        "rpm": 69,
+        "power": 161,
+        "heartRate": 106
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:51:49.943Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 14,
+      "targetSpeed": 28,
+      "workoutData": {
+        "time": 495,
+        "speed": 25.3,
+        "rpm": 68,
+        "power": 173,
+        "heartRate": 111
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:52:20.492Z",
+      "advice": "Begin forest protocol simulation, moderate uphill climb",
+      "oldResistance": 14,
+      "newResistance": 15,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 524,
+        "speed": 27.6,
+        "rpm": 74,
+        "power": 197,
+        "heartRate": 111
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:52:49.822Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 15,
+      "newResistance": 15,
+      "targetSpeed": 26,
+      "workoutData": {
+        "time": 554,
+        "speed": 24.6,
+        "rpm": 66,
+        "power": 172,
+        "heartRate": 108
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:53:19.656Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 15,
+      "newResistance": 15,
+      "targetSpeed": 28,
+      "workoutData": {
+        "time": 583,
+        "speed": 25.3,
+        "rpm": 68,
+        "power": 180,
+        "heartRate": 113
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:53:49.140Z",
+      "advice": "Begin rolling hills section to build endurance",
+      "oldResistance": 15,
+      "newResistance": 12,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 613,
+        "speed": 27.2,
+        "rpm": 73,
+        "power": 201,
+        "heartRate": 74
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:54:19.867Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 12,
+      "newResistance": 15,
+      "targetSpeed": 28,
+      "workoutData": {
+        "time": 643,
+        "speed": 24.6,
+        "rpm": 66,
+        "power": 150,
+        "heartRate": 113
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:54:49.874Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 15,
+      "newResistance": 16,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 673,
+        "speed": 27.6,
+        "rpm": 74,
+        "power": 205,
+        "heartRate": 117
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:55:19.211Z",
+      "advice": "Begin HIIT interval, increase speed and power",
+      "oldResistance": 16,
+      "newResistance": 15,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 703,
+        "speed": 31.7,
+        "rpm": 85,
+        "power": 11,
+        "heartRate": 123
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:55:50.040Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 15,
+      "newResistance": 14,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 733,
+        "speed": 36.5,
+        "rpm": 98,
+        "power": 62,
+        "heartRate": 131
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:56:19.751Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 16,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 762,
+        "speed": 29.8,
+        "rpm": 80,
+        "power": 221,
+        "heartRate": 133
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:56:50.170Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 16,
+      "newResistance": 14,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 792,
+        "speed": 29.5,
+        "rpm": 79,
+        "power": 236,
+        "heartRate": 135
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:57:20.401Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 16,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 822,
+        "speed": 29.1,
+        "rpm": 78,
+        "power": 213,
+        "heartRate": 78
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:57:49.487Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 16,
+      "newResistance": 14,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 851,
+        "speed": 29.5,
+        "rpm": 79,
+        "power": 236,
+        "heartRate": 135
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:58:19.503Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 13,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 881,
+        "speed": 29.5,
+        "rpm": 79,
+        "power": 217,
+        "heartRate": 130
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:58:49.583Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 13,
+      "newResistance": 15,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 911,
+        "speed": 29.8,
+        "rpm": 80,
+        "power": 212,
+        "heartRate": 132
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:59:20.246Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 15,
+      "newResistance": 16,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 941,
+        "speed": 28,
+        "rpm": 75,
+        "power": 210,
+        "heartRate": 130
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T17:59:49.773Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 16,
+      "newResistance": 15,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 971,
+        "speed": 25,
+        "rpm": 67,
+        "power": 184,
+        "heartRate": 123
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:00:20.511Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 15,
+      "newResistance": 14,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 1001,
+        "speed": 29.5,
+        "rpm": 79,
+        "power": 226,
+        "heartRate": 128
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:00:49.746Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 16,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 1029,
+        "speed": 29.1,
+        "rpm": 78,
+        "power": 213,
+        "heartRate": 132
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:01:20.818Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 16,
+      "newResistance": 14,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 1061,
+        "speed": 28.7,
+        "rpm": 77,
+        "power": 227,
+        "heartRate": 132
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:01:49.838Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 14,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 1090,
+        "speed": 25.7,
+        "rpm": 69,
+        "power": 177,
+        "heartRate": 129
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:02:20.658Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 16,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 1120,
+        "speed": 25.7,
+        "rpm": 69,
+        "power": 177,
+        "heartRate": 124
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:02:49.959Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 16,
+      "newResistance": 14,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 1149,
+        "speed": 25,
+        "rpm": 67,
+        "power": 184,
+        "heartRate": 117
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:03:19.120Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 14,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 1178,
+        "speed": 23.9,
+        "rpm": 64,
+        "power": 157,
+        "heartRate": 119
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:03:52.933Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 14,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 1212,
+        "speed": 24.6,
+        "rpm": 66,
+        "power": 165,
+        "heartRate": 121
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:04:20.472Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 16,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 1239,
+        "speed": 24.2,
+        "rpm": 65,
+        "power": 161,
+        "heartRate": 115
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:04:50.445Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 16,
+      "newResistance": 14,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 1269,
+        "speed": 22,
+        "rpm": 59,
+        "power": 150,
+        "heartRate": 114
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:05:19.285Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 16,
+      "targetSpeed": 32,
+      "workoutData": {
+        "time": 1297,
+        "speed": 22,
+        "rpm": 59,
+        "power": 138,
+        "heartRate": 109
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:05:49.403Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 16,
+      "newResistance": 14,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 1327,
+        "speed": 22.4,
+        "rpm": 60,
+        "power": 155,
+        "heartRate": 114
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:06:20.610Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 14,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 1358,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 134,
+        "heartRate": 112
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:06:49.865Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 14,
+      "targetSpeed": 28,
+      "workoutData": {
+        "time": 1387,
+        "speed": 22.7,
+        "rpm": 61,
+        "power": 145,
+        "heartRate": 114
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:07:20.273Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 15,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 1417,
+        "speed": 22.4,
+        "rpm": 60,
+        "power": 142,
+        "heartRate": 112
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:07:49.019Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 15,
+      "newResistance": 15,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 1446,
+        "speed": 22,
+        "rpm": 59,
+        "power": 143,
+        "heartRate": 112
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:08:19.117Z",
+      "advice": "Begin hill climb interval, increase resistance and speed",
+      "oldResistance": 15,
+      "newResistance": 12,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 1476,
+        "speed": 22,
+        "rpm": 59,
+        "power": 143,
+        "heartRate": 111
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:08:49.376Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 12,
+      "newResistance": 14,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 1506,
+        "speed": 23.5,
+        "rpm": 63,
+        "power": 139,
+        "heartRate": 110
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:09:21.138Z",
+      "advice": "Begin hill climb interval, increase speed",
+      "oldResistance": 14,
+      "newResistance": 12,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 1537,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 134,
+        "heartRate": 108
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:09:49.412Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 12,
+      "newResistance": 14,
+      "targetSpeed": 28,
+      "workoutData": {
+        "time": 1565,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 121,
+        "heartRate": 110
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:10:19.355Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 14,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 1595,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 134,
+        "heartRate": 78
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:10:50.060Z",
+      "advice": "Begin hill climb interval, increase speed",
+      "oldResistance": 14,
+      "newResistance": 12,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 1625,
+        "speed": 20.5,
+        "rpm": 55,
+        "power": 122,
+        "heartRate": 110
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:11:19.386Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 12,
+      "newResistance": 14,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 1655,
+        "speed": 23.5,
+        "rpm": 63,
+        "power": 139,
+        "heartRate": 109
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:11:49.535Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 14,
+      "targetSpeed": 28,
+      "workoutData": {
+        "time": 1685,
+        "speed": 21.6,
+        "rpm": 58,
+        "power": 134,
+        "heartRate": 104
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:12:20.854Z",
+      "advice": "Begin hill climb interval, increase speed and resistance",
+      "oldResistance": 14,
+      "newResistance": 12,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 1716,
+        "speed": 21.2,
+        "rpm": 57,
+        "power": 130,
+        "heartRate": 106
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:12:50.547Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 12,
+      "newResistance": 14,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 1745,
+        "speed": 23.1,
+        "rpm": 62,
+        "power": 136,
+        "heartRate": 109
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:13:19.636Z",
+      "advice": "Begin HIIT interval, increase resistance and speed",
+      "oldResistance": 14,
+      "newResistance": 14,
+      "targetSpeed": 30,
+      "workoutData": {
+        "time": 1774,
+        "speed": 22,
+        "rpm": 59,
+        "power": 138,
+        "heartRate": 111
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    },
+    {
+      "timestamp": "2025-06-10T18:13:50.273Z",
+      "advice": "Begin hill climb interval, increase speed and resistance",
+      "oldResistance": 14,
+      "newResistance": 12,
+      "targetSpeed": 25,
+      "workoutData": {
+        "time": 1804,
+        "speed": 22.7,
+        "rpm": 61,
+        "power": 145,
+        "heartRate": 108
+      },
+      "rideStyle": "suburban",
+      "goal": "casual"
+    }
+  ]
+}
