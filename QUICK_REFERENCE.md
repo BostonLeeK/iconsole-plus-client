@@ -25,7 +25,7 @@ interface FTMSData {
 ### Proprietary Command (Primary)
 
 ```typescript
-// Service: fff0, Range: 1-20
+// Service: fff0, Range: 1-32
 const cmd = [0xf0, 0xa6, 0x01, 0x01, level + 1, checksum];
 const checksum = cmd.slice(0, -1).reduce((xor, b) => xor ^ b, 0);
 ```
@@ -80,4 +80,4 @@ if (data[0] !== 0x74 || data[1] !== 0x0b) console.warn("Unexpected flags");
 - **Cadence**: 30-100 RPM
 - **Power**: 10-300 watts
 - **Heart Rate**: 60-180 BPM (0 if no sensor)
-- **Resistance**: 1-20 levels
+- **Resistance**: 1-32 levels

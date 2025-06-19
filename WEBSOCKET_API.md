@@ -190,7 +190,7 @@ Sent before server stops:
 | `calories`   | number | kcal    | Calories burned             |
 | `heartRate`  | number | bpm     | Heart rate (0 if no sensor) |
 | `watt`       | number | watts   | Power output                |
-| `resistance` | number | level   | Resistance level (1-20)     |
+| `resistance` | number | level   | Resistance level (1-32)     |
 
 ## 💻 Client Examples
 

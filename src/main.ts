@@ -466,11 +466,11 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
       const currentResistance = request.workoutData.currentResistance || 5;
 
       if (request.goal === "weight_loss" && heartRate < 120 && heartRate > 0) {
-        newResistance = Math.min(20, currentResistance + 2); // Increase for fat burn
+        newResistance = Math.min(32, currentResistance + 2); // Increase for fat burn
       } else if (request.goal === "casual" && rpm > 70) {
         newResistance = Math.max(1, currentResistance - 1); // Decrease for comfort
       } else if (rpm > 80) {
-        newResistance = Math.min(20, currentResistance + 1); // Increase if spinning too fast
+        newResistance = Math.min(32, currentResistance + 1); // Increase if spinning too fast
       } else if (rpm < 40 && rpm > 0) {
         newResistance = Math.max(1, currentResistance - 1); // Decrease if too slow
       } else if (
@@ -488,7 +488,7 @@ ipcMain.handle("ai:analyze-workout", async (event, request, apiKey) => {
     );
 
     const result = {
-      newResistance: Math.max(1, Math.min(20, Math.round(newResistance))),
+      newResistance: Math.max(1, Math.min(32, Math.round(newResistance))),
       targetSpeed: targetSpeed,
       advice: parsed.advice || "Continue your workout",
       action: parsed.action || "Keep it up!",

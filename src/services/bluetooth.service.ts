@@ -443,7 +443,7 @@ export class BluetoothService
       );
     }
 
-    const clampedLevel = Math.max(1, Math.min(20, Math.round(level)));
+    const clampedLevel = Math.max(1, Math.min(32, Math.round(level)));
     let resistanceCommand: Uint8Array;
 
     if (this.controlServiceUuid === "1826") {

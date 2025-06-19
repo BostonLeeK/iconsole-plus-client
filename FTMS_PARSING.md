@@ -340,13 +340,13 @@ iConsole+ bikes support both proprietary and FTMS standard resistance control:
 - **Service UUID**: `fff0` (Proprietary control service)
 - **Characteristic**: Write characteristic for commands
 - **Command Format**: `[0xf0, 0xa6, 0x01, 0x01, level+1, checksum]`
-- **Resistance Range**: 1-20 levels
+- **Resistance Range**: 1-32 levels
 - **Checksum**: XOR of all bytes except checksum
 
 ```typescript
 function sendProprietaryResistance(level: number): void {
-  if (level < 1 || level > 20) {
-    throw new Error("Resistance level must be between 1 and 20");
+  if (level < 1 || level > 32) {
+    throw new Error("Resistance level must be between 1 and 32");
   }
 
   const command = [0xf0, 0xa6, 0x01, 0x01, level + 1];

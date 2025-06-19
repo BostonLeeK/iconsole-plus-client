@@ -183,17 +183,17 @@ export function DeviceControl() {
             <input
               type="range"
               min="1"
-              max="20"
+              max="32"
               value={resistanceLevel()}
               onInput={(e) => setResistanceLevel(parseInt(e.target.value))}
               class="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
             />
             <div class="flex justify-between text-xs text-gray-400">
               <span>1</span>
-              <span>5</span>
-              <span>10</span>
-              <span>15</span>
-              <span>20</span>
+              <span>8</span>
+              <span>16</span>
+              <span>24</span>
+              <span>32</span>
             </div>
             <button
               onClick={handleSetResistance}

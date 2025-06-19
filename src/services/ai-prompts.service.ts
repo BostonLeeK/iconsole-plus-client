@@ -84,10 +84,10 @@ CURRENT: Speed ${request.workoutData.speed}km/h, RPM ${
       request.workoutData.rpm
     }, Power ${request.workoutData.power}W, HR ${
       request.workoutData.heartRate
-    }bpm, Resistance ${request.workoutData.currentResistance}/20
+    }bpm, Resistance ${request.workoutData.currentResistance}/32
 ${historyContext}
 CRITICAL RULES:
-• RESISTANCE LIMITS: MIN=1, MAX=20 (NEVER exceed!)
+• RESISTANCE LIMITS: MIN=1, MAX=32 (NEVER exceed!)
 • RESPECT THE SELECTED GOAL - ${goal.toUpperCase()} mode requirements MUST be followed
 • Max speed is 38km/h
 • Match resistance to current performance and fatigue level
@@ -126,7 +126,7 @@ GOAL-SPECIFIC PROTOCOLS:
 • WARMUP: Progressive R1→8 over first 5 minutes, gradual intensity increase
 • ENDURANCE: R8-15, steady with small variations, sustained effort
 • RECOVERY: R1-6, very easy spinning, active rest
-• STRENGTH: R14-20, short power intervals, muscle building focus
+• STRENGTH: R14-32, short power intervals, muscle building focus
 • SPRINT: R6-12, RPM focus, short bursts
 
 RIDE STYLE ADAPTATIONS:
@@ -145,7 +145,7 @@ HIIT MODE: Alternate high/low resistance, create work/recovery intervals
 WEIGHT_LOSS: Moderate steady resistance R6-12, maintain fat burn heart rate zone
 ENDURANCE: Gradual resistance changes R8-15, avoid sudden spikes
 RECOVERY: Very low resistance R1-6, prioritize easy spinning
-STRENGTH: Use high resistance R14-20 for power building
+STRENGTH: Use high resistance R14-32 for power building
 SPRINT: Focus on speed with moderate resistance R6-12
 
 TIMING CONSIDERATIONS:
@@ -218,7 +218,7 @@ ${session.data
         point.watt
       }W | Speed: ${point.speed}km/h | RPM: ${point.rpm} | Resistance: ${
         point.resistance
-      }/20`
+      }/32`
   )
   .join("\n")}
 
@@ -233,7 +233,7 @@ ${session.data
         point.heartRate
       }bpm | Power: ${point.watt}W | Speed: ${point.speed}km/h | RPM: ${
         point.rpm
-      } | Resistance: ${point.resistance}/20`
+      } | Resistance: ${point.resistance}/32`
   )
   .join("\n")}
 
@@ -307,10 +307,10 @@ ${
 }
 
 CYCLING WORKOUT TYPES:
-- ENDURANCE: Long steady rides, moderate resistance (R8-12), HR 120-140
+- ENDURANCE: Long steady rides, moderate resistance (R8-15), HR 120-140
 - HIIT: High intensity intervals (R12-18), alternating with recovery
-- STRENGTH: High resistance hill climbs (R14-20), muscle building
-- RECOVERY: Light active recovery (R3-6), easy spinning
+- STRENGTH: High resistance hill climbs (R14-32), muscle building
+- RECOVERY: Easy spinning, low resistance (R1-6), HR 90-110
 - WEIGHT_LOSS: Fat burning zone (R6-12), HR 120-140, longer sessions
 - CASUAL: Comfortable pace (R5-10), enjoyable rides
 
@@ -349,7 +349,7 @@ Create a structured weekly plan with specific workouts for each requested day. R
       "rideStyle": "style_name",
       "goal": "goal_name", 
       "duration": minutes,
-      "targetResistance": {"min": 1-20, "max": 1-20},
+      "targetResistance": {"min": 1-32, "max": 1-32},
       "targetHeartRate": {"min": bpm, "max": bpm},
       "description": "Detailed workout description and instructions"
     }

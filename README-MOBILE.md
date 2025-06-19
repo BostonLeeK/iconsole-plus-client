@@ -15,7 +15,7 @@ iConsole+ Mobile is a React Native app built with Expo that allows remote monito
 - **Workout Time** - Total session duration
 - **Distance** - Distance covered in km
 - **Heart Rate** - Heart rate in BPM
-- **Resistance** - Current resistance level (R1-R20) with color coding
+- **Resistance** - Current resistance level (R1-R32) with color coding
 - **Power** - Current power output in watts
 - **Cadence (RPM)** - Pedal revolutions per minute
 - **Calories** - Calories burned

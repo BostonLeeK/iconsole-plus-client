@@ -8,7 +8,7 @@ A modern Electron application built with SolidJS for connecting to iConsole+ exe
 
 - 🔗 **Bluetooth LE Connection** - Connect to iConsole+ exercise bikes
 - 📊 **Real-time Data** - Live workout metrics display
-- 🎛️ **Resistance Control** - Adjust bike resistance remotely (1-20 levels)
+- 🎛️ **Resistance Control** - Adjust bike resistance remotely (1-32 levels)
 - 📹 **Session Recording** - Record and save workout sessions to JSON files
 - 🤖 **AI Trainer** - Claude-powered intelligent training assistant
 - 📈 **Smart Resistance** - Automatic resistance adjustments based on goals
@@ -70,7 +70,7 @@ npm run package
 4. **Click "Scan"** to discover nearby devices
 5. **Select your bike** from the list
 6. **Connect** and start your workout!
-7. **Control resistance** using the slider (1-20 levels)
+7. **Control resistance** using the slider (1-32 levels)
 8. **Configure AI Trainer** in settings with your Claude API key
 9. **Select training style** and goals for personalized coaching
 
@@ -165,7 +165,7 @@ This application uses the standard **FTMS (Fitness Machine Service)** Bluetooth 
 - **Data Service**: `1826` (FTMS) - Real-time workout data
 - **Control Service**: `fff0` (Proprietary) - Resistance commands
 - **Message Format**: 21-byte Indoor Bike Data packets
-- **Resistance Range**: 1-20 levels with dual protocol support
+- **Resistance Range**: 1-32 levels with dual protocol support
 - **Update Frequency**: 2-3 seconds
 - **Recording Frequency**: 1-second intervals
 - **AI Engine**: Claude 3 Haiku - 30-second analysis intervals
@@ -179,7 +179,7 @@ The application supports both proprietary and FTMS standard resistance control:
 
 - **Primary Protocol**: Proprietary `fff0` service with `0xa6` commands
 - **Fallback Protocol**: FTMS standard `0x04` resistance commands
-- **Range**: 1-20 resistance levels
+- **Range**: 1-32 resistance levels
 - **Real-time**: Immediate response to resistance changes
 
 ### Session Data Format
